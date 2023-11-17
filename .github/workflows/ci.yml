@@ -1,0 +1,31 @@
+# This is the name of the workflow, it appears in the GitHub Actions tab
+name: Continuous Integration
+
+# The name for workflow runs generated from this workflow
+run-name: CI Run on ${{ github.ref }} by @${{ github.actor }}
+
+# This specifies the events that will trigger the workflow to run
+on: [push, pull_request]
+
+# Jobs define the actual tasks that the workflow will execute
+jobs:
+  setup:
+    uses: ./.github/workflows/setup_environment.yml
+    with:
+      python-version: '3.11'
+
+  build_and_check:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # A step to block .env files
+      - name: Block .env files from being committed
+        run: |
+          if git diff --name-only origin/main..HEAD | grep -qE "^.env|^.env.example|^.env.sample"
+          then
+            echo ".env files must not be committed"
+            exit 1
+          fi
