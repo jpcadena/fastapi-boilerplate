@@ -1,0 +1,39 @@
+# This is the name of the workflow, it appears in the GitHub Actions tab
+name: Code Quality
+
+# The name for workflow runs generated from this workflow
+run-name: Code Quality Run on ${{ github.ref }} by @${{ github.actor }}
+
+# This specifies the events that will trigger the workflow to run
+on: [push, pull_request]
+
+# Jobs define the actual tasks that the workflow will execute
+jobs:
+  setup:
+    uses: ./.github/workflows/setup_environment.yml
+    with:
+      python-version: '3.11'
+
+  lint-and-type-check:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+
+    # Check code formatting using isort
+    - name: Run isort
+      run: |
+        pip install isort
+        isort . --check-only
+    # Check code formatting using Black
+    - name: Run Black
+      run: |
+        pip install black
+        black --check .
+    # Use Ruff to run additional quality checks
+    - name: Run Ruff
+      uses: chartboost/ruff-action@v1
+
+    - name: Run mypy
+      run: |
+        pip install mypy
+        mypy .
