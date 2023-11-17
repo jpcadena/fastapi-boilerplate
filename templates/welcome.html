@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Welcome to Our Platform</title>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="/assets/css/styles.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet">
+</head>
+<body>
+  <div class="email-container">
+    <table class="main-table" role="presentation">
+      <tbody>
+      <tr>
+        <td class="header-section">
+          <h1 class="title">Welcome to {{ project_name }}</h1>
+        </td>
+      </tr>
+      <tr>
+        <td class="content-section">
+          <p class="main-content">
+            Hello, <span class="highlight">{{ username }}</span>.
+          </p>
+          <p class="main-content">
+            We're excited to have you on board. Start exploring {{
+            project_name }} by logging in with your credentials.
+            If you have any questions or need assistance, our support team is here to help.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td class="button-section">
+          <a class="button-link" href="{{ http://localhost }}" target="_blank">Log In</a>
+        </td>
+      </tr>
+      <tr>
+        <td class="footer-section">
+          <p class="footer-content">
+            Thank you for choosing {{ project_name }}. We're thrilled to have you with us!
+          </p>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

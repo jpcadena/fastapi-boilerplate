@@ -1,0 +1,255 @@
+[tool.poetry]
+name = "fastapi-boilerplate"
+version = "0.1.0"
+description = "FastAPI boilerplate"
+license = "MIT"
+authors = ["Juan Pablo Cadena Aguilar <jpcadena@espol.edu.ec>"]
+maintainers = ["Juan Pablo Cadena Aguilar <jpcadena@espol.edu.ec>"]
+readme = "README.md"
+homepage = "https://github.com/jpcadena/fastapi-boilerplate"
+repository = "https://github.com/jpcadena/fastapi-boilerplate"
+documentation = "https://github.com/jpcadena/fastapi-boilerplate"
+keywords = [
+    "python",
+    "backend",
+    "restful api",
+    "fastapi",
+    "boilerplate",
+    "template",
+    "poetry",
+    "pydantic",
+    "starlette",
+    "uvicorn",
+    "sqlalchemy",
+    "redis",
+    "isort",
+    "ruff",
+    "black-formatter",
+    "mypy",
+    "postgresql",
+    "solid-principles",
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Web Environment",
+    "Framework :: FastAPI",
+    "Framework :: Pydantic",
+    "Framework :: Pydantic :: 2",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Natural Language :: Spanish",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Communications :: Email",
+    "Topic :: Communications :: Internet Phone",
+    "Topic :: Database",
+    "Topic :: Database :: Database Engines/Servers",
+    "Topic :: Documentation",
+    "Topic :: File Formats",
+    "Topic :: Internet",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Version Control",
+    "Topic :: Software Development :: Version Control :: CVS",
+    "Topic :: Software Development :: Version Control :: Git",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Topic :: Text Processing :: Markup :: Markdown",
+    "Topic :: Text Processing :: Markup :: reStructuredText",
+    "Typing :: Typed",
+]
+packages = [{include = "fastapi_boilerplate"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = {extras = ["all"], version = "^0.104.1"}
+uvicorn = {extras = ["standard"], version = "^0.24.0.post1"}
+starlette = "0.27.0"
+pydantic = "^2.5.1"
+pydantic-settings = "^2.1.0"
+pydantic-extra-types = "^2.1.0"
+email-validator = "^2.1.0.post1"
+phonenumbers = "^8.13.25"
+pycountry = "^22.3.5"
+python-multipart = "^0.0.6"
+python-dotenv = "^1.0.0"
+aiofiles = "^23.2.1"
+types-aiofiles = "^23.2.0.0"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+types-python-jose = "^3.3.4.8"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+types-passlib = "^1.7.7.13"
+aiosmtplib = "^3.0.1"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.23"}
+sqlalchemy2-stubs = "^0.0.2a37"
+asyncpg = "^0.29.0"
+redis = "^5.0.1"
+types-redis = "^4.6.0.10"
+isort = "^5.12.0"
+black = "^23.11.0"
+ruff = "^0.1.5"
+mypy = "^1.7.0"
+pre-commit = "^3.5.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.extras]
+pgsql = ["asyncpg"]
+redis = ["redis"]
+databases = ["asyncpg", "redis"]
+
+[tool.poetry.urls]
+"FastAPI boilerplate" = "https://github.com/jpcadena/fastapi-boilerplate"
+
+[tool.isort]
+atomic = true
+#skip_gitignore = true
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 80
+profile = "black"
+
+[tool.black]
+line-length = 80
+target-version = ["py311"]
+exclude = '''
+(
+    /(\.venv
+  | \.mypy_cache
+  | \.ruff_cache
+  | cache
+  | venv)
+)
+'''
+skip-string-normalization = true
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+show_error_codes = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+exclude = ".venv|venv|tests|cache|.mypy_cache|.ruff_cache|.pytest_cache"
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_return_any = true
+implicit_reexport = false
+strict_optional = true
+strict_equality = true
+plugins = ["pydantic.mypy"]
+follow_imports = "silent"
+no_implicit_reexport = true
+ignore_missing_imports = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+warn_untyped_fields = true
+
+[tool.ruff]
+select = ["E", "F"]
+ignore = []
+fixable = [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "I",
+    "N",
+    "Q",
+    "S",
+    "T",
+    "W",
+    "ANN",
+    "ARG",
+    "BLE",
+    "COM",
+    "DJ",
+    "DTZ",
+    "EM",
+    "ERA",
+    "EXE",
+    "FBT",
+    "ICN",
+    "INP",
+    "ISC",
+    "NPY",
+    "PD",
+    "PGH",
+    "PIE",
+    "PL",
+    "PT",
+    "PTH",
+    "PYI",
+    "RET",
+    "RSE",
+    "RUF",
+    "SIM",
+    "SLF",
+    "TCH",
+    "TID",
+    "TRY",
+    "UP",
+    "YTT",
+]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".pytest_cache",
+    "cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+line-length = 80
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+target-version = "py311"
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+[tool.ruff.isort]
+known-third-party = ["fastapi", "pydantic", "starlette"]
+
+[tool.bandit]
+skips = ["B101", "B601"]

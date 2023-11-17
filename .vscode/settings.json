@@ -1,0 +1,30 @@
+{
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+      "source.organizeImports": true
+    },
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4
+  },
+  "black-formatter.args": ["--config", "pyproject.toml"],
+  "black-formatter.interpreter": [
+    "${workspaceFolder}/.venv/Scripts/python.exe"
+  ],
+  "black-formatter.path": ["${workspaceFolder}/.venv/Scripts/black.exe"],
+  "isort.args": ["--profile", "black", "--settings-file", "pyproject.toml"],
+  "isort.check": true,
+  "isort.interpreter": ["${workspaceFolder}/.venv/Scripts/python.exe"],
+  "isort.path": ["${workspaceFolder}/.venv/Scripts/isort.exe"],
+  "mypy-type-checker.args": ["--config-file=pyproject.toml"],
+  "mypy-type-checker.interpreter": [
+    "${workspaceFolder}/.venv/Scripts/python.exe"
+  ],
+  "mypy-type-checker.path": ["${workspaceFolder}/.venv/Scripts/mypy.exe"],
+  "python.analysis.typeCheckingMode": "strict",
+  "python.languageServer": "Pylance",
+  "ruff.lint.args": ["--config=pyproject.toml"],
+  "ruff.interpreter": ["${workspaceFolder}/.venv/Scripts/python.exe"],
+  "ruff.path": ["${workspaceFolder}/.venv/Scripts/ruff.exe"]
+}

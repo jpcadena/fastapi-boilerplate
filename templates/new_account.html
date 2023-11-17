@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Account Created Successfully</title>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link href="/assets/css/styles.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="email-container">
+      <table class="main-table" role="presentation">
+        <tbody>
+          <tr>
+            <td class="header-section">
+              <h1 class="title">{{ project_name }} - New Account</h1>
+            </td>
+          </tr>
+          <tr>
+            <td class="content-section">
+              <p class="main-content">Congratulations on creating your new account:</p>
+              <p class="user-details">Username: <span class="highlight">{{ username }}</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td class="button-section">
+              <a class="button-link" href="{{ http://localhost }}" target="_blank">Go to Dashboard</a>
+            </td>
+          </tr>
+          <tr>
+            <td class="footer-section">
+              <p class="footer-content">
+                Thank you for choosing us. If you have any questions or need assistance, please contact our support.
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

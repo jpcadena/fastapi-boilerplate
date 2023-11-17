@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Account Deletion Confirmation</title>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="/assets/css/styles.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet">
+</head>
+<body>
+  <div class="email-container">
+    <table class="main-table" role="presentation">
+      <tbody>
+      <tr>
+        <td class="header-section">
+          <h1 class="title">{{ project_name }} - Account Deletion Confirmation</h1>
+        </td>
+      </tr>
+      <tr>
+        <td class="content-section">
+          <p class="main-content">
+            Hello, <span class="highlight">{{ username }}</span>.
+          </p>
+          <p class="main-content">
+            We're writing to confirm that your account with the email <span class="highlight">{{ email }}</span> has been successfully deleted from our system.
+            You will no longer have access to any data associated with this account.
+          </p>
+          <p class="main-content">
+            If you didn't request the deletion of this account or if you think something went wrong, please contact our support team immediately.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td class="button-section">
+          <a class="button-link" href="{{ http://localhost }}" target="_blank">Contact Support</a>
+        </td>
+      </tr>
+      <tr>
+        <td class="footer-section">
+          <p class="footer-content">
+            We're sorry to see you go. You're always welcome to rejoin {{ project_name }} at any time.
+          </p>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
