@@ -604,6 +604,10 @@ class UserResponse(UserInDB, UserOptional, UserBase, UserID):
     )
 
 
+class UsersResponse(BaseModel):
+    users: list[UserResponse]
+
+
 def custom_serializer(my_dict: dict[str, Any]) -> dict[str, Any]:
     """
     Custom serializer for User model

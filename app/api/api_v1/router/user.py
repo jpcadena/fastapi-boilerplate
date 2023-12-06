@@ -38,6 +38,7 @@ from app.schemas.external.user import (
     UserCreate,
     UserCreateResponse,
     UserResponse,
+    UsersResponse,
     UserUpdate,
     UserUpdateResponse,
 )
@@ -55,7 +56,7 @@ logger: logging.Logger = logging.getLogger(__name__)
 router: APIRouter = APIRouter(prefix="/user", tags=["user"])
 
 
-@router.get("", response_model=list[UserResponse])
+@router.get("", response_model=UsersResponse)
 async def get_users(
     skip: Optional[NonNegativeInt] = Query(  # type: ignore
         default=0,
@@ -77,7 +78,7 @@ async def get_users(
     ),
     current_user: UserAuth = Depends(get_current_user),
     user_service: UserService = Depends(get_user_service),
-) -> list[UserResponse]:
+) -> UsersResponse:
     """
     Retrieve all users' basic information from the system using
      pagination.
@@ -88,7 +89,7 @@ async def get_users(
     - `:type limit:` **PositiveInt**
     ## Response:
     - `:return:` **List of Users retrieved from database**
-    - `:rtype:` **list[UserResponse]**
+    - `:rtype:` **UsersResponse**
     \f
     :param user_service: Dependency method for user service layer
     :type user_service: UserService
@@ -104,7 +105,8 @@ async def get_users(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=str(serv_exc)
         ) from serv_exc
-    return found_users
+    users: UsersResponse = UsersResponse(users=found_users)
+    return users
 
 
 @router.post(
