@@ -42,8 +42,8 @@ class RateLimiterMiddleware:
                 raise NotFoundException("No client found on the request")
             try:
                 client_ip = ip_address(client.host)
-            except AddressValueError:
-                raise NotFoundException("Invalid IP address")
+            except AddressValueError as e:
+                raise NotFoundException("Invalid IP address") from e
             user_agent: str = request.headers.get("user-agent", "unknown")
             request_path: str = request.url.path
             rate_limiter: RateLimiter = RateLimiter(

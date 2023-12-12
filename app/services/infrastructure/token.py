@@ -115,4 +115,4 @@ class TokenService:
         except RedisError as r_exc:
             logger.error("Error at checking if token is blacklisted. %s", r_exc)
             raise r_exc
-        return True if blacklisted else False
+        return bool(blacklisted)

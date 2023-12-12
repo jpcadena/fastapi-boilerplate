@@ -56,8 +56,11 @@ def _setup_mail_handler(
         raise AttributeError("Mail subject is not set.")
     if not settings.MAIL_TIMEOUT:
         raise AttributeError("Mail timeout is not set.")
-    credentials: tuple[str, str] = (settings.SMTP_USER, settings.SMTP_PASSWORD)
     if log_level == logging.CRITICAL:
+        credentials: tuple[str, str] = (
+            settings.SMTP_USER,
+            settings.SMTP_PASSWORD,
+        )
         mail_handler = SMTPHandler(
             mailhost=settings.SMTP_USER,
             fromaddr=settings.EMAILS_FROM_EMAIL,
@@ -96,10 +99,7 @@ def _build_log_filename(init_settings: InitSettings) -> str:
     :return: The filename for the log file
     :rtype: str
     """
-    return (
-        f"log-"
-        f"{datetime.today().strftime(init_settings.FILE_DATE_FORMAT)}.log"
-    )
+    return f"log-{datetime.now().strftime(init_settings.FILE_DATE_FORMAT)}.log"
 
 
 def _configure_file_handler(

@@ -56,8 +56,8 @@ def hide_email(email: EmailStr) -> str:
     replaced_domain_first: str = domain_first_section.replace(
         domain_first_section[domain_count * -1 :], "*" * domain_count
     )
-    replaced_domain: str = (
-        replaced_domain_first + "." + ".".join(domain_sections[1:])
+    replaced_domain: str = f"{replaced_domain_first}." + ".".join(
+        domain_sections[1:]
     )
     hidden_email: str = f"{replaced_title}@{replaced_domain}"
     return hidden_email
@@ -72,8 +72,7 @@ def get_nationality_code(country_name: str) -> str:
     :rtype: str
     """
     try:
-        country = pycountry.countries.get(name=country_name)
-        if country:
+        if country := pycountry.countries.get(name=country_name):
             return str(country.alpha_3)
     except LookupError:
         pass

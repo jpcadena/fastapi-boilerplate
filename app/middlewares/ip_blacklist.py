@@ -35,8 +35,8 @@ class BlacklistMiddleware:
                 raise NotFoundException("No client available from request")
             try:
                 client_ip = ip_address(client.host)
-            except AddressValueError:
-                raise NotFoundException("Invalid IP address")
+            except AddressValueError as e:
+                raise NotFoundException("Invalid IP address") from e
             if await blacklist_service.is_ip_blacklisted(client_ip):
                 raise HTTPException(
                     status_code=status.HTTP_403_FORBIDDEN,

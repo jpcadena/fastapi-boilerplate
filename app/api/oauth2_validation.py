@@ -54,8 +54,8 @@ async def authenticate_user(
     :rtype: UserAuth
     """
     payload: dict[str, Any] = decode_jwt(token, auth_settings)
-    username: str = payload.get("preferred_username", None)
-    sub: str = payload.get("sub", None)
+    username: str = payload.get("preferred_username")  # type: ignore
+    sub: str = payload.get("sub")  # type: ignore
     if username is None or sub is None:
         await raise_unauthorized_error(
             auth_settings.DETAIL, auth_settings.HEADERS
@@ -120,7 +120,7 @@ async def get_current_user(
     """
     token_service: TokenService = TokenService(redis, auth_settings)
     is_blacklisted: bool = await token_service.is_token_blacklisted(token)
-    if is_blacklisted is True:
+    if is_blacklisted:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token is blacklisted",

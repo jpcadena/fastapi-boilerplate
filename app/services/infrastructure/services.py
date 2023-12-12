@@ -23,6 +23,4 @@ async def model_to_response(model: User, response_model: T) -> Optional[T]:
     :return: Model inherited from SQLAlchemy Declarative Base
     :rtype: Optional[T]
     """
-    if not model:
-        return None
-    return response_model.model_validate(model)
+    return response_model.model_validate(model) if model else None

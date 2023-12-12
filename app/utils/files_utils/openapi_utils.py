@@ -54,7 +54,7 @@ def modify_json_data(
     for key, path_data in paths.items():
         if key == "/":
             continue
-        for _, operation in dict(path_data).items():
+        for operation in dict(path_data).values():
             update_operation_id(operation)
     return data
 
