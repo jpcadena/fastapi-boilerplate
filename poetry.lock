@@ -1160,20 +1160,20 @@ typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
 name = "pydantic-extra-types"
-version = "2.1.0"
+version = "2.2.0"
 description = "Extra Pydantic types."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pydantic_extra_types-2.1.0-py3-none-any.whl", hash = "sha256:1b8aa83a2986b0bc6a7179834fdb423c5e0bcef6b2b4cd9261bf753ad7dcc483"},
-    {file = "pydantic_extra_types-2.1.0.tar.gz", hash = "sha256:d07b869e733d33712b07d6b8cd7b0223077c23ae5a1e23bd0699a00401259ec7"},
+    {file = "pydantic_extra_types-2.2.0-py3-none-any.whl", hash = "sha256:d4c6bcab0ea4b5300075ae7a664c134d923ac35496ad8caa0feae30234f14756"},
+    {file = "pydantic_extra_types-2.2.0.tar.gz", hash = "sha256:7f2fdd5251729745983cf8cdc5e431ffee2362f283fff54f68122625cef82c11"},
 ]
 
 [package.dependencies]
 pydantic = ">=2.0.3"
 
 [package.extras]
-all = ["phonenumbers (>=8,<9)", "pycountry (>=22,<23)"]
+all = ["phonenumbers (>=8,<9)", "pycountry (>=22,<23)", "python-ulid (>=1,<2)"]
 
 [[package]]
 name = "pydantic-settings"
@@ -1939,4 +1939,4 @@ redis = ["redis"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "c7b2dbe47e3a98be2d6807e01f0c1e6bef3a71070d091248eb227b1d8342ddcd"
+content-hash = "43b149d471807f84f583eec5e4271494279c3063178474dd8f51cf2d718a91bd"
