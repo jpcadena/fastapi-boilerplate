@@ -80,7 +80,7 @@ class InitSettings(BaseSettings):
     )
 
     SUMMARY: str = """This backend project is FastAPI template.
-     This project serves as the backend, which aims to provide a robust and 
+     This project serves as the backend, which aims to provide a robust and
      reliable system to its users.
        This backend application plays a crucial role in providing the
      functionality for user authentication, real-time monitoring,
@@ -88,13 +88,12 @@ class InitSettings(BaseSettings):
        the scalability and maintainability of the mobile app,
         making it a vital part of the overall solution.
     """
-    DESCRIPTION: str = f"""**FastAPI**, **SQLAlchemy** and **Redis** helps you 
+    DESCRIPTION: str = f"""**FastAPI**, **SQLAlchemy** and **Redis** helps you
     do awesome stuff. 🚀
     \n\n<img src="data:image/png;base64,{img_b64}"/>"""
     LICENSE_INFO: dict[str, str] = {
         "name": "MIT",
         "identifier": "MIT",
-        "url": "https://opensource.org/licenses/MIT",
     }
     TAGS_METADATA: list[dict[str, str]] = [
         {
