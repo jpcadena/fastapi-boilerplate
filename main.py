@@ -67,4 +67,4 @@ async def redirect_to_docs() -> RedirectResponse:
     - `return:` **The redirected response**
     - `rtype:` **RedirectResponse**
     """
-    return RedirectResponse(url="/docs")
+    return RedirectResponse("/docs")

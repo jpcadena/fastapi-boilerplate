@@ -62,9 +62,9 @@ router: APIRouter = APIRouter(prefix="/auth", tags=["auth"])
 async def login(
     request: Request,
     auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
-    user: OAuth2PasswordRequestForm = Depends(),
-    user_service: UserService = Depends(get_user_service),
-    redis: Redis = Depends(get_redis_dep),  # type: ignore
+    user: Annotated[OAuth2PasswordRequestForm, Depends()],
+    user_service: Annotated[UserService, Depends(get_user_service)],
+    redis: Annotated[Redis, Depends(get_redis_dep)],  # type: ignore
 ) -> TokenResponse:
     """
     Endpoint to handle user login with OAuth2 authentication using
@@ -122,9 +122,11 @@ async def login(
 async def refresh_token(
     request: Request,
     user_service: Annotated[UserService, Depends(get_user_service)],
-    auth_settings: AuthSettings = Depends(get_auth_settings),
-    refresh_current_user: UserAuth = Depends(get_refresh_current_user),
-    redis: Redis = Depends(get_redis_dep),  # type: ignore
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
+    refresh_current_user: Annotated[
+        UserAuth, Depends(get_refresh_current_user)
+    ],
+    redis: Annotated[Redis, Depends(get_redis_dep)],  # type: ignore
 ) -> TokenResponse:
     """
     Generates a refresh token for the current user and saves it to the
@@ -163,7 +165,7 @@ async def refresh_token(
 
 @router.post("/validate-token", response_model=UserAuth)
 async def validate_token(
-    current_user: UserAuth = Depends(get_current_user),
+    current_user: Annotated[UserAuth, Depends(get_current_user)]
 ) -> UserAuth:
     """
     Endpoint to validate an access token.
@@ -181,15 +183,18 @@ async def validate_token(
 async def recover_password(
     settings: Annotated[Settings, Depends(get_settings)],
     auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
-    email: EmailStr = Path(
-        ...,
-        title="Email",
-        description="The email used to recover the password",
-        example={"email": "someone@example.com"},
-        openapi_examples=init_setting.EMAIL_BODY_EXAMPLES,
-    ),
-    user_service: UserService = Depends(get_user_service),
-    init_settings: InitSettings = Depends(get_init_settings),
+    email: Annotated[
+        EmailStr,
+        Path(
+            ...,
+            title="Email",
+            description="The email used to recover the password",
+            example={"email": "someone@example.com"},
+            openapi_examples=init_setting.EMAIL_BODY_EXAMPLES,
+        ),
+    ],
+    user_service: Annotated[UserService, Depends(get_user_service)],
+    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
 ) -> Msg:
     """
     Endpoint to handle password recovery.
@@ -236,14 +241,17 @@ async def recover_password(
 async def reset_password(
     settings: Annotated[Settings, Depends(get_settings)],
     auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
-    user_service: UserService = Depends(get_user_service),
-    token_reset_password: TokenResetPassword = Body(
-        ...,
-        title="Body object",
-        description="Object with access token and new password",
-        openapi_examples=init_setting.TOKEN_PAYLOAD_EXAMPLES,
-    ),
-    init_settings: InitSettings = Depends(get_init_settings),
+    user_service: Annotated[UserService, Depends(get_user_service)],
+    token_reset_password: Annotated[
+        TokenResetPassword,
+        Body(
+            ...,
+            title="Body object",
+            description="Object with access token and new password",
+            openapi_examples=init_setting.TOKEN_PAYLOAD_EXAMPLES,
+        ),
+    ],
+    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
 ) -> Msg:
     """
     Endpoint to handle password reset.
@@ -306,24 +314,27 @@ async def reset_password(
 )
 async def logout(
     auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
-    authorization: str = Header(
-        ...,
-        title="Authorization",
-        description="The access bearer token as authorization string in the"
-        " header",
-        min_length=30,
-        example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-        openapi_examples=init_setting.AUTHORIZATION_HEADER_EXAMPLES,
-    ),
-    current_user: UserAuth = Depends(get_current_user),
-    redis: Redis = Depends(get_redis_dep),  # type: ignore
+    authorization: Annotated[
+        str,
+        Header(
+            ...,
+            title="Authorization",
+            description="The access bearer token as authorization string in the"
+            " header",
+            min_length=30,
+            example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+            openapi_examples=init_setting.AUTHORIZATION_HEADER_EXAMPLES,
+        ),
+    ],
+    current_user: Annotated[UserAuth, Depends(get_current_user)],
+    redis: Annotated[Redis, Depends(get_redis_dep)],  # type: ignore
 ) -> Msg:
     """
     Add the user's token to the blacklist database
     ## Parameters:
-    - `:param authorization:`The access bearer token as authorization string
-    in the header
-    - `:type authorization:` str
+    - `:param authorization:` **The access bearer token as authorization string
+    in the header**
+    - `:type authorization:` **str**
      ## Response:
     - `return:` **Message object**
     - `rtype:` **Msg**
