@@ -70,7 +70,7 @@ packages = [{include = "fastapi_boilerplate"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-fastapi = { extras = ["all"], version = "^0.105.0" }
+fastapi = { extras = ["all"], version = "^0.106.0" }
 uvicorn = { extras = ["standard"], version = "^0.25.0" }
 starlette = "0.27.0"
 pydantic = "^2.5.3"
