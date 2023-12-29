@@ -18,7 +18,7 @@ from sqlalchemy.exc import (
 from sqlalchemy.exc import TimeoutError as SATimeoutError
 from sqlalchemy.ext.asyncio import AsyncTransaction
 
-from app.config.config import get_init_settings, get_settings
+from app.config.config import auth_setting, get_init_settings, get_settings
 from app.config.init_settings import InitSettings
 from app.config.settings import Settings
 from app.crud.specification import EmailSpecification
@@ -30,6 +30,10 @@ from app.models.sql.user import User
 from app.schemas.external.address import Address
 from app.schemas.external.user import UserSuperCreate
 from app.schemas.infrastructure.gender import Gender
+from app.tasks.email_tasks.email_tasks import (
+    send_new_account_email,
+    send_welcome_email,
+)
 from app.utils.utils import hide_email
 
 logger: logging.Logger = logging.getLogger(__name__)
@@ -105,19 +109,19 @@ async def init_db(
         gender=Gender.MALE,
     )
     superuser: User = await user_repo.create_user(superuser_created)
-    # await send_new_account_email(
-    #     superuser.email,
-    #     superuser.username,
-    #     settings,
-    #     auth_setting,
-    #     init_settings
-    # )
+    await send_new_account_email(
+        superuser.email,
+        superuser.username,
+        settings,
+        auth_setting,
+        init_settings,
+    )
     hidden_email: str = hide_email(superuser.email)
     logger.info(
         "Superuser created with email %s from %s",
         hidden_email,
         address.locality,
     )
-    # await send_welcome_email(
-    #     superuser.email, superuser.username, init_settings, settings
-    # )
+    await send_welcome_email(
+        superuser.email, superuser.username, init_settings, settings
+    )

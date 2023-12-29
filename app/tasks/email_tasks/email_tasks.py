@@ -6,7 +6,12 @@ from pathlib import Path
 from fastapi import Depends
 from pydantic import EmailStr
 
-from app.config.config import get_auth_settings, get_init_settings, get_settings
+from app.config.config import (
+    auth_setting,
+    get_auth_settings,
+    get_init_settings,
+    get_settings,
+)
 from app.config.db.auth_settings import AuthSettings
 from app.config.init_settings import InitSettings
 from app.config.settings import Settings
@@ -167,6 +172,7 @@ async def send_welcome_email(
             "project_name": init_settings.PROJECT_NAME,
             "username": username,
             "email": email_to,
+            "link": auth_setting.SERVER_URL,
         },
         settings=settings,
     )

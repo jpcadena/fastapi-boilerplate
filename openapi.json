@@ -227,7 +227,7 @@
         "description": "User Auth that inherits from UserID.",
         "example": {
           "email": "example@mail.com",
-          "id": "fc26a724-89c8-49c5-a4df-4741742ef603",
+          "id": "fccda9cf-09bc-4c88-b4af-879362a928de",
           "username": "username"
         },
         "properties": {
@@ -394,7 +394,7 @@
         "example": {
           "email": "example@mail.com",
           "first_name": "Some",
-          "id": "b730e76e-11b8-4b1d-8415-39686883ba82",
+          "id": "69222b6d-c820-4c5f-bfa4-d263b2266b97",
           "last_name": "Example",
           "username": "username"
         },
@@ -452,19 +452,19 @@
             "region": "Guayas",
             "street_address": "Urdesa Norte mz A1 v 99"
           },
-          "address_id": "12b81de7-47e5-48a5-825c-754ccd7196f0",
+          "address_id": "2651a9d4-db6c-48fb-9375-02265912f75e",
           "birthdate": "2004-12-31",
-          "created_at": "2023-12-20 21:46:16.372772",
+          "created_at": "2023-12-28 21:42:21.639500",
           "email": "example@mail.com",
           "first_name": "Some",
           "gender": "male",
-          "id": "6a3e8fa9-0655-4f6b-97fa-6256a832042f",
+          "id": "a2b63321-0c6d-4518-8f92-b1bf2ae6b8b0",
           "is_active": true,
           "is_superuser": false,
           "last_name": "Example",
           "middle_name": "One",
           "phone_number": "+593987654321",
-          "updated_at": "2023-12-20 21:46:16.372772",
+          "updated_at": "2023-12-28 21:42:21.639500",
           "username": "username"
         },
         "properties": {
@@ -770,20 +770,20 @@
             "locality": "Guayaquil",
             "street_address": "Urdesa Norte mz A1 v 99"
           },
-          "address_id": "be21c318-b38c-4859-b9aa-3f02930fa1cd",
+          "address_id": "8a643871-17ee-4498-83db-1a2327ffda47",
           "birthdate": "2004-12-31",
-          "created_at": "2023-12-20 21:46:16.367768",
+          "created_at": "2023-12-28 21:42:21.634495",
           "email": "example@mail.com",
           "first_name": "Some",
           "gender": "male",
-          "id": "1efc5aed-f1e1-4808-a6bf-ff595ecd5cd1",
+          "id": "feabc0fa-6878-4511-bbb8-6b8661155cde",
           "is_active": true,
           "is_superuser": false,
           "last_name": "Example",
           "middle_name": "One",
           "password": "Hk7pH9*Hk7pH9*35Fu&3UHk7pH9*35Fu&3U35Fu&3U",
           "phone_number": "+593987654321",
-          "updated_at": "2023-12-20 21:46:16.367768",
+          "updated_at": "2023-12-28 21:42:21.634495",
           "username": "username"
         },
         "properties": {
@@ -1083,7 +1083,7 @@
               "normal": {
                 "description": "A **normal** authorization token object that works correctly.",
                 "summary": "A normal example",
-                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZTo1MDY1YWZjNy1hMzU0LTRiNDYtODNiZS05ZDhmYjIyMGZmNGIiLCJuYXRpb25hbGl0aWVzIjpbIkVDVSJdLCJlbWFpbCI6ImV4YW1wbGVAbWFpbC5jb20iLCJuaWNrbmFtZSI6ImV4YW1wbGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJleGFtcGxlIiwiZ2l2ZW5fbmFtZSI6IlNvbWUiLCJmYW1pbHlfbmFtZSI6IkV4YW1wbGUiLCJtaWRkbGVfbmFtZSI6Ik9uZSIsImdlbmRlciI6Im1hbGUiLCJiaXJ0aGRhdGUiOiIyMDA0LTEyLTMxIiwidXBkYXRlZF9hdCI6IjIwMjMtMTItMjBUMjE6NDY6MTYuMTQyNTc2IiwicGhvbmVfbnVtYmVyIjoiKzU5Mzk4NzY1NDMyMSIsImFkZHJlc3MiOnsic3RyZWV0X2FkZHJlc3MiOiJVcmRlc2EgTm9ydGUgbXogQTEgdiA5OSIsImxvY2FsaXR5IjoiR3VheWFxdWlsIiwicmVnaW9uIjoiR3VheWFzIiwiY291bnRyeSI6IkVjdWFkb3IiLCJwb3N0YWxfY29kZSI6IjA5MDUwNSJ9LCJleHAiOjE3MDMxMjg1NzYsIm5iZiI6MTcwMzEyNjc3NSwiaWF0IjoxNzAzMTI2Nzc2fQ.Am7H-ycW5D50pTLuqkdk6ajw86PSyVfnG0ygiODhweQ"
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZTphNWE3NzI3MC1hNTZlLTRmNDktODU4ZC1iNWZlYjQwNGQxMjEiLCJuYXRpb25hbGl0aWVzIjpbIkVDVSJdLCJlbWFpbCI6ImV4YW1wbGVAbWFpbC5jb20iLCJuaWNrbmFtZSI6ImV4YW1wbGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJleGFtcGxlIiwiZ2l2ZW5fbmFtZSI6IlNvbWUiLCJmYW1pbHlfbmFtZSI6IkV4YW1wbGUiLCJtaWRkbGVfbmFtZSI6Ik9uZSIsImdlbmRlciI6Im1hbGUiLCJiaXJ0aGRhdGUiOiIyMDA0LTEyLTMxIiwidXBkYXRlZF9hdCI6IjIwMjMtMTItMjhUMjE6NDI6MjEuMzk3NzkyIiwicGhvbmVfbnVtYmVyIjoiKzU5Mzk4NzY1NDMyMSIsImFkZHJlc3MiOnsic3RyZWV0X2FkZHJlc3MiOiJVcmRlc2EgTm9ydGUgbXogQTEgdiA5OSIsImxvY2FsaXR5IjoiR3VheWFxdWlsIiwicmVnaW9uIjoiR3VheWFzIiwiY291bnRyeSI6IkVjdWFkb3IiLCJwb3N0YWxfY29kZSI6IjA5MDUwNSJ9LCJleHAiOjE3MDM4MTk1NDEsIm5iZiI6MTcwMzgxNzc0MCwiaWF0IjoxNzAzODE3NzQxfQ.Hk2QHMJjTrZ_h-vevVL9Jq5oQ3lBWU4oMOOi3NhC3GY"
               }
             },
             "in": "header",
@@ -1559,7 +1559,7 @@
         "parameters": [
           {
             "description": "ID of the User to be searched",
-            "example": "42028ba7-90e7-422a-9525-815238d2bfc4",
+            "example": "225542c5-72e7-49cb-a1bb-2698151b3932",
             "in": "path",
             "name": "user_id",
             "required": true,
@@ -1602,7 +1602,7 @@
         "parameters": [
           {
             "description": "ID of the User to be searched",
-            "example": "7ba40f2b-f4d9-4c30-ac74-aa0fccfcacd8",
+            "example": "d1e2f0e4-0877-4977-96b1-4fc471838e2f",
             "in": "path",
             "name": "user_id",
             "required": true,
@@ -1652,7 +1652,7 @@
         "parameters": [
           {
             "description": "ID of the User to be searched",
-            "example": "5ea9c810-826d-45b9-829e-a4fb661bdb6a",
+            "example": "75a6519b-9b92-492b-b742-2c13fff20a08",
             "in": "path",
             "name": "user_id",
             "required": true,
