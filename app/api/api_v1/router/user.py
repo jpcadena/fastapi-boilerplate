@@ -63,7 +63,6 @@ async def get_users(
     skip: Annotated[
         NonNegativeInt,
         Query(
-            # default=0,
             annotation=Optional[NonNegativeInt],
             title="Skip",
             description="Skip users",
@@ -74,7 +73,6 @@ async def get_users(
     limit: Annotated[
         Optional[PositiveInt],
         Query(
-            # default=100,
             annotation=Optional[PositiveInt],
             title="Limit",
             description="Limit pagination",

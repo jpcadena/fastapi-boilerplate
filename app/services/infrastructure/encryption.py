@@ -201,6 +201,25 @@ class EncryptionService:
         ).decode(init_setting.ENCODING)
         return public_pem, private_pem
 
+    def save_key_pair(
+        self, public_key_path: str, private_key_path: str
+    ) -> None:
+        """
+        Save RSA keys to files.
+        :param public_key_path: Path to save the public key.
+        :type public_key_path: str
+        :param private_key_path: Path to save the private key.
+        :type private_key_path: str
+        :return: None
+        :rtype: NoneType
+        """
+        public_pem, private_pem = self.generate_key_pair()
+        with open(public_key_path, 'w') as public_file:
+            public_file.write(public_pem)
+        with open(private_key_path, 'w') as private_file:
+            private_file.write(private_pem)
+        print("Public and Private keys have been generated and saved.")
+
     @staticmethod
     def serialize_encrypted_info(encrypted_info: dict[str, bytes]) -> str:
         """
@@ -276,3 +295,7 @@ def get_encryption_service() -> EncryptionService:
     :rtype: EncryptionService
     """
     return EncryptionService()
+
+
+encryption_service: EncryptionService = get_encryption_service()
+encryption_service.save_key_pair("public_key.pem", "private_key.pem")

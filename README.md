@@ -9,7 +9,6 @@
 *** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
 -->
 
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -26,8 +25,6 @@
     <br />
   </p>
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -61,8 +58,6 @@
     <li><a href="#contact">Contact</a></li>  </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
@@ -70,11 +65,11 @@
 ![Project][project-screenshot]
 
 This backend project is FastAPI template. This project serves as the backend,
-which aims to provide a robust and reliable system to its users. This 
-backend application plays a crucial role in providing the functionality for 
+which aims to provide a robust and reliable system to its users. This
+backend application plays a crucial role in providing the functionality for
 user authentication, real-time monitoring, data processing, and advanced
-alerting system. It is designed to ensure the scalability and 
-maintainability of the mobile app, making it a vital part of the overall 
+alerting system. It is designed to ensure the scalability and
+maintainability of the mobile app, making it a vital part of the overall
 solution.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -92,12 +87,11 @@ Here are the main components of the system:
 - **Redis**: Used for caching and speeding up frequent requests.
 - **JWT**: Used for handling authentication.
 
-Each of these components plays a vital role in the functioning of the 
-backend. Together, they will make up a scalable, maintainable, and robust 
+Each of these components plays a vital role in the functioning of the
+backend. Together, they will make up a scalable, maintainable, and robust
 application.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 <!-- GETTING STARTED -->
 
@@ -110,28 +104,36 @@ application.
 ### Installation
 
 1. Clone the **repository**
-   ```
+
+   ```bash
    git clone https://github.com/jpcadena/fastapi-boilerplate.git
    ```
+
 2. Change the directory to **root project**
-   ```
+
+   ```bash
    cd fastapi-boilerplate
    ```
+
 3. Install **Poetry** package manager
-   ```
+
+   ```bash
    pip install poetry
    ```
+
 4. Install the project's **dependencies**
-   ```
+
+   ```bash
    poetry install
    ```
+
 5. Activate the **environment**
-   ```
+
+   ```bash
    poetry shell
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 <!-- USAGE EXAMPLES -->
 
@@ -141,41 +143,52 @@ application.
 
    If you find a `.env.sample` in the project directory, make a copy of it and rename to `.env`.
 
-   ```
+   ```bash
    cp .env.sample .env
    ```
 
    This `.env` file will be used to manage your application's environment variables.
 
-
 2. **Configuring your credentials:**
 
    Open the `.env` file in a text editor and replace the placeholder values with your actual credentials.
-   ```
+
+   ```bash
    # .env file
    POSTGRES_USER=your_database_user
    SECRET_KEY=your_api_key
    ```
+
    Be sure to save the file after making these changes.
 
+3. **Generating RSA keys**
 
-3. **Starting the server:**
+    To ensure secure communication in this project, RSA keys are used. Before running the application, you need to generate a public and private RSA key pair.
+    We've provided a Python script to automatically generate these keys. You can find the script at `app\services\infrastructure\encryption.py`. To generate your keys, simply run:
+
+    ```bash
+    python app\services\infrastructure\encryption.py.py
+    ```
+
+    This will create `public_key.pem` and `private_key.pem` files in your specified directory.
+
+    Once the keys are generated, the application will use them for cryptographic operations. Ensure that these files are kept secure and are not exposed publicly. The default configuration expects these keys in the root directory of the project.
+
+4. **Starting the server:**
 
    To start the local server on your machine, run the following command in your terminal:
 
-   ```
+   ```bash
    uvicorn main:app --reload
    ```
 
    The `--reload` flag enables hot reloading, which means the server will automatically update whenever you make changes to the code.
 
-
-4. **Interacting with the app:**
+5. **Interacting with the app:**
 
    Once your server is running, you can interact with it using any API client like Postman or your web browser. You can send GET, POST, PUT, DELETE requests to the API endpoints as defined in your `main.py` file. For example, to get all users, you can send a GET request to `http://localhost:8000/api/v1/users`.
 
-
-5. **Using Swagger UI:**
+6. **Using Swagger UI:**
 
    FastAPI provides automatic interactive API documentation using Swagger UI. Once your server is up and running, you can go to `http://localhost:8000/docs` in your web browser to access it. From there, you can explore and interact with your API directly.
 
@@ -198,6 +211,7 @@ npm install openapi-typescript-codegen --save-dev
 ### Codegen Usage
 
 Add the following to your package.json file:
+
 ```bash
 "generate-client": "openapi --input C:/Users/user/fastapi-boilerplate/openapi.json --output . /src/client --client axios"
 ```
@@ -288,7 +302,6 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
 [linkedin-url]: https://linkedin.com/in/juanpablocadenaaguilar
 [python-url]: https://docs.python.org/3.11/
-[python-url]: https://www.python.org/
 [fastapi-url]: https://fastapi.tiangolo.com
 [pydantic-url]: https://docs.pydantic.dev
 [starlette-url]: https://www.starlette.io/
