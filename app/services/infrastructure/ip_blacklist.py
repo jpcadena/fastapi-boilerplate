@@ -1,12 +1,16 @@
 """
 A module for ip blacklist in the app.services.infrastructure package.
 """
-import logging
-from datetime import datetime
 
+import logging
+from datetime import datetime, timezone
+from typing import Annotated
+
+from fastapi import Depends
 from pydantic import IPvAnyAddress
 from redis.asyncio import Redis
 
+from app.api.deps import get_redis_dep
 from app.config.config import auth_setting
 from app.core.decorators import benchmark, with_logging
 from app.db.auth import handle_redis_exceptions
@@ -25,31 +29,44 @@ class IPBlacklistService:
     @handle_redis_exceptions
     @with_logging
     @benchmark
-    async def is_ip_blacklisted(self, ip_address: IPvAnyAddress) -> bool:
+    async def is_ip_blacklisted(self, ip: IPvAnyAddress) -> bool:
         """
-        Check if the given IP address is blacklisted
-        :param ip_address: The IP address to check
-        :type ip_address: IPvAnyAddress
-        :return: True if the IP address is blacklisted; False otherwise
-        :rtype: bool
+        Check if the IP address is currently blacklisted.
+        :param ip: The IP address to check.
+        :return: True if blacklisted, False otherwise.
         """
-        blacklisted_reason = await self._redis.get(f"blacklist:{ip_address}")
-        return bool(blacklisted_reason)
+        return bool(await self._redis.get(self.get_redis_key(ip)))
 
     @handle_redis_exceptions
     @with_logging
     @benchmark
-    async def add_to_blacklist(self, ip_address: IPvAnyAddress) -> None:
+    async def blacklist_ip(self, ip: IPvAnyAddress) -> None:
         """
-        Add a new IP address to the blacklist on Redis
-        :param ip_address: The new IP address to add to the blacklist
-        :type ip_address: IPvAnyAddress
-        :return: None
-        :rtype: NoneType
+        Add the IP address to the blacklist.
+        :param ip: The IP address to blacklist.
         """
         await self._redis.setex(
-            f"blacklist:{ip_address}",
+            self.get_redis_key(ip),
             auth_setting.BLACKLIST_EXPIRATION_SECONDS,
-            f"Blacklisted at {datetime.utcnow()}"
-            f" due to excessive rate limiting violations.",
+            f"Blacklisted at {datetime.now(timezone.utc).isoformat()}",
         )
+
+    @staticmethod
+    def get_redis_key(ip: IPvAnyAddress) -> str:
+        """
+        Generate the Redis key for the given IP address.
+        :param ip: The IP address.
+        :return: The Redis key.
+        """
+        return f"blacklist:{ip}"
+
+
+def get_ip_blacklist_service(
+    redis: Annotated[Redis, Depends(get_redis_dep)]  # type: ignore
+) -> IPBlacklistService:
+    """
+    Get an instance of the IP Blacklist service
+    :return: IPBlacklistService instance
+    :rtype: IPBlacklistService
+    """
+    return IPBlacklistService(redis)

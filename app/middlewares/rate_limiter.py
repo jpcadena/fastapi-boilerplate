@@ -1,6 +1,7 @@
 """
 A module for rate limiter in the app.middlewares package.
 """
+from datetime import datetime
 from ipaddress import AddressValueError, ip_address
 from typing import Any, Callable, Optional
 
@@ -51,13 +52,28 @@ class RateLimiterMiddleware:
                 user_agent=user_agent,
                 request_path=request_path,
             )
-            if await rate_limiter_service.is_rate_limited(rate_limiter):
-                await blacklist_service.add_to_blacklist(client_ip)
+            # Add the request and clean up old requests
+            await rate_limiter_service.add_request(rate_limiter)
+            # Check if the rate limit has been exceeded
+            request_count: int = await rate_limiter_service.get_request_count(
+                rate_limiter
+            )
+            remaining_requests: int = (
+                await rate_limiter_service.get_remaining_requests(rate_limiter)
+            )
+            reset_time: datetime = await rate_limiter_service.get_reset_time(
+                rate_limiter
+            )
+            if request_count > auth_setting.MAX_REQUESTS:
+                await blacklist_service.blacklist_ip(client_ip)
+                headers: dict[str, str] = {
+                    "X-RateLimit-Limit": str(auth_setting.MAX_REQUESTS),
+                    "X-RateLimit-Remaining": str(max(0, remaining_requests)),
+                    "X-RateLimit-Reset": str(int(reset_time.timestamp())),
+                }
                 raise HTTPException(
                     status_code=status.HTTP_429_TOO_MANY_REQUESTS,
                     detail="Too many requests",
-                    headers={
-                        "Retry-After": f"{auth_setting.RATE_LIMIT_DURATION}"
-                    },
+                    headers=headers,
                 )
         await self.app(scope, receive, send)

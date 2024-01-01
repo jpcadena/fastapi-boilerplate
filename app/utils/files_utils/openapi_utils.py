@@ -32,10 +32,13 @@ def update_operation_id(operation: dict[str, Any]) -> None:
     :return: None
     :rtype: NoneType
     """
-    tag: str = operation["tags"][0]
     operation_id: str = operation["operationId"]
-    new_operation_id: str = remove_tag_from_operation_id(tag, operation_id)
-    operation["operationId"] = new_operation_id
+    if operation.get(
+        "tags",
+    ):
+        tag: str = operation["tags"][0]
+        new_operation_id: str = remove_tag_from_operation_id(tag, operation_id)
+        operation["operationId"] = new_operation_id
 
 
 def modify_json_data(
@@ -67,8 +70,11 @@ def custom_generate_unique_id(route: APIRoute) -> str:
     :return: new ID based on tag and route name
     :rtype: str
     """
-    if route.name in ("redirect_to_docs",):
-        return ""
+    if route.name in (
+        "redirect_to_docs",
+        "check_health",
+    ):
+        return route.name
     return f"{route.tags[0]}-{route.name}"
 
 

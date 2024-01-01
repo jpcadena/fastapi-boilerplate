@@ -100,7 +100,7 @@ class RegisteredClaimsToken(BaseModel):
         max_length=45,
     )
     aud: Optional[str] = Field(
-        default=str(auth_setting.AUDIENCE),
+        default=auth_setting.AUDIENCE.__str__(),
         title="Audience",
         description="Recipient of JWT",
         min_length=1,
@@ -151,7 +151,7 @@ class RegisteredClaimsToken(BaseModel):
     htm: Optional[Literal[HttpMethod.POST]] = HttpMethod.POST
     htu: Optional[AnyHttpUrl] = Field(
         default=AnyHttpUrl(
-            f"{str(auth_setting.SERVER_URL)}{auth_setting.TOKEN_URL}",
+            f"{auth_setting.SERVER_URL.__str__()}{auth_setting.TOKEN_URL}",
         ),
         title="HTTP URI",
         description="The HTTP URI of the request",
@@ -178,9 +178,10 @@ class RegisteredClaimsToken(BaseModel):
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
-                "iss": "http://localhost:8000",
+                "iss": auth_setting.SERVER_URL.__str__(),
                 "sub": "username:c3ee0ef6-3a18-4251-af6d-138a8c8fec25",
-                "aud": "http://localhost:8000/api/v1/auth/login",
+                "aud": f"{auth_setting.SERVER_URL.__str__()}:80"
+                f"/{auth_setting.TOKEN_URL}",
                 "exp": 1672433102,
                 "nbf": 1672413301,
                 "iat": 1672413302,
@@ -204,9 +205,10 @@ class TokenPayload(PublicClaimsToken, RegisteredClaimsToken):
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
-                "iss": "http://localhost:8000",
+                "iss": auth_setting.SERVER_URL.__str__(),
                 "sub": "username:c3ee0ef6-3a18-4251-af6d-138a8c8fec25",
-                "aud": "http://localhost:8000/api/v1/auth/login",
+                "aud": f"{auth_setting.SERVER_URL.__str__()}:80"
+                f"/{auth_setting.TOKEN_URL}",
                 "exp": 1672433102,
                 "nbf": 1672413301,
                 "iat": 1672413302,

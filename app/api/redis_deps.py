@@ -18,7 +18,7 @@ class RedisDependency:
     """
 
     def __init__(self) -> None:
-        self._url: str = str(auth_setting.REDIS_DATABASE_URI)
+        self._url: str = auth_setting.REDIS_DATABASE_URI.__str__()
         self._redis: Optional[Redis] = None  # type: ignore
 
     async def init_redis(self) -> None:

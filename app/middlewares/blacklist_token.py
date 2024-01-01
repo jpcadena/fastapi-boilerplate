@@ -17,6 +17,7 @@ SKIP_ROUTES: list[str] = [
     "/api/v1/auth/recover-password",
     "/api/v1/auth/reset-password",
     "/api/v1/user",
+    "/",
 ]
 
 

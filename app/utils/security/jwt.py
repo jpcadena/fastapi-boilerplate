@@ -2,7 +2,7 @@
 A module for jwt in the app.utils.security package.
 """
 import logging
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import Depends, HTTPException, status
 from jose import exceptions, jwt
@@ -16,7 +16,7 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 def encode_jwt(
     payload: dict[str, Any],
-    auth_settings: AuthSettings = Depends(get_auth_settings),
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
 ) -> str:
     """
     Encode a JSON Web Token (JWT) with the given payload.
@@ -33,7 +33,8 @@ def encode_jwt(
 
 
 def decode_jwt(
-    token: str, auth_settings: AuthSettings = Depends(get_auth_settings)
+    token: str,
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
 ) -> dict[str, Any]:
     """
     Validate the provided JWT token.
@@ -50,8 +51,8 @@ def decode_jwt(
             key=auth_settings.SECRET_KEY,
             algorithms=[auth_settings.ALGORITHM],
             options={"verify_subject": False},
-            audience=str(auth_settings.AUDIENCE),
-            issuer=str(auth_settings.SERVER_URL),
+            audience=auth_settings.AUDIENCE.__str__(),
+            issuer=auth_settings.SERVER_URL.__str__(),
         )
     except exceptions.ExpiredSignatureError as es_exc:
         logger.error(es_exc)

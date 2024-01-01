@@ -3,7 +3,7 @@ A module for template in the app.utils package.
 """
 import logging
 from pathlib import Path
-from typing import Any, Union
+from typing import Annotated, Any, Union
 
 import aiofiles
 from fastapi import Depends
@@ -34,7 +34,7 @@ def render_template(template: str, environment: dict[str, Any]) -> str:
 @benchmark
 async def read_template_file(
     template_path: Union[str, Path],
-    init_settings: InitSettings = Depends(get_init_settings),
+    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
 ) -> str:
     """
     Read the template file

@@ -3,7 +3,7 @@ A module for email notifications in the app.utils package.
 """
 import logging
 from email.mime.text import MIMEText
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import Depends
 from pydantic import EmailStr
@@ -23,7 +23,7 @@ async def send_email(
     subject_template: str,
     html_template: str,
     environment: dict[str, Any],
-    settings: Settings = Depends(get_settings),
+    settings: Annotated[Settings, Depends(get_settings)],
 ) -> bool:
     """
     Send an e-mail to a recipient.

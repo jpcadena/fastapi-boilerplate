@@ -2,7 +2,7 @@
 Initialization of the database (PostgreSQL) script
 """
 import logging
-from typing import Optional
+from typing import Annotated, Optional
 
 from fastapi import Depends
 from sqlalchemy.exc import (
@@ -71,8 +71,8 @@ async def create_db_and_tables() -> None:
 
 
 async def init_db(
-    user_repo: UserRepository = Depends(get_user_repository),
-    settings: Settings = Depends(get_settings),
+    user_repo: Annotated[UserRepository, Depends(get_user_repository)],
+    settings: Annotated[Settings, Depends(get_settings)],
     init_settings: InitSettings = get_init_settings(),
 ) -> None:
     """

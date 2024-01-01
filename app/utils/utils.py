@@ -4,7 +4,7 @@ A module for utils in the app.utils package.
 import logging
 import math
 import re
-from typing import Any, Optional
+from typing import Annotated, Any, Optional
 
 import phonenumbers
 import pycountry
@@ -22,18 +22,18 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 
 async def update_json(
-    init_setting: InitSettings = Depends(get_init_settings),
+    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
 ) -> None:
     """
     Update JSON file for client
-    :param init_setting: Dependency method for cached setting object
-    :type init_setting: InitSettings
+    :param init_settings: Dependency method for cached setting object
+    :type init_settings: InitSettings
     :return: None
     :rtype: NoneType
     """
-    data: dict[str, Any] = await read_json_file(init_setting)
+    data: dict[str, Any] = await read_json_file(init_settings)
     data = modify_json_data(data)
-    await write_json_file(data, init_setting)
+    await write_json_file(data, init_settings)
     logger.info("Updated OpenAPI JSON file")
 
 

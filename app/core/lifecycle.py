@@ -11,6 +11,7 @@ from app.api.deps import RedisConnectionManager
 from app.config.config import auth_setting, init_setting, setting
 from app.crud.user import get_user_repository
 from app.db.init_db import init_db
+from app.services.infrastructure.ip_blacklist import get_ip_blacklist_service
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -29,4 +30,7 @@ async def lifespan(application: FastAPI) -> AsyncGenerator[Any, None]:
     await init_db(await get_user_repository(), setting, init_setting)
     async with redis_manager.connection() as connection:
         application.state.redis_connection = connection
+        application.state.ip_blacklist_service = get_ip_blacklist_service(
+            connection
+        )
         yield

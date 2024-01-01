@@ -6,7 +6,7 @@ It includes authentication utilities, connection handlers for external
 """
 import logging
 from contextlib import asynccontextmanager
-from typing import Any, AsyncGenerator, Optional
+from typing import Annotated, Any, AsyncGenerator, Optional
 
 from fastapi import Depends
 from redis.asyncio import Redis
@@ -23,7 +23,7 @@ class RedisConnectionManager:
     """
 
     def __init__(self, auth_settings: AuthSettings):
-        self.url: str = str(auth_settings.REDIS_DATABASE_URI)
+        self.url: str = auth_settings.REDIS_DATABASE_URI.__str__()
         self.pool: Optional[Redis] = None  # type: ignore
 
     async def start(self) -> None:
@@ -65,7 +65,7 @@ class RedisConnectionManager:
 
 
 async def get_redis_dep(
-    redis_dependency: RedisDependency = Depends(RedisDependency),
+    redis_dependency: Annotated[RedisDependency, Depends()]
 ) -> AsyncGenerator[Redis, None]:  # type: ignore
     """
     Lazy generation of Redis dependency

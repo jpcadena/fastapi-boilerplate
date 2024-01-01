@@ -3,7 +3,7 @@ This script provides functions for interacting with the authentication
  (Redis) database.
 """
 import logging
-from typing import Any, Callable
+from typing import Annotated, Any, Callable
 
 from fastapi import Depends
 from redis.asyncio import Redis
@@ -23,7 +23,7 @@ logger: logging.Logger = logging.getLogger(__name__)
 @with_logging
 @benchmark
 async def init_auth_db(
-    auth_settings: AuthSettings = Depends(get_auth_settings),
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
 ) -> None:
     """
     Initialize connection to the Redis database for authentication
@@ -32,7 +32,7 @@ async def init_auth_db(
     :return: None
     :rtype: NoneType
     """
-    url: str = str(auth_settings.REDIS_DATABASE_URI)
+    url: str = auth_settings.REDIS_DATABASE_URI.__str__()
     redis_pool = Redis.from_url(url, decode_responses=True)
     await redis_pool.ping()
     logger.info("Redis Database initialized")

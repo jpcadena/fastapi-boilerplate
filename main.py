@@ -9,7 +9,7 @@ from functools import partial
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
-from fastapi.responses import RedirectResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.api.api_v1.api import api_router
@@ -17,7 +17,7 @@ from app.config.config import auth_setting, init_setting, setting
 from app.core import logging_config
 from app.core.lifecycle import lifespan
 from app.middlewares.blacklist_token import blacklist_middleware
-from app.middlewares.ip_blacklist import BlacklistMiddleware
+from app.middlewares.ip_blacklist import IPBlacklistMiddleware
 from app.middlewares.rate_limiter import RateLimiterMiddleware
 from app.middlewares.security_headers import SecurityHeadersMiddleware
 from app.utils.files_utils.openapi_utils import (
@@ -39,13 +39,13 @@ app: FastAPI = FastAPI(
 app.openapi = partial(custom_openapi, app)  # type: ignore
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(RateLimiterMiddleware)
-app.add_middleware(BlacklistMiddleware)
+app.add_middleware(IPBlacklistMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=setting.BACKEND_CORS_ORIGINS,
-    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    allow_credentials=True,
 )
 app.add_middleware(GZipMiddleware)
 app.middleware("http")(blacklist_middleware)
@@ -70,3 +70,14 @@ async def redirect_to_docs() -> RedirectResponse:
     - `rtype:` **RedirectResponse**
     """
     return RedirectResponse("/docs")
+
+
+@app.get("/health", response_class=JSONResponse)
+async def check_health() -> JSONResponse:
+    """
+    Check the health of the application backend.
+    ## Response:
+    - `return:` **The JSON response**
+    - `rtype:` **JSONResponse**
+    """
+    return JSONResponse({"status": "healthy"})

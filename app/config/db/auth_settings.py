@@ -47,6 +47,7 @@ class AuthSettings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_MINUTES: PositiveInt
     EMAIL_RESET_TOKEN_EXPIRE_HOURS: PositiveInt
     AUDIENCE: Optional[AnyHttpUrl] = None
+    STRICT_TRANSPORT_SECURITY_MAX_AGE: PositiveInt
 
     @field_validator("AUDIENCE", mode="before")
     def assemble_audience(

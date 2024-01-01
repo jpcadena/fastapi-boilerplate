@@ -7,6 +7,8 @@ from starlette.middleware.base import (
     RequestResponseEndpoint,
 )
 
+from app.config.config import auth_setting
+
 
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     """
@@ -38,9 +40,21 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         :return: None
         :rtype: NoneType
         """
-        response.headers[
-            "Strict-Transport-Security"
-        ] = "max-age=31536000; includeSubDomains"
-        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["Strict-Transport-Security"] = (
+            f"max-age={auth_setting.STRICT_TRANSPORT_SECURITY_MAX_AGE}; "
+            f"includeSubDomains"
+        )
+        # TODO: Add Content Security Policies support
+        response.headers["Cross-Origin-Embedder-Policy"] = "require-corp"
+        response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
+        response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
+        response.headers["Referrer-Policy"] = "no-referrer-when-downgrade"
+        response.headers["Permissions-Policy"] = (
+            "geolocation=(self 'https://maps.googleapis.com'),"
+            "microphone=self, camera=self, fullscreen=self,"
+            "accelerometer=self, gyroscope=self"
+        )
         response.headers["X-Frame-Options"] = "DENY"
-        response.headers["Referrer-Policy"] = "no-referrer"
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        response.headers["X-DNS-Prefetch-Control"] = "off"

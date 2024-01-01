@@ -2,6 +2,7 @@
 A module for rate limiter in the app.services.infrastructure package.
 """
 from datetime import datetime, timedelta
+from typing import Any
 
 from pydantic import PositiveInt
 from redis.asyncio import Redis
@@ -45,22 +46,69 @@ class RateLimiterService:
     @handle_redis_exceptions
     @with_logging
     @benchmark
-    async def is_rate_limited(self, rate_limiter: RateLimiter) -> bool:
+    async def add_request(self, rate_limiter: RateLimiter) -> None:
         """
-        Check and update the rate limit for the given IP and request path.
-        :param rate_limiter: The rate limiter instance
+        Add a new request and clean up old requests.
+        :param rate_limiter: The rate limiter schema instance
         :type rate_limiter: RateLimiter
-        :return: True if the request exceeds the rate limit; otherwise false.
-        :rtype: bool
+        :return: None
+        :rtype: NoneType
         """
         rate_limit_key: str = self.get_rate_limit_key(rate_limiter)
         min_timestamp: datetime = datetime.now() - timedelta(
             seconds=self._rate_limit_duration
         )
+        now_timestamp: float = datetime.now().timestamp()
         await self._redis.zremrangebyscore(
             rate_limit_key, "-inf", min_timestamp.timestamp()
         )
-        now_timestamp: float = datetime.now().timestamp()
-        await self._redis.zadd(rate_limit_key, {"now_timestamp": now_timestamp})
-        request_count: int = await self._redis.zcard(rate_limit_key)
-        return request_count > self._max_requests
+        await self._redis.zadd(
+            rate_limit_key, {now_timestamp.__str__(): now_timestamp}
+        )
+
+    @handle_redis_exceptions
+    @with_logging
+    @benchmark
+    async def get_request_count(self, rate_limiter: RateLimiter) -> int:
+        """
+        Get the number of requests in the current window.
+        :param rate_limiter: The rate limiter schema instance
+        :type rate_limiter: RateLimiter
+        :return: The number of requests in the current window
+        :rtype: int
+        """
+        rate_limit_key: str = self.get_rate_limit_key(rate_limiter)
+        return await self._redis.zcard(rate_limit_key)
+
+    async def get_remaining_requests(self, rate_limiter: RateLimiter) -> int:
+        """
+        Calculate the remaining requests.
+        :param rate_limiter: The rate limiter schema instance
+        :type rate_limiter: RateLimiter
+        :return: The remaining requests available
+        :rtype: int
+        """
+        request_count: int = await self.get_request_count(rate_limiter)
+        return self._max_requests - request_count
+
+    @handle_redis_exceptions
+    @with_logging
+    @benchmark
+    async def get_reset_time(self, rate_limiter: RateLimiter) -> datetime:
+        """
+        Calculate the reset time.
+        :param rate_limiter: The rate limiter schema instance
+        :type rate_limiter: RateLimiter
+        :return: The reset time available
+        :rtype: datetime
+        """
+        rate_limit_key: str = self.get_rate_limit_key(rate_limiter)
+        oldest_request: list[tuple[Any, float]] = await self._redis.zrange(
+            rate_limit_key, 0, 0, withscores=True
+        )
+        oldest_timestamp: datetime = (
+            datetime.fromtimestamp(oldest_request[0][1])
+            if oldest_request
+            else datetime.now()
+        )
+        return oldest_timestamp + timedelta(seconds=self._rate_limit_duration)

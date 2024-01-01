@@ -3,7 +3,7 @@ A module for auth in the app.services package.
 """
 import logging
 import time
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import Depends, HTTPException, status
 from redis.asyncio import Redis
@@ -27,7 +27,8 @@ class AuthService:
 
     @staticmethod
     def _build_payload(
-        user: User, auth_settings: AuthSettings = Depends(get_auth_settings)
+        user: User,
+        auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
     ) -> TokenPayload:
         """
         Build JWT payload for authentication
@@ -64,7 +65,8 @@ class AuthService:
 
     @staticmethod
     def auth_token(
-        user: User, auth_settings: AuthSettings = Depends(get_auth_settings)
+        user: User,
+        auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
     ) -> Token:
         """
         Authenticate a user and generate access and refresh tokens

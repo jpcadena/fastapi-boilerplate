@@ -227,7 +227,7 @@
         "description": "User Auth that inherits from UserID.",
         "example": {
           "email": "example@mail.com",
-          "id": "fccda9cf-09bc-4c88-b4af-879362a928de",
+          "id": "d9e36f19-d8c4-4467-b404-2805d54006aa",
           "username": "username"
         },
         "properties": {
@@ -394,7 +394,7 @@
         "example": {
           "email": "example@mail.com",
           "first_name": "Some",
-          "id": "69222b6d-c820-4c5f-bfa4-d263b2266b97",
+          "id": "bba415a6-135a-4257-8d18-e1ccd3cc33f1",
           "last_name": "Example",
           "username": "username"
         },
@@ -452,19 +452,19 @@
             "region": "Guayas",
             "street_address": "Urdesa Norte mz A1 v 99"
           },
-          "address_id": "2651a9d4-db6c-48fb-9375-02265912f75e",
+          "address_id": "5294a2d8-d1a1-4aba-adc2-ad06cbbb28a6",
           "birthdate": "2004-12-31",
-          "created_at": "2023-12-28 21:42:21.639500",
+          "created_at": "2023-12-31 19:42:45.179327",
           "email": "example@mail.com",
           "first_name": "Some",
           "gender": "male",
-          "id": "a2b63321-0c6d-4518-8f92-b1bf2ae6b8b0",
+          "id": "31e2522d-32e5-49d3-b012-ba9048b06afe",
           "is_active": true,
           "is_superuser": false,
           "last_name": "Example",
           "middle_name": "One",
           "phone_number": "+593987654321",
-          "updated_at": "2023-12-28 21:42:21.639500",
+          "updated_at": "2023-12-31 19:42:45.179827",
           "username": "username"
         },
         "properties": {
@@ -770,20 +770,20 @@
             "locality": "Guayaquil",
             "street_address": "Urdesa Norte mz A1 v 99"
           },
-          "address_id": "8a643871-17ee-4498-83db-1a2327ffda47",
+          "address_id": "41bad646-7cd8-4545-8e19-b66a803f1911",
           "birthdate": "2004-12-31",
-          "created_at": "2023-12-28 21:42:21.634495",
+          "created_at": "2023-12-31 19:42:45.174822",
           "email": "example@mail.com",
           "first_name": "Some",
           "gender": "male",
-          "id": "feabc0fa-6878-4511-bbb8-6b8661155cde",
+          "id": "c9260222-2f11-4c89-83f2-0cf718487b77",
           "is_active": true,
           "is_superuser": false,
           "last_name": "Example",
           "middle_name": "One",
           "password": "Hk7pH9*Hk7pH9*35Fu&3UHk7pH9*35Fu&3U35Fu&3U",
           "phone_number": "+593987654321",
-          "updated_at": "2023-12-28 21:42:21.634495",
+          "updated_at": "2023-12-31 19:42:45.174822",
           "username": "username"
         },
         "properties": {
@@ -1017,7 +1017,7 @@
     "/": {
       "get": {
         "description": "Redirects the user to the /docs endpoint for API documentation.\n## Response:\n- `return:` **The redirected response**\n- `rtype:` **RedirectResponse**",
-        "operationId": "",
+        "operationId": "redirect_to_docs",
         "responses": {
           "307": {
             "description": "Successful Response"
@@ -1083,7 +1083,7 @@
               "normal": {
                 "description": "A **normal** authorization token object that works correctly.",
                 "summary": "A normal example",
-                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZTphNWE3NzI3MC1hNTZlLTRmNDktODU4ZC1iNWZlYjQwNGQxMjEiLCJuYXRpb25hbGl0aWVzIjpbIkVDVSJdLCJlbWFpbCI6ImV4YW1wbGVAbWFpbC5jb20iLCJuaWNrbmFtZSI6ImV4YW1wbGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJleGFtcGxlIiwiZ2l2ZW5fbmFtZSI6IlNvbWUiLCJmYW1pbHlfbmFtZSI6IkV4YW1wbGUiLCJtaWRkbGVfbmFtZSI6Ik9uZSIsImdlbmRlciI6Im1hbGUiLCJiaXJ0aGRhdGUiOiIyMDA0LTEyLTMxIiwidXBkYXRlZF9hdCI6IjIwMjMtMTItMjhUMjE6NDI6MjEuMzk3NzkyIiwicGhvbmVfbnVtYmVyIjoiKzU5Mzk4NzY1NDMyMSIsImFkZHJlc3MiOnsic3RyZWV0X2FkZHJlc3MiOiJVcmRlc2EgTm9ydGUgbXogQTEgdiA5OSIsImxvY2FsaXR5IjoiR3VheWFxdWlsIiwicmVnaW9uIjoiR3VheWFzIiwiY291bnRyeSI6IkVjdWFkb3IiLCJwb3N0YWxfY29kZSI6IjA5MDUwNSJ9LCJleHAiOjE3MDM4MTk1NDEsIm5iZiI6MTcwMzgxNzc0MCwiaWF0IjoxNzAzODE3NzQxfQ.Hk2QHMJjTrZ_h-vevVL9Jq5oQ3lBWU4oMOOi3NhC3GY"
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZToxNjAwNjEwZi1jYzgyLTQ4ZDktYmQ0YS0yZTg0MTQ0ZDljMTAiLCJuYXRpb25hbGl0aWVzIjpbIkVDVSJdLCJlbWFpbCI6ImV4YW1wbGVAbWFpbC5jb20iLCJuaWNrbmFtZSI6ImV4YW1wbGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJleGFtcGxlIiwiZ2l2ZW5fbmFtZSI6IlNvbWUiLCJmYW1pbHlfbmFtZSI6IkV4YW1wbGUiLCJtaWRkbGVfbmFtZSI6Ik9uZSIsImdlbmRlciI6Im1hbGUiLCJiaXJ0aGRhdGUiOiIyMDA0LTEyLTMxIiwidXBkYXRlZF9hdCI6IjIwMjMtMTItMzFUMTk6NDI6NDQuOTQ5MTI4IiwicGhvbmVfbnVtYmVyIjoiKzU5Mzk4NzY1NDMyMSIsImFkZHJlc3MiOnsic3RyZWV0X2FkZHJlc3MiOiJVcmRlc2EgTm9ydGUgbXogQTEgdiA5OSIsImxvY2FsaXR5IjoiR3VheWFxdWlsIiwicmVnaW9uIjoiR3VheWFzIiwiY291bnRyeSI6IkVjdWFkb3IiLCJwb3N0YWxfY29kZSI6IjA5MDUwNSJ9LCJleHAiOjE3MDQwNzE1NjQsIm5iZiI6MTcwNDA2OTc2MywiaWF0IjoxNzA0MDY5NzY0fQ.aOdEKvwgh6HqUV7n5S1sAJ0y9cWXnASBbs9XwwS3AvA"
               }
             },
             "in": "header",
@@ -1559,7 +1559,7 @@
         "parameters": [
           {
             "description": "ID of the User to be searched",
-            "example": "225542c5-72e7-49cb-a1bb-2698151b3932",
+            "example": "79bd54de-5046-4464-9112-ce916f80846d",
             "in": "path",
             "name": "user_id",
             "required": true,
@@ -1602,12 +1602,14 @@
         "parameters": [
           {
             "description": "ID of the User to be searched",
-            "example": "d1e2f0e4-0877-4977-96b1-4fc471838e2f",
             "in": "path",
             "name": "user_id",
             "required": true,
             "schema": {
               "description": "ID of the User to be searched",
+              "examples": [
+                "fae39a8d-9e07-426b-bd4f-a8010a828256"
+              ],
               "format": "uuid4",
               "title": "User ID",
               "type": "string"
@@ -1652,7 +1654,7 @@
         "parameters": [
           {
             "description": "ID of the User to be searched",
-            "example": "75a6519b-9b92-492b-b742-2c13fff20a08",
+            "example": "2c0c6a36-b4aa-4c0d-a877-0fc18078a11c",
             "in": "path",
             "name": "user_id",
             "required": true,
@@ -1769,6 +1771,23 @@
         "tags": [
           "user"
         ]
+      }
+    },
+    "/health": {
+      "get": {
+        "description": "Check the health of the application backend.\n## Response:\n- `return:` **The JSON response**\n- `rtype:` **JSONResponse**",
+        "operationId": "check_health",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Check Health"
       }
     }
   },

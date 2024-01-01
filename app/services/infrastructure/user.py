@@ -4,7 +4,7 @@ User Service to handle business logic
 import json
 import logging
 from datetime import datetime
-from typing import Any, Optional, Union
+from typing import Annotated, Any, Optional, Union
 
 from fastapi import Depends
 from pydantic import UUID4, EmailStr, NonNegativeInt, PositiveInt
@@ -309,7 +309,7 @@ class CachedUserService:
 
 
 async def get_user_service(
-    user_repo: UserRepository = Depends(get_user_repository),
+    user_repo: Annotated[UserRepository, Depends(get_user_repository)],
 ) -> UserService:
     """
     Get an instance of the user service with the given repository.

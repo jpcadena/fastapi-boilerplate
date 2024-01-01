@@ -1,9 +1,10 @@
 """
 A module for password in the app.utils.security package.
 """
+
 import logging
-from datetime import datetime, timedelta
-from typing import Any, Optional
+from datetime import datetime, timedelta, timezone
+from typing import Annotated, Any, Optional
 
 from fastapi import Depends
 from pydantic import EmailStr
@@ -16,7 +17,8 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 
 def generate_password_reset_payload(
-    email: EmailStr, auth_settings: AuthSettings = Depends(get_auth_settings)
+    email: EmailStr,
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
 ) -> dict[str, Any]:
     """
     Generate a password reset payload
@@ -27,13 +29,13 @@ def generate_password_reset_payload(
     :return: The payload to be used
     :rtype: dict[str, Any]
     """
-    now: datetime = datetime.utcnow()
+    now: datetime = datetime.now(timezone.utc)
     expires: datetime = now + timedelta(
         hours=auth_settings.EMAIL_RESET_TOKEN_EXPIRE_HOURS
     )
     exp: float = expires.timestamp()
     payload: dict[str, Any] = {
-        "iss": str(auth_settings.SERVER_URL),
+        "iss": auth_settings.SERVER_URL.__str__(),
         "exp": exp,
         "nbf": now,
         "sub": email,
@@ -43,7 +45,8 @@ def generate_password_reset_payload(
 
 
 def generate_password_reset_token(
-    email: EmailStr, auth_settings: AuthSettings = Depends(get_auth_settings)
+    email: EmailStr,
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
 ) -> str:
     """
     Generate a password reset token for the given email address.
@@ -61,7 +64,8 @@ def generate_password_reset_token(
 
 
 def verify_password_reset_token(
-    token: str, auth_settings: AuthSettings = Depends(get_auth_settings)
+    token: str,
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
 ) -> Optional[EmailStr]:
     """
     Verify a password reset token and return the email address if valid.

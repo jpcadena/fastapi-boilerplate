@@ -16,7 +16,7 @@ def get_init_settings() -> InitSettings:
     :return: The init settings instance
     :rtype: InitSettings
     """
-    return InitSettings()
+    return init_setting
 
 
 @lru_cache()

@@ -4,7 +4,7 @@ This module handles JSON Web Token (JWT) creation for authentication
 """
 import logging
 from datetime import datetime, timedelta
-from typing import Any, Optional
+from typing import Annotated, Any, Optional
 
 from fastapi import Depends
 from fastapi.encoders import jsonable_encoder
@@ -45,9 +45,9 @@ def _generate_expiration_time(
 
 def create_access_token(
     payload: TokenPayload,
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
     scope: Scope = Scope.ACCESS_TOKEN,
     expires_delta: Optional[timedelta] = None,
-    auth_settings: AuthSettings = Depends(get_auth_settings),
 ) -> str:
     """
     Create a new JWT access token
@@ -84,7 +84,7 @@ def create_access_token(
 
 def create_refresh_token(
     payload: TokenPayload,
-    auth_settings: AuthSettings = Depends(get_auth_settings),
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
 ) -> str:
     """
     Create a refresh token for authentication
@@ -100,8 +100,8 @@ def create_refresh_token(
     )
     token: str = create_access_token(
         payload=payload,
+        auth_settings=auth_settings,
         scope=Scope.REFRESH_TOKEN,
         expires_delta=expires,
-        auth_settings=auth_settings,
     )
     return token

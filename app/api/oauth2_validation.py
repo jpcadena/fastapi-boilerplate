@@ -1,7 +1,7 @@
 """
 A module for oauth2 validation in the app.api package.
 """
-from typing import Any, Optional
+from typing import Annotated, Any, Optional
 from uuid import UUID
 
 from fastapi import Depends, HTTPException, status
@@ -74,10 +74,10 @@ async def authenticate_user(
 
 
 async def get_refresh_current_user(
-    refresh_token: str = Depends(refresh_token_scheme),
-    auth_settings: AuthSettings = Depends(get_auth_settings),
-    user_service: UserService = Depends(get_user_service),
-    redis: Redis = Depends(get_redis_dep),  # type: ignore
+    refresh_token: Annotated[str, Depends(refresh_token_scheme)],
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
+    user_service: Annotated[UserService, Depends(get_user_service)],
+    redis: Annotated[Redis, Depends(get_redis_dep)],  # type: ignore
 ) -> UserAuth:
     """
     Fetches the current authenticated user based on the provided JWT
@@ -99,10 +99,10 @@ async def get_refresh_current_user(
 
 
 async def get_current_user(
-    token: str = Depends(oauth2_scheme),
-    auth_settings: AuthSettings = Depends(get_auth_settings),
-    user_service: UserService = Depends(get_user_service),
-    redis: Redis = Depends(get_redis_dep),  # type: ignore
+    token: Annotated[str, Depends(oauth2_scheme)],
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
+    user_service: Annotated[UserService, Depends(get_user_service)],
+    redis: Annotated[Redis, Depends(get_redis_dep)],  # type: ignore
 ) -> UserAuth:
     """
     Fetches the current authenticated user based on the provided JWT

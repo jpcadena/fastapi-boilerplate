@@ -2,6 +2,7 @@
 A module for email utilities in the app.utils package.
 """
 from pathlib import Path
+from typing import Annotated
 
 from fastapi import Depends
 from pydantic import EmailStr
@@ -21,7 +22,8 @@ from app.tasks.email_tasks.template import read_template_file
 
 
 async def build_email_template(
-    template_file: str, init_settings: InitSettings = Depends(get_init_settings)
+    template_file: str,
+    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
 ) -> str:
     """
     Builds the email template
@@ -44,9 +46,9 @@ async def send_reset_password_email(
     email_to: EmailStr,
     username: str,
     token: str,
-    settings: Settings = Depends(get_settings),
-    init_settings: InitSettings = Depends(get_init_settings),
-    auth_settings: AuthSettings = Depends(get_auth_settings),
+    settings: Annotated[Settings, Depends(get_settings)],
+    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
 ) -> bool:
     """
     Sends a password reset email to a user with the given email address
@@ -73,7 +75,7 @@ async def send_reset_password_email(
         "reset_password.html", init_settings
     )
     link: str = (
-        f"{auth_settings.SERVER_URL}"
+        f"{auth_settings.SERVER_URL.__str__()}"
         f"{auth_settings.AUTH_URL}reset-password?token={token}"
     )
     is_sent: bool = await send_email(
@@ -96,9 +98,9 @@ async def send_reset_password_email(
 async def send_new_account_email(
     email_to: EmailStr,
     username: str,
-    settings: Settings = Depends(get_settings),
-    auth_settings: AuthSettings = Depends(get_auth_settings),
-    init_settings: InitSettings = get_init_settings(),
+    settings: Annotated[Settings, Depends(get_settings)],
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
+    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
 ) -> None:
     """
     Send a new account email
@@ -131,7 +133,7 @@ async def send_new_account_email(
             "project_name": init_settings.PROJECT_NAME,
             "username": username,
             "email": email_to,
-            "link": auth_settings.SERVER_URL,
+            "link": auth_settings.SERVER_URL.__str__(),
         },
         settings=settings,
     )
@@ -141,8 +143,8 @@ async def send_new_account_email(
 async def send_welcome_email(
     email_to: EmailStr,
     username: str,
-    init_settings: InitSettings = Depends(get_init_settings),
-    settings: Settings = Depends(get_settings),
+    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
+    settings: Annotated[Settings, Depends(get_settings)],
 ) -> None:
     """
     Send a welcome email
@@ -172,7 +174,7 @@ async def send_welcome_email(
             "project_name": init_settings.PROJECT_NAME,
             "username": username,
             "email": email_to,
-            "link": auth_setting.SERVER_URL,
+            "link": auth_setting.SERVER_URL.__str__(),
         },
         settings=settings,
     )
@@ -182,8 +184,8 @@ async def send_welcome_email(
 async def send_password_changed_confirmation_email(
     email_to: EmailStr,
     username: str,
-    init_settings: InitSettings = Depends(get_init_settings),
-    settings: Settings = Depends(get_settings),
+    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
+    settings: Annotated[Settings, Depends(get_settings)],
 ) -> bool:
     """
     Send a password changed confirmation email
@@ -213,6 +215,8 @@ async def send_password_changed_confirmation_email(
             "project_name": init_settings.PROJECT_NAME,
             "username": username,
             "email": email_to,
+            "link": f"mailto:{settings.CONTACT_EMAIL.__str__()}?subject="
+            f"{init_settings.PROJECT_NAME} password changed",
         },
         settings=settings,
     )
@@ -223,8 +227,8 @@ async def send_password_changed_confirmation_email(
 async def send_delete_account_email(
     email_to: EmailStr,
     username: str,
-    init_settings: InitSettings = Depends(get_init_settings),
-    settings: Settings = Depends(get_settings),
+    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
+    settings: Annotated[Settings, Depends(get_settings)],
 ) -> bool:
     """
     Send a delete account email
@@ -251,6 +255,8 @@ async def send_delete_account_email(
             "project_name": init_settings.PROJECT_NAME,
             "username": username,
             "email": email_to,
+            "link": f"mailto:{settings.CONTACT_EMAIL.__str__()}?subject="
+            f"{init_settings.PROJECT_NAME} account deleted",
         },
         settings=settings,
     )

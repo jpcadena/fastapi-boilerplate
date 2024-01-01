@@ -3,7 +3,7 @@ A module for message in the app.utils package.
 """
 import logging
 from email.mime.text import MIMEText
-from typing import Union
+from typing import Annotated, Union
 
 import aiosmtplib
 from fastapi import Depends
@@ -20,7 +20,7 @@ def create_message(
     email_to: EmailStr,
     subject: str,
     html: str,
-    settings: Settings = Depends(get_settings),
+    settings: Annotated[Settings, Depends(get_settings)],
 ) -> MIMEText:
     """
     Creates an email message with the given HTML content and subject
@@ -49,7 +49,7 @@ def create_message(
 @benchmark
 async def send_email_message(
     message: MIMEText,
-    settings: Settings = Depends(get_settings),
+    settings: Annotated[Settings, Depends(get_settings)],
 ) -> Union[bool, str]:
     """
     Sends the message to the given email address.
