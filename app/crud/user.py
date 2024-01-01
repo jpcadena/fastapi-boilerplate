@@ -2,8 +2,9 @@
 This script handles CRUD (Create, Read, Update, Delete) operations for
  User objects in the database.
 """
+
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Optional, Union
 
 from pydantic import UUID4, NonNegativeInt, PositiveInt
@@ -189,12 +190,6 @@ class UserRepository:
             update={
                 "password": hashed_password,
                 "address_id": address.id,
-                # "email": encrypted_email,
-                # "phone_number": encrypted_phone_number,
-                # "birthdate": encrypted_birthdate,
-                # "email_encrypted_info": serialized_email,
-                # "phone_number_encrypted_info": serialized_phone_number,
-                # "birthdate_encrypted_info": serialized_birthdate,
             }
         )
         user_data: dict[str, Any] = user_in.model_dump()
@@ -254,7 +249,7 @@ class UserRepository:
                             )
                     else:
                         setattr(found_user, field, value)
-            found_user.updated_at = datetime.utcnow()
+            found_user.updated_at = datetime.now(timezone.utc)
             session.add(found_user)
             await session.commit()
             try:

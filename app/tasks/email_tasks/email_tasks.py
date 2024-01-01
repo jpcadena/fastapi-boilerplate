@@ -7,12 +7,7 @@ from typing import Annotated
 from fastapi import Depends
 from pydantic import EmailStr
 
-from app.config.config import (
-    auth_setting,
-    get_auth_settings,
-    get_init_settings,
-    get_settings,
-)
+from app.config.config import get_auth_settings, get_init_settings, get_settings
 from app.config.db.auth_settings import AuthSettings
 from app.config.init_settings import InitSettings
 from app.config.settings import Settings
@@ -145,6 +140,7 @@ async def send_welcome_email(
     username: str,
     init_settings: Annotated[InitSettings, Depends(get_init_settings)],
     settings: Annotated[Settings, Depends(get_settings)],
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
 ) -> None:
     """
     Send a welcome email
@@ -156,6 +152,8 @@ async def send_welcome_email(
     :type init_settings: InitSettings
     :param settings: Dependency method for cached setting object
     :type settings: Settings
+    :param auth_settings: Dependency method for cached setting object
+    :type auth_settings: AuthSettings
     :return: None
     :rtype: NoneType
     """
@@ -174,7 +172,7 @@ async def send_welcome_email(
             "project_name": init_settings.PROJECT_NAME,
             "username": username,
             "email": email_to,
-            "link": auth_setting.SERVER_URL.__str__(),
+            "link": auth_settings.SERVER_URL.__str__(),
         },
         settings=settings,
     )

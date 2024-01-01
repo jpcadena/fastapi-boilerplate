@@ -1,6 +1,8 @@
 """
 A module for utils in the app.utils package.
 """
+
+import contextlib
 import logging
 import math
 import re
@@ -71,11 +73,9 @@ def get_nationality_code(country_name: str) -> str:
     :return: The nationality in ICAO 3-letter code [ICAO-Doc9303]
     :rtype: str
     """
-    try:
+    with contextlib.suppress(LookupError):
         if country := pycountry.countries.get(name=country_name):
             return str(country.alpha_3)
-    except LookupError:
-        pass
     return ""
 
 

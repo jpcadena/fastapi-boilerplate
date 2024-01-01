@@ -2,8 +2,9 @@
 This script handles CRUD (Create, Read, Update, Delete) operations for
  Address objects in the database.
 """
+
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Optional
 
 from fastapi.encoders import jsonable_encoder
@@ -120,7 +121,7 @@ class AddressRepository:
                 if field in update_data:
                     setattr(found_address, field, update_data[field])
                 if field == "updated_at":
-                    setattr(found_address, field, datetime.utcnow())
+                    setattr(found_address, field, datetime.now(timezone.utc))
             session.add(found_address)
             await session.commit()
             try:

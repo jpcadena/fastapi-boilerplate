@@ -2,8 +2,9 @@
 This module handles JSON Web Token (JWT) creation for authentication
  and authorization.
 """
+
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Annotated, Any, Optional
 
 from fastapi import Depends
@@ -33,9 +34,9 @@ def _generate_expiration_time(
     :rtype: datetime
     """
     if expires_delta:
-        return datetime.utcnow() + expires_delta
+        return datetime.now(timezone.utc) + expires_delta
     if minutes is not None:
-        return datetime.utcnow() + timedelta(minutes=minutes)
+        return datetime.now(timezone.utc) + timedelta(minutes=minutes)
     value_error: ValueError = ValueError(
         "Either 'expires_delta' or 'minutes' must be provided."
     )
@@ -51,14 +52,15 @@ def create_access_token(
 ) -> str:
     """
     Create a new JWT access token
-    :param scope: The token's scope.
-    :type scope: Scope
+
     :param payload: The payload or claims for the token
     :type payload: TokenPayload
-    :param expires_delta: The timedelta specifying when the token should expire
-    :type expires_delta: timedelta
     :param auth_settings: Dependency method for cached setting object
     :type auth_settings: AuthSettings
+    :param scope: The token's scope.
+    :type scope: Scope
+    :param expires_delta: The timedelta specifying when the token should expire
+    :type expires_delta: timedelta
     :return: The encoded JWT
     :rtype: str
     """

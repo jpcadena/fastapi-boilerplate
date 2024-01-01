@@ -18,7 +18,8 @@ from sqlalchemy.exc import (
 from sqlalchemy.exc import TimeoutError as SATimeoutError
 from sqlalchemy.ext.asyncio import AsyncTransaction
 
-from app.config.config import auth_setting, get_init_settings, get_settings
+from app.config.config import get_auth_settings, get_init_settings, get_settings
+from app.config.db.auth_settings import AuthSettings
 from app.config.init_settings import InitSettings
 from app.config.settings import Settings
 from app.crud.specification import EmailSpecification
@@ -73,7 +74,8 @@ async def create_db_and_tables() -> None:
 async def init_db(
     user_repo: Annotated[UserRepository, Depends(get_user_repository)],
     settings: Annotated[Settings, Depends(get_settings)],
-    init_settings: InitSettings = get_init_settings(),
+    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
 ) -> None:
     """
     Initialize the database connection and create the necessary tables.
@@ -83,6 +85,8 @@ async def init_db(
     :type settings: Settings
     :param init_settings: Dependency method for cached init setting object
     :type init_settings: InitSettings
+    :param auth_settings: Dependency method for cached setting object
+    :type auth_settings: AuthSettings
     :return: None
     :rtype: NoneType
     """
@@ -113,7 +117,7 @@ async def init_db(
         superuser.email,
         superuser.username,
         settings,
-        auth_setting,
+        auth_settings,
         init_settings,
     )
     hidden_email: str = hide_email(superuser.email)
@@ -123,5 +127,9 @@ async def init_db(
         address.locality,
     )
     await send_welcome_email(
-        superuser.email, superuser.username, init_settings, settings
+        superuser.email,
+        superuser.username,
+        init_settings,
+        settings,
+        auth_settings,
     )

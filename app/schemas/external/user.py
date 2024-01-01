@@ -222,19 +222,6 @@ class UserCreate(UserOptional, UserBase):
         max_length=14,
     )
 
-    # email_encrypted_info: str = Field(
-    #     ..., title="Email encrypted info",
-    #     description="The encrypted information for the user's email address"
-    # )
-    # phone_number_encrypted_info: str = Field(
-    #     ..., title="Phone number info",
-    #     description="The encrypted information for the user's phone number"
-    # )
-    # birthdate_encrypted_info: str = Field(
-    #     ..., title="Birthdate encrypted info",
-    #     description="The encrypted information for the user's birthdate"
-    # )
-
     @field_validator("password", mode="before")
     def validate_password(cls, v: Optional[str]) -> str:
         """

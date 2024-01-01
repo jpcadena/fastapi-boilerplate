@@ -32,11 +32,11 @@ def update_operation_id(operation: dict[str, Any]) -> None:
     :return: None
     :rtype: NoneType
     """
-    operation_id: str = operation["operationId"]
     if operation.get(
         "tags",
     ):
         tag: str = operation["tags"][0]
+        operation_id: str = operation["operationId"]
         new_operation_id: str = remove_tag_from_operation_id(tag, operation_id)
         operation["operationId"] = new_operation_id
 

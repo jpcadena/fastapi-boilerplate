@@ -23,9 +23,9 @@ async_engine: AsyncEngine = create_async_engine(
 
 async def get_db() -> AsyncGenerator[AsyncSession, Any]:
     """
-    Get an asynchronous session to the database as a generator
-    :return session: Async session for database connection
-    :rtype session: AsyncSession
+    Yield an asynchronous session to the database as a generator
+    :return session: Generated async session for database connection
+    :rtype session: AsyncGenerator[AsyncSession, Any]:
     """
     async_session: AsyncSession = AsyncSession(
         bind=async_engine, expire_on_commit=False

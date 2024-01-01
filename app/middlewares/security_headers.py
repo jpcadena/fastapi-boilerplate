@@ -35,7 +35,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     def add_security_headers(response: Response) -> None:
         """
         Adds security headers to the response.
-        :param response:
+        :param response: The FastAPI response instance
         :type response: Response
         :return: None
         :rtype: NoneType

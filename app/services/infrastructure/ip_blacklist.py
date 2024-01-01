@@ -33,7 +33,9 @@ class IPBlacklistService:
         """
         Check if the IP address is currently blacklisted.
         :param ip: The IP address to check.
+        :type ip: IPvAnyAddress
         :return: True if blacklisted, False otherwise.
+        :rtype: bool
         """
         return bool(await self._redis.get(self.get_redis_key(ip)))
 
@@ -44,6 +46,9 @@ class IPBlacklistService:
         """
         Add the IP address to the blacklist.
         :param ip: The IP address to blacklist.
+        :type ip: IPvAnyAddress
+        :return: None
+        :rtype: NoneType
         """
         await self._redis.setex(
             self.get_redis_key(ip),
@@ -56,7 +61,9 @@ class IPBlacklistService:
         """
         Generate the Redis key for the given IP address.
         :param ip: The IP address.
+        :type ip: IPvAnyAddress
         :return: The Redis key.
+        :rtype: str
         """
         return f"blacklist:{ip}"
 
@@ -66,6 +73,8 @@ def get_ip_blacklist_service(
 ) -> IPBlacklistService:
     """
     Get an instance of the IP Blacklist service
+    :param redis: Dependency method for async Redis connection
+    :type redis: Redis
     :return: IPBlacklistService instance
     :rtype: IPBlacklistService
     """

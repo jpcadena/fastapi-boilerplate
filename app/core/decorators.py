@@ -15,9 +15,9 @@ def with_logging(func: Callable[..., Any]) -> Callable[..., Any]:
     This decorator logs when a function starts and finishes its
      execution.
     :param func: The function to be decorated
-    :type func: Callable
+    :type func: Callable[..., Any]
     :return: The decorated function that logs its call
-    :rtype: Callable
+    :rtype: Callable[..., Any]
     """
 
     @functools.wraps(func)
@@ -46,9 +46,9 @@ def benchmark(func: Callable[..., Any]) -> Callable[..., Any]:
     This decorator provides a benchmarking feature by logging the
      execution time of the decorated function
     :param func: The function to be executed
-    :type func: Callable
+    :type func: Callable[..., Any]
     :return: The decorated function that logs its execution time
-    :rtype: Callable
+    :rtype: Callable[..., Any]
     """
 
     @functools.wraps(func)

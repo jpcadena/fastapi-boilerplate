@@ -27,7 +27,6 @@ class IPBlacklistMiddleware:
     ) -> None:
         if scope["type"] == "http":
             request: Request = Request(scope, receive=receive)
-            # app: FastAPI = scope['app']
             ip_blacklist_service: IPBlacklistService = (
                 request.app.state.ip_blacklist_service
             )

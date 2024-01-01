@@ -52,9 +52,7 @@ class RateLimiterMiddleware:
                 user_agent=user_agent,
                 request_path=request_path,
             )
-            # Add the request and clean up old requests
             await rate_limiter_service.add_request(rate_limiter)
-            # Check if the rate limit has been exceeded
             request_count: int = await rate_limiter_service.get_request_count(
                 rate_limiter
             )

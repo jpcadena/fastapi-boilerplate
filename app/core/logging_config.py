@@ -35,7 +35,7 @@ def _setup_console_handler(
 def _setup_mail_handler(
     logger: logging.Logger,
     log_level: PositiveInt,
-    settings: Settings = get_settings(),
+    settings: Settings,
 ) -> None:
     """
     Configure a mail handler for the given logger
@@ -43,6 +43,8 @@ def _setup_mail_handler(
     :type logger: logging.Logger
     :param log_level: The log level for the mail handler
     :type log_level: PositiveInt
+    :param settings: Dependency method for cached setting object
+    :type settings: Settings
     :return: None
     :rtype: NoneType
     """
@@ -128,7 +130,7 @@ def _configure_file_handler(
 def _setup_file_handler(
     logger: logging.Logger,
     log_level: PositiveInt,
-    init_settings: InitSettings = get_init_settings(),
+    init_settings: InitSettings,
 ) -> None:
     """
     Configure a file handler for the given logger

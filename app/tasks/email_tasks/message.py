@@ -26,10 +26,10 @@ def create_message(
     Creates an email message with the given HTML content and subject
     :param email_to: The email address of the recipient
     :type email_to: EmailStr
-    :param html: Rendered template with environment variables
-    :type html: str
     :param subject: The subject of the email
     :type subject: str
+    :param html: Rendered template with environment variables
+    :type html: str
     :param settings: Dependency method for cached setting object
     :type settings: config.Settings
     :return: Message with subject and rendered template
