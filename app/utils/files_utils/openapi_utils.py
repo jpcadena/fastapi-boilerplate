@@ -8,8 +8,6 @@ from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from fastapi.routing import APIRoute
 
-from app.config.config import auth_setting, init_setting, setting
-
 
 def remove_tag_from_operation_id(tag: str, operation_id: str) -> str:
     """
@@ -92,23 +90,25 @@ def custom_openapi(app: FastAPI) -> dict[str, Any]:
     if app.openapi_schema:
         return app.openapi_schema
     openapi_schema: dict[str, dict[str, Any]] = get_openapi(
-        title=init_setting.PROJECT_NAME,
-        version=init_setting.VERSION,
-        summary=init_setting.SUMMARY,
-        description=init_setting.DESCRIPTION,
+        title=app.state.init_settings.PROJECT_NAME,
+        version=app.state.init_settings.VERSION,
+        summary=app.state.init_settings.SUMMARY,
+        description=app.state.init_settings.DESCRIPTION,
         routes=app.routes,
         servers=[
             {
-                "url": auth_setting.SERVER_URL,
-                "description": auth_setting.SERVER_DESCRIPTION,
+                "url": app.state.auth_settings.SERVER_URL,
+                "description": app.state.auth_settings.SERVER_DESCRIPTION,
             }
         ],
-        contact=setting.CONTACT,
-        license_info=init_setting.LICENSE_INFO,
+        contact=app.state.settings.CONTACT,
+        license_info=app.state.init_settings.LICENSE_INFO,
     )
     openapi_schema = modify_json_data(openapi_schema)
     app.openapi_schema = openapi_schema
-    file_path: str = f"{init_setting.OPENAPI_FILE_PATH}"[1:]
-    with open(file_path, mode="w", encoding=init_setting.ENCODING) as out_file:
+    file_path: str = f"{app.state.init_settings.OPENAPI_FILE_PATH}"[1:]
+    with open(
+        file_path, mode="w", encoding=app.state.init_settings.ENCODING
+    ) as out_file:
         out_file.write(json.dumps(openapi_schema, indent=4))
     return app.openapi_schema

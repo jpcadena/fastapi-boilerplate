@@ -25,7 +25,7 @@ from app.utils.files_utils.openapi_utils import (
     custom_openapi,
 )
 
-logging_config.setup_logging(init_settings=init_setting, settings=setting)
+logging_config.setup_logging(setting, init_setting)
 logger: logging.Logger = logging.getLogger(__name__)
 
 
@@ -37,6 +37,8 @@ app: FastAPI = FastAPI(
     generate_unique_id_function=custom_generate_unique_id,
 )
 app.openapi = partial(custom_openapi, app)  # type: ignore
+
+# Register middlewares
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(RateLimiterMiddleware)
 app.add_middleware(IPBlacklistMiddleware)
@@ -49,6 +51,7 @@ app.add_middleware(
 )
 app.add_middleware(GZipMiddleware)
 app.middleware("http")(blacklist_middleware)
+
 app.mount(
     init_setting.IMAGES_PATH,
     StaticFiles(directory=init_setting.IMAGES_DIRECTORY),

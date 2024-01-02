@@ -7,8 +7,6 @@ from typing import Any
 from pydantic import PositiveInt
 from redis.asyncio import Redis
 
-from app.config.config import auth_setting
-from app.core.decorators import benchmark, with_logging
 from app.db.auth import handle_redis_exceptions
 from app.schemas.external.rate_limiter import RateLimiter
 
@@ -21,8 +19,8 @@ class RateLimiterService:
     def __init__(
         self,
         redis: Redis,  # type: ignore
-        rate_limit_duration: PositiveInt = auth_setting.RATE_LIMIT_DURATION,
-        max_requests: PositiveInt = auth_setting.MAX_REQUESTS,
+        rate_limit_duration: PositiveInt,
+        max_requests: PositiveInt,
     ):
         self._redis: Redis = redis  # type: ignore
         self._rate_limit_duration: PositiveInt = rate_limit_duration
@@ -44,8 +42,6 @@ class RateLimiterService:
         )
 
     @handle_redis_exceptions
-    @with_logging
-    @benchmark
     async def add_request(self, rate_limiter: RateLimiter) -> None:
         """
         Add a new request and clean up old requests.
@@ -67,8 +63,6 @@ class RateLimiterService:
         )
 
     @handle_redis_exceptions
-    @with_logging
-    @benchmark
     async def get_request_count(self, rate_limiter: RateLimiter) -> int:
         """
         Get the number of requests in the current window.
@@ -92,8 +86,6 @@ class RateLimiterService:
         return self._max_requests - request_count
 
     @handle_redis_exceptions
-    @with_logging
-    @benchmark
     async def get_reset_time(self, rate_limiter: RateLimiter) -> datetime:
         """
         Calculate the reset time.

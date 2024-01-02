@@ -8,6 +8,7 @@ from redis.asyncio import Redis
 from redis.exceptions import RedisError
 
 from app.config.config import auth_setting
+from app.config.db.auth_settings import AuthSettings
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -20,6 +21,7 @@ class RedisDependency:
     def __init__(self) -> None:
         self._url: str = auth_setting.REDIS_DATABASE_URI.__str__()
         self._redis: Optional[Redis] = None  # type: ignore
+        self.auth_settings: AuthSettings = auth_setting
 
     async def init_redis(self) -> None:
         """

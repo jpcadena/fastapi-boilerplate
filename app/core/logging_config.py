@@ -10,7 +10,6 @@ from logging.handlers import SMTPHandler
 
 from pydantic import PositiveInt
 
-from app.config.config import get_init_settings, get_settings
 from app.config.init_settings import InitSettings
 from app.config.settings import Settings
 
@@ -154,19 +153,19 @@ def _setup_file_handler(
 
 
 def setup_logging(
+    settings: Settings,
+    init_settings: InitSettings,
     log_level: PositiveInt = logging.DEBUG,
-    init_settings: InitSettings = get_init_settings(),
-    settings: Settings = get_settings(),
 ) -> None:
     """
     Initialize logging for the application
+    :param settings: Dependency method for cached setting object
+    :type settings: Settings
+    :param init_settings: Dependency method for cached init setting object
+    :type init_settings: InitSettings
     :param log_level: The log level to use for the application.
      Defaults to DEBUG
     :type log_level: PositiveInt
-    :param init_settings: Dependency method for cached init setting object
-    :type init_settings: InitSettings
-    :param settings: Dependency method for cached setting object
-    :type settings: Settings
     :return: None
     :rtype: NoneType
     """

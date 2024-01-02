@@ -2,12 +2,11 @@
 A module for security headers in the app.middlewares package.
 """
 from fastapi import Request, Response
+from pydantic import PositiveInt
 from starlette.middleware.base import (
     BaseHTTPMiddleware,
     RequestResponseEndpoint,
 )
-
-from app.config.config import auth_setting
 
 
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
@@ -28,21 +27,25 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         :rtype: Response
         """
         response: Response = await call_next(request)
-        self.add_security_headers(response)
+        self.add_security_headers(
+            response,
+            request.app.state.auth_settings.STRICT_TRANSPORT_SECURITY_MAX_AGE,
+        )
         return response
 
     @staticmethod
-    def add_security_headers(response: Response) -> None:
+    def add_security_headers(response: Response, max_age: PositiveInt) -> None:
         """
         Adds security headers to the response.
+        :param max_age: The maximum age for the strict transport security
+        :type max_age: PositiveInt
         :param response: The FastAPI response instance
         :type response: Response
         :return: None
         :rtype: NoneType
         """
         response.headers["Strict-Transport-Security"] = (
-            f"max-age={auth_setting.STRICT_TRANSPORT_SECURITY_MAX_AGE}; "
-            f"includeSubDomains"
+            f"max-age={max_age}; " f"includeSubDomains"
         )
         # TODO: Add Content Security Policies support
         response.headers["Cross-Origin-Embedder-Policy"] = "require-corp"

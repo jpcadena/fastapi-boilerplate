@@ -147,6 +147,7 @@ async def refresh_token(
     :param redis: Dependency method for async Redis connection
     :type redis: Redis
     """
+    client: Optional[Address]
     if not (client := request.client):
         raise NotFoundException("No client found on the request")
     client_ip: str = client.host

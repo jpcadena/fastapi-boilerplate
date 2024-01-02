@@ -7,7 +7,6 @@ from typing import Optional
 from fastapi import HTTPException, Request, Response, status
 from starlette.middleware.base import RequestResponseEndpoint
 
-from app.config.config import auth_setting
 from app.services.infrastructure.token import TokenService
 
 logger: logging.Logger = logging.getLogger(__name__)
@@ -19,6 +18,55 @@ SKIP_ROUTES: list[str] = [
     "/api/v1/user",
     "/",
 ]
+
+
+def extract_token(request: Request) -> Optional[str]:
+    """
+    Extract token from the Authorization headers of the request
+    :param request: The upcoming request instance
+    :type request: Request
+    :return: The token
+    :rtype: Optional[str]
+    """
+    auth_header: Optional[str] = request.headers.get("Authorization")
+    if auth_header and auth_header.startswith("Bearer "):
+        return auth_header.replace("Bearer ", "", 1)
+    return None
+
+
+async def check_blacklist(token: str, request: Request) -> None:
+    """
+    Check if a token is blacklisted from the upcoming request
+    :param token: The token to check
+    :type token: str
+    :param request: The upcoming request instance
+    :type request: Request
+    :return: None
+    :rtype: NoneType
+    """
+    token_service: TokenService = TokenService(
+        request.app.state.redis_connection,
+        request.app.state.auth_settings,
+    )
+    if await token_service.is_token_blacklisted(token):
+        logger.warning(f"Access attempt with blacklisted token: {token}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="This token has been blacklisted.",
+        )
+
+
+async def process_request(request: Request) -> None:
+    """
+    Process request for the blacklist middleware
+    :param request: The upcoming request instance
+    :type request: Request
+    :return: None
+    :rtype: NoneType
+    """
+    token: Optional[str]
+    if token := extract_token(request):
+        await check_blacklist(token, request)
 
 
 async def blacklist_middleware(
@@ -33,33 +81,9 @@ async def blacklist_middleware(
     :return: The response from the next call
     :rtype: Response
     """
-    try:
-        # Skip middleware for login route
-        if not any(request.url.path.startswith(route) for route in SKIP_ROUTES):
-            logger.info("Start of blacklist_middleware")
-            auth_header: Optional[str] = request.headers.get("Authorization")
-            if auth_header and auth_header.startswith("Bearer "):
-                token = auth_header.replace("Bearer ", "", 1)
-                token_service = TokenService(
-                    request.app.state.redis_connection, auth_setting
-                )
-                is_blacklisted = await token_service.is_token_blacklisted(token)
-                if is_blacklisted:
-                    raise HTTPException(
-                        status_code=status.HTTP_401_UNAUTHORIZED,
-                        detail="This token has been blacklisted.",
-                    )
-            else:
-                logger.info("No Bearer token found in request.")
-            logger.info("End of blacklist_middleware")
-    except HTTPException as e:
-        logger.error(
-            f"An HTTPException occurred: status_code={e.status_code},"
-            f" detail={e.detail}"
-        )
-        raise
-    except Exception as e:
-        logger.error(f"An unexpected error occurred: {e}")
-        raise
+    if not any(request.url.path.startswith(route) for route in SKIP_ROUTES):
+        logger.info("Start of blacklist_middleware")
+        await process_request(request)
+        logger.info("End of blacklist_middleware")
     response: Response = await call_next(request)
     return response

@@ -10,7 +10,7 @@ from fastapi import Depends
 from pydantic import UUID4, EmailStr, NonNegativeInt, PositiveInt
 from redis.asyncio import Redis
 
-from app.api.redis_deps import RedisDependency
+from app.api.deps import get_redis_dep
 from app.config.config import auth_setting
 from app.crud.specification import (
     EmailSpecification,
@@ -48,7 +48,7 @@ class UserService:
     def __init__(
         self,
         user_repo: UserRepository,
-        redis: Redis = RedisDependency(),  # type: ignore
+        redis: Redis,  # type: ignore
     ):
         self._user_repo: UserRepository = user_repo
         self._redis: Redis = redis  # type: ignore
@@ -310,12 +310,15 @@ class CachedUserService:
 
 async def get_user_service(
     user_repo: Annotated[UserRepository, Depends(get_user_repository)],
+    redis: Annotated[Redis, Depends(get_redis_dep)],  # type: ignore
 ) -> UserService:
     """
     Get an instance of the user service with the given repository.
     :param user_repo: User repository object for database connection
     :type user_repo: UserRepository
+    :param redis: Dependency method for async Redis connection
+    :type redis: Redis
     :return: UserService instance with repository associated
     :rtype: UserService
     """
-    return UserService(user_repo)
+    return UserService(user_repo, redis)

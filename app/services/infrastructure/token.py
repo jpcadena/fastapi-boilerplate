@@ -8,7 +8,6 @@ from pydantic import PositiveInt
 from redis.asyncio import Redis
 from redis.exceptions import RedisError
 
-from app.config.config import auth_setting
 from app.config.db.auth_settings import AuthSettings
 from app.core.decorators import benchmark
 from app.db.auth import handle_redis_exceptions
@@ -25,7 +24,7 @@ class TokenService:
     def __init__(
         self,
         redis: Redis,  # type: ignore
-        auth_settings: AuthSettings = auth_setting,
+        auth_settings: AuthSettings,
     ):
         self._redis: Redis = redis  # type: ignore
         self._refresh_token_expire_minutes: (
@@ -33,7 +32,7 @@ class TokenService:
         ) = auth_settings.REFRESH_TOKEN_EXPIRE_MINUTES
         self._blacklist_expiration_seconds: PositiveInt = (
             PositiveInt(
-                PositiveInt(auth_setting.ACCESS_TOKEN_EXPIRE_MINUTES) + 1
+                PositiveInt(auth_settings.ACCESS_TOKEN_EXPIRE_MINUTES) + 1
             )
             * 60
         )  # converting minutes to seconds

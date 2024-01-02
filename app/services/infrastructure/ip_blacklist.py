@@ -7,12 +7,12 @@ from datetime import datetime, timezone
 from typing import Annotated
 
 from fastapi import Depends
-from pydantic import IPvAnyAddress
+from pydantic import IPvAnyAddress, PositiveInt
 from redis.asyncio import Redis
 
 from app.api.deps import get_redis_dep
-from app.config.config import auth_setting
-from app.core.decorators import benchmark, with_logging
+from app.config.config import get_auth_settings
+from app.config.db.auth_settings import AuthSettings
 from app.db.auth import handle_redis_exceptions
 
 logger: logging.Logger = logging.getLogger(__name__)
@@ -23,12 +23,15 @@ class IPBlacklistService:
     Service class for IP blacklisting operations using Redis.
     """
 
-    def __init__(self, redis: Redis):  # type: ignore
+    def __init__(
+        self,
+        redis: Redis,  # type: ignore
+        blacklist_expiration_seconds: PositiveInt,
+    ):
         self._redis: Redis = redis  # type: ignore
+        self._expiration_seconds: PositiveInt = blacklist_expiration_seconds
 
     @handle_redis_exceptions
-    @with_logging
-    @benchmark
     async def is_ip_blacklisted(self, ip: IPvAnyAddress) -> bool:
         """
         Check if the IP address is currently blacklisted.
@@ -40,8 +43,6 @@ class IPBlacklistService:
         return bool(await self._redis.get(self.get_redis_key(ip)))
 
     @handle_redis_exceptions
-    @with_logging
-    @benchmark
     async def blacklist_ip(self, ip: IPvAnyAddress) -> None:
         """
         Add the IP address to the blacklist.
@@ -52,7 +53,7 @@ class IPBlacklistService:
         """
         await self._redis.setex(
             self.get_redis_key(ip),
-            auth_setting.BLACKLIST_EXPIRATION_SECONDS,
+            self._expiration_seconds,
             f"Blacklisted at {datetime.now(timezone.utc).isoformat()}",
         )
 
@@ -69,13 +70,16 @@ class IPBlacklistService:
 
 
 def get_ip_blacklist_service(
-    redis: Annotated[Redis, Depends(get_redis_dep)]  # type: ignore
+    redis: Annotated[Redis, Depends(get_redis_dep)],  # type: ignore
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
 ) -> IPBlacklistService:
     """
     Get an instance of the IP Blacklist service
     :param redis: Dependency method for async Redis connection
     :type redis: Redis
+    :param auth_settings: Dependency method for cached setting object
+    :type auth_settings: AuthSettings
     :return: IPBlacklistService instance
     :rtype: IPBlacklistService
     """
-    return IPBlacklistService(redis)
+    return IPBlacklistService(redis, auth_settings.BLACKLIST_EXPIRATION_SECONDS)

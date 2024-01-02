@@ -6,17 +6,19 @@ import contextlib
 import logging
 import math
 import re
-from typing import Annotated, Any, Optional
+from ipaddress import AddressValueError, IPv4Address, IPv6Address, ip_address
+from typing import Annotated, Any, Optional, Union
 
 import phonenumbers
 import pycountry
-from fastapi import Depends
+from fastapi import Depends, Request
 from pydantic import EmailStr, PositiveInt
 from pydantic_extra_types.phone_numbers import PhoneNumber
+from starlette.datastructures import Address
 
 from app.config.config import get_init_settings, sql_database_setting
 from app.config.init_settings import InitSettings
-from app.exceptions.exceptions import ServiceException
+from app.exceptions.exceptions import NotFoundException, ServiceException
 from app.utils.files_utils.json_utils import read_json_file, write_json_file
 from app.utils.files_utils.openapi_utils import modify_json_data
 
@@ -117,3 +119,21 @@ def validate_password(password: Optional[str]) -> str:
     ):
         raise ValueError("Password validation failed")
     return password
+
+
+def get_client_ip(request: Request) -> Union[IPv4Address, IPv6Address]:
+    """
+    Extract the client IP address from the request.
+    :param request: The FastAPI request object.
+    :type request: Request
+    :return: The extracted IP address.
+    :rtype: Union[IPv4Address, IPv6Address]
+    """
+    client: Optional[Address] = request.client
+    if not client:
+        raise NotFoundException("No client found on the request")
+    client_ip: str = client.host
+    try:
+        return ip_address(client_ip)
+    except AddressValueError as exc:
+        raise ValueError("Invalid IP address in the request.") from exc
