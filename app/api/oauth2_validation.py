@@ -14,9 +14,9 @@ from app.config.db.auth_settings import AuthSettings
 from app.exceptions.exceptions import raise_unauthorized_error
 from app.models.sql.user import User
 from app.schemas.external.user import UserAuth
+from app.services.infrastructure.cached_user import CachedUserService
 from app.services.infrastructure.token import TokenService
 from app.services.infrastructure.user import (
-    CachedUserService,
     UserService,
     get_user_service,
 )
@@ -56,7 +56,7 @@ async def authenticate_user(
     payload: dict[str, Any] = decode_jwt(token, auth_settings)
     username: str = payload.get("preferred_username")  # type: ignore
     sub: str = payload.get("sub")  # type: ignore
-    if username is None or sub is None:
+    if not username or not sub:
         await raise_unauthorized_error(
             auth_settings.DETAIL, auth_settings.HEADERS
         )

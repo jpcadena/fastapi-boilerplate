@@ -1,7 +1,6 @@
 """
 A module for utils in the app.utils package.
 """
-
 import contextlib
 import logging
 import math
@@ -19,7 +18,11 @@ from starlette.datastructures import Address
 from app.config.config import get_init_settings, sql_database_setting
 from app.config.init_settings import InitSettings
 from app.exceptions.exceptions import NotFoundException, ServiceException
-from app.utils.files_utils.json_utils import read_json_file, write_json_file
+from app.utils.files_utils.json_utils import (
+    get_json_file_path,
+    read_json_file,
+    write_json_file,
+)
 from app.utils.files_utils.openapi_utils import modify_json_data
 
 logger: logging.Logger = logging.getLogger(__name__)
@@ -35,9 +38,12 @@ async def update_json(
     :return: None
     :rtype: NoneType
     """
-    data: dict[str, Any] = await read_json_file(init_settings)
+    file_path: str = get_json_file_path(init_settings)
+    data: dict[str, Any] = await read_json_file(
+        file_path, init_settings.ENCODING
+    )
     data = modify_json_data(data)
-    await write_json_file(data, init_settings)
+    await write_json_file(data, file_path, init_settings.ENCODING)
     logger.info("Updated OpenAPI JSON file")
 
 

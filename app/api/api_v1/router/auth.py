@@ -92,11 +92,11 @@ async def login(
     client_ip: str = client.host
     try:
         found_user: UserDB = await user_service.get_login_user(user.username)
-    except ServiceException as s_exc:
-        logger.error(s_exc)
+    except ServiceException as exc:
+        logger.error(exc)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Invalid credentials"
-        ) from s_exc
+        ) from exc
     if not verify_password(found_user.password, user.password):
         detail: str = "Incorrect password"
         logger.warning(detail)
@@ -155,12 +155,12 @@ async def refresh_token(
         user: UserDB = await user_service.get_login_user(
             refresh_current_user.username
         )
-    except ServiceException as serv_exc:
+    except ServiceException as exc:
         detail: str = "Can not found user information."
         logger.error(detail)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=detail
-        ) from serv_exc
+        ) from exc
     return await common_auth_procedure(user, client_ip, redis, auth_settings)
 
 
@@ -220,8 +220,8 @@ async def recover_password(
         user: Optional[UserResponse] = await user_service.get_user_by_email(
             email
         )
-    except ServiceException as s_exc:
-        logger.error(s_exc)
+    except ServiceException as exc:
+        logger.error(exc)
         user = None
     if user:
         password_reset_token: str = generate_password_reset_token(
@@ -284,12 +284,12 @@ async def reset_password(
         found_user: Optional[
             UserResponse
         ] = await user_service.get_user_by_email(email)
-    except ServiceException as s_exc:
-        logger.error(s_exc)
+    except ServiceException as exc:
+        logger.error(exc)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="There was an issue with the request",
-        ) from s_exc
+        ) from exc
     if not found_user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"

@@ -52,7 +52,6 @@ def create_access_token(
 ) -> str:
     """
     Create a new JWT access token
-
     :param payload: The payload or claims for the token
     :type payload: TokenPayload
     :param auth_settings: Dependency method for cached setting object

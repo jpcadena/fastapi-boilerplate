@@ -2,28 +2,12 @@
 Initialization of the database (PostgreSQL) script
 """
 import logging
-from typing import Annotated, Optional
 
-from fastapi import Depends
-from sqlalchemy.exc import (
-    CompileError,
-    DatabaseError,
-    DataError,
-    DisconnectionError,
-    IntegrityError,
-    InternalError,
-    InvalidatePoolError,
-    PendingRollbackError,
-)
-from sqlalchemy.exc import TimeoutError as SATimeoutError
-from sqlalchemy.ext.asyncio import AsyncTransaction
-
-from app.config.config import get_auth_settings, get_init_settings, get_settings
 from app.config.db.auth_settings import AuthSettings
 from app.config.init_settings import InitSettings
 from app.config.settings import Settings
 from app.crud.specification import EmailSpecification
-from app.crud.user import UserRepository, get_user_repository
+from app.crud.user import UserRepository
 from app.db.base_class import Base
 from app.db.session import async_engine
 from app.models.sql import __all__ as tables
@@ -46,39 +30,20 @@ async def create_db_and_tables() -> None:
     :return: None
     :rtype: NoneType
     """
-    async with async_engine.connect() as async_connection:
-        try:
-            transaction: AsyncTransaction = async_connection.begin()
-            await transaction.start()
-            await async_connection.run_sync(Base.metadata.drop_all)
-            for table in tables:
-                await async_connection.run_sync(
-                    table.__table__.create  # type: ignore
-                )
-            await transaction.commit()
-        except (
-            PendingRollbackError,
-            CompileError,
-            DataError,
-            IntegrityError,
-            InternalError,
-            DatabaseError,
-            InvalidatePoolError,
-            DisconnectionError,
-            SATimeoutError,
-        ) as exc:
-            await transaction.rollback()
-            logger.error(exc)
+    async with async_engine.begin() as connection:
+        await connection.run_sync(Base.metadata.drop_all)
+        for table in tables:
+            await connection.run_sync(table.__table__.create)  # type: ignore
 
 
-async def init_db(
-    user_repo: Annotated[UserRepository, Depends(get_user_repository)],
-    settings: Annotated[Settings, Depends(get_settings)],
-    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
-    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
+async def create_superuser(
+    user_repo: UserRepository,
+    settings: Settings,
+    init_settings: InitSettings,
+    auth_settings: AuthSettings,
 ) -> None:
     """
-    Initialize the database connection and create the necessary tables.
+    Create the superuser if it doesn't exist already in the database
     :param user_repo: The user repository dependency.
     :type user_repo: UserRepository
     :param settings: Dependency method for cached setting object
@@ -90,12 +55,12 @@ async def init_db(
     :return: None
     :rtype: NoneType
     """
-    await create_db_and_tables()
-    user: Optional[User] = await user_repo.read_by_email(
+    user = await user_repo.read_by_email(
         EmailSpecification(settings.SUPERUSER_EMAIL)
     )
     if user:
-        logger.warning("User already in database")
+        logger.warning("Superuser already exists.")
+        return
     address: Address = Address(
         street_address=settings.SUPERUSER_STREET_ADDRESS,
         locality=settings.SUPERUSER_LOCALITY,
@@ -133,3 +98,26 @@ async def init_db(
         settings,
         auth_settings,
     )
+
+
+async def init_db(
+    user_repo: UserRepository,
+    settings: Settings,
+    init_settings: InitSettings,
+    auth_settings: AuthSettings,
+) -> None:
+    """
+    Initialize the database connection and create the necessary tables.
+    :param user_repo: The user repository dependency.
+    :type user_repo: UserRepository
+    :param settings: Dependency method for cached setting object
+    :type settings: Settings
+    :param init_settings: Dependency method for cached init setting object
+    :type init_settings: InitSettings
+    :param auth_settings: Dependency method for cached setting object
+    :type auth_settings: AuthSettings
+    :return: None
+    :rtype: NoneType
+    """
+    await create_db_and_tables()
+    await create_superuser(user_repo, settings, init_settings, auth_settings)

@@ -88,14 +88,14 @@ types-python-jose = "^3.3.4.8"
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 types-passlib = "^1.7.7.13"
 aiosmtplib = "^3.0.1"
-sqlalchemy = {extras = ["asyncio"], version = "^2.0.23"}
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.25"}
 sqlalchemy2-stubs = "^0.0.2a38"
 asyncpg = "^0.29.0"
 redis = "^5.0.1"
 types-redis = "^4.6.0.11"
 isort = "^5.13.2"
 black = "^23.12.1"
-ruff = "^0.1.9"
+ruff = "^0.1.11"
 mypy = "^1.8.0"
 pre-commit = "^3.6.0"
 bcrypt = "^4.1.2"

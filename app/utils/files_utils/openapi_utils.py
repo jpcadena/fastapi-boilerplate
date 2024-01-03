@@ -76,6 +76,24 @@ def custom_generate_unique_id(route: APIRoute) -> str:
     return f"{route.tags[0]}-{route.name}"
 
 
+def write_schema_to_file(
+    schema: dict[str, dict[str, Any]], file_path: str, encoding: str
+) -> None:
+    """
+    Writes the given schema to a file.
+    :param schema: Schema to write.
+    :type schema: dict[str, dict[str, Any]]
+    :param file_path: Path of the file.
+    :type file_path: str
+    :param encoding: Encoding of the file.
+    :type encoding: str
+    :return: None
+    :rtype: NoneType
+    """
+    with open(file_path, mode="w", encoding=encoding) as out_file:
+        out_file.write(json.dumps(schema, indent=4))
+
+
 def custom_openapi(app: FastAPI) -> dict[str, Any]:
     """
     Generate a custom OpenAPI schema for the application.
@@ -106,9 +124,9 @@ def custom_openapi(app: FastAPI) -> dict[str, Any]:
     )
     openapi_schema = modify_json_data(openapi_schema)
     app.openapi_schema = openapi_schema
-    file_path: str = f"{app.state.init_settings.OPENAPI_FILE_PATH}"[1:]
-    with open(
-        file_path, mode="w", encoding=app.state.init_settings.ENCODING
-    ) as out_file:
-        out_file.write(json.dumps(openapi_schema, indent=4))
+    write_schema_to_file(
+        openapi_schema,
+        f"{app.state.init_settings.OPENAPI_FILE_PATH}"[1:],
+        app.state.init_settings.ENCODING,
+    )
     return app.openapi_schema

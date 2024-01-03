@@ -1,7 +1,6 @@
 """
 User Service to handle business logic
 """
-import json
 import logging
 from datetime import datetime
 from typing import Annotated, Any, Optional, Union
@@ -23,9 +22,7 @@ from app.exceptions.exceptions import (
     NotFoundException,
     ServiceException,
 )
-from app.models.sql.address import Address as AddressDB
 from app.models.sql.user import User
-from app.schemas.external.address import Address
 from app.schemas.external.user import (
     UserCreate,
     UserCreateResponse,
@@ -33,7 +30,6 @@ from app.schemas.external.user import (
     UserSuperCreate,
     UserUpdate,
     UserUpdateResponse,
-    custom_serializer,
 )
 from app.services.infrastructure.services import model_to_response
 
@@ -241,71 +237,6 @@ class UserService:
             logger.error(str(db_exc))
             raise ServiceException(str(db_exc)) from db_exc
         return {"ok": deleted, "deleted_at": datetime.now()}
-
-
-class CachedUserService:
-    """
-    Service class for cached user-related business logic.
-    """
-
-    def __init__(
-        self,
-        redis: Redis,  # type: ignore
-    ):
-        self._redis: Redis = redis  # type: ignore
-        self._cache_seconds: PositiveInt = auth_setting.CACHE_SECONDS
-
-    async def get_model_from_cache(self, key: UUID4) -> Optional[User]:
-        """
-        Get the user model instance for the given key from the cache database
-        :param key: The unique identifier for the model user instance
-        :type key: UUID4
-        :return: The user model instance
-        :rtype: User
-        """
-        value: Optional[str] = await self._redis.get(str(key))
-        if not value:
-            return None
-        user_data: dict[str, Any] = json.loads(value)
-        address_data: dict[str, Any] = user_data.pop("address", {})
-        address_instance: Address = Address(**address_data)
-        address_create: AddressDB = AddressDB(**address_instance.model_dump())
-        user_instance: User = User(address=address_create, **user_data)
-        return user_instance
-
-    async def get_schema_from_cache(self, key: UUID4) -> Optional[UserResponse]:
-        """
-        Get the user auth schema instance for the given key from the cache
-        database
-        :param key: The unique identifier for the user instance
-        :type key: UUID4
-        :return: The user schema instance
-        :rtype: UserResponse
-        """
-        value: Optional[str] = await self._redis.get(str(key))
-        if value:
-            user_data: dict[str, Any] = json.loads(value)
-            if len(user_data.keys()) > 3:
-                return UserResponse(**user_data)
-        return None
-
-    async def set_to_cache(
-        self,
-        key: UUID4,
-        value: dict[str, Any],
-    ) -> None:
-        """
-        Set the user schema instance to the cache database using the given key
-        :param key: The unique identifier for the user instance
-        :type key: UUID4
-        :param value: The user schema instance to be used
-        :type value: dict[str, Any]
-        :return: None
-        :rtype: NoneType
-        """
-        await self._redis.setex(
-            str(key), self._cache_seconds, json.dumps(custom_serializer(value))
-        )
 
 
 async def get_user_service(

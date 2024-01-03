@@ -39,11 +39,9 @@ class RateLimiterMiddleware:
         :rtype: NoneType
         """
         remaining_requests: int = (
-            await rate_limiter_service.get_remaining_requests(rate_limiter)
+            await rate_limiter_service.get_remaining_requests()
         )
-        reset_time: datetime = await rate_limiter_service.get_reset_time(
-            rate_limiter
-        )
+        reset_time: datetime = await rate_limiter_service.get_reset_time()
         await request.app.state.ip_blacklist_service.blacklist_ip(
             rate_limiter.ip_address
         )
@@ -80,10 +78,8 @@ class RateLimiterMiddleware:
         :return: None
         :rtype: NoneType
         """
-        await rate_limiter_service.add_request(rate_limiter)
-        request_count: int = await rate_limiter_service.get_request_count(
-            rate_limiter
-        )
+        await rate_limiter_service.add_request()
+        request_count: int = await rate_limiter_service.get_request_count()
         if request_count > request.app.state.auth_settings.MAX_REQUESTS:
             await self.handle_rate_limit_exceeded(
                 rate_limiter, rate_limiter_service, request
@@ -109,6 +105,7 @@ class RateLimiterMiddleware:
             request.app.state.redis_connection,
             request.app.state.auth_settings.RATE_LIMIT_DURATION,
             request.app.state.auth_settings.MAX_REQUESTS,
+            rate_limiter,
         )
         await self.enforce_rate_limit(
             rate_limiter, rate_limiter_service, request

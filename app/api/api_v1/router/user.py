@@ -42,8 +42,8 @@ from app.schemas.external.user import (
     UserUpdate,
     UserUpdateResponse,
 )
+from app.services.infrastructure.cached_user import CachedUserService
 from app.services.infrastructure.user import (
-    CachedUserService,
     UserService,
     get_user_service,
 )
@@ -104,11 +104,11 @@ async def get_users(
         found_users: list[UserResponse] = await user_service.get_users(
             skip, limit
         )
-    except ServiceException as serv_exc:
-        logger.error(serv_exc)
+    except ServiceException as exc:
+        logger.error(exc)
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=str(serv_exc)
-        ) from serv_exc
+            status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)
+        ) from exc
     users: UsersResponse = UsersResponse(users=found_users)
     return users
 
@@ -157,12 +157,12 @@ async def create_user(
         new_user: Optional[
             UserCreateResponse
         ] = await user_service.register_user(user)
-    except ServiceException as serv_exc:
+    except ServiceException as exc:
         detail: str = "Error at creating user."
         logger.error(detail)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=detail
-        ) from serv_exc
+        ) from exc
     if not new_user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -217,12 +217,12 @@ async def get_user_me(
             current_user.id
         )
         await cached_service.set_to_cache(current_user.id, user.model_dump())
-    except ServiceException as serv_exc:
+    except ServiceException as exc:
         detail: str = "Can not found user information."
         logger.error(detail)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=detail
-        ) from serv_exc
+        ) from exc
     return user
 
 
@@ -269,12 +269,12 @@ async def get_user_by_id(
             user_id
         )
         await cached_service.set_to_cache(user_id, user.model_dump())
-    except ServiceException as serv_exc:
+    except ServiceException as exc:
         detail: str = f"User with id {user_id} not found in the system."
         logger.error(detail)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=detail
-        ) from serv_exc
+        ) from exc
     except NotFoundException as not_found_exc:
         logger.error(not_found_exc)
         raise HTTPException(
@@ -330,12 +330,12 @@ async def update_user(
         user: Optional[UserUpdateResponse] = await user_service.update_user(
             user_id, user_in
         )
-    except ServiceException as serv_exc:
+    except ServiceException as exc:
         detail: str = f"User with id {user_id} not found in the system."
         logger.error(detail)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=detail
-        ) from serv_exc
+        ) from exc
     return user
 
 

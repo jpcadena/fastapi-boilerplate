@@ -2,9 +2,7 @@
 Database session script
 """
 import logging
-from typing import Any, AsyncGenerator, Optional
 
-from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
@@ -21,25 +19,6 @@ async_engine: AsyncEngine = create_async_engine(
 )
 
 
-async def get_db() -> AsyncGenerator[AsyncSession, Any]:
-    """
-    Yield an asynchronous session to the database as a generator
-    :return session: Generated async session for database connection
-    :rtype session: AsyncGenerator[AsyncSession, Any]:
-    """
-    async_session: AsyncSession = AsyncSession(
-        bind=async_engine, expire_on_commit=False
-    )
-    try:
-        yield async_session
-        await async_session.commit()
-        await async_session.commit()
-    except SQLAlchemyError as exc:
-        logger.error(exc)
-        await async_session.rollback()
-        raise exc
-
-
 @with_logging
 @benchmark
 async def get_session() -> AsyncSession:
@@ -48,9 +27,7 @@ async def get_session() -> AsyncSession:
     :return session: Async session for database connection
     :rtype session: AsyncSession
     """
-    session: Optional[AsyncSession] = None
-    async for session in get_db():
-        break
-    if session is None:
-        raise RuntimeError("No database session available")
-    return session
+    async with AsyncSession(
+        bind=async_engine, expire_on_commit=False
+    ) as session:
+        return session

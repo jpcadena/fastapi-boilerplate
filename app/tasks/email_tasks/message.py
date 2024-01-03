@@ -61,7 +61,7 @@ async def send_email_message(
     :rtype: Union[bool, str]
     """
     try:
-        smtp = aiosmtplib.SMTP(
+        smtp: aiosmtplib.SMTP = aiosmtplib.SMTP(
             hostname=settings.SMTP_HOST,
             port=settings.SMTP_PORT,
             username=settings.SMTP_USER,

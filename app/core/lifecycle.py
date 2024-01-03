@@ -30,10 +30,11 @@ async def lifespan(application: FastAPI) -> AsyncGenerator[Any, None]:
         application.state.settings = get_settings()
         application.state.init_settings = get_init_settings()
         application.state.auth_settings = get_auth_settings()
+        application.state.user_repository = await get_user_repository()
         logger.info("Configuration settings loaded.")
 
         await init_db(
-            await get_user_repository(),
+            application.state.user_repository,
             application.state.settings,
             application.state.init_settings,
             application.state.auth_settings,
