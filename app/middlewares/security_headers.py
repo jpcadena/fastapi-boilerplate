@@ -45,19 +45,23 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         :rtype: NoneType
         """
         response.headers["Strict-Transport-Security"] = (
-            f"max-age={max_age}; " f"includeSubDomains"
+            f"max-age={max_age}; includeSubDomains;"
+            # f" preload"  # Uncomment when using HTTPS for HSTS protection
         )
         # TODO: Add Content Security Policies support
         response.headers["Cross-Origin-Embedder-Policy"] = "require-corp"
         response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
         response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
-        response.headers["Referrer-Policy"] = "no-referrer-when-downgrade"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
         response.headers["Permissions-Policy"] = (
             "geolocation=(self 'https://maps.googleapis.com'),"
             "microphone=self, camera=self, fullscreen=self,"
             "accelerometer=self, gyroscope=self"
         )
+        response.headers['Cache-Control'] = 'no-store'
         response.headers["X-Frame-Options"] = "DENY"
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-XSS-Protection"] = "1; mode=block"
         response.headers["X-DNS-Prefetch-Control"] = "off"
+        response.headers["X-Download-Options"] = "noopen"
+        response.headers["X-Permitted-Cross-Domain-Policies"] = "none"

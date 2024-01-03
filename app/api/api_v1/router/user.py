@@ -43,10 +43,7 @@ from app.schemas.external.user import (
     UserUpdateResponse,
 )
 from app.services.infrastructure.cached_user import CachedUserService
-from app.services.infrastructure.user import (
-    UserService,
-    get_user_service,
-)
+from app.services.infrastructure.user import UserService, get_user_service
 from app.tasks.email_tasks.email_tasks import (
     send_new_account_email,
     send_welcome_email,

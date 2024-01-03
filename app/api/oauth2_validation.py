@@ -16,10 +16,7 @@ from app.models.sql.user import User
 from app.schemas.external.user import UserAuth
 from app.services.infrastructure.cached_user import CachedUserService
 from app.services.infrastructure.token import TokenService
-from app.services.infrastructure.user import (
-    UserService,
-    get_user_service,
-)
+from app.services.infrastructure.user import UserService, get_user_service
 from app.utils.security.jwt import decode_jwt
 
 oauth2_scheme: OAuth2PasswordBearer = OAuth2PasswordBearer(
