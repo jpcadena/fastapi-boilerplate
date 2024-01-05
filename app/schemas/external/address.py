@@ -3,11 +3,18 @@ A module for address in the app-schemas package.
 """
 from datetime import datetime
 from typing import Optional
-from uuid import uuid4
 
 from pydantic import UUID4, BaseModel, ConfigDict, Field
 
 from app.config.config import init_setting, sql_database_setting
+from app.schemas.schemas import (
+    address_response_example,
+    address_update_example,
+    common_address_data,
+    id_example,
+    updated_at_example,
+    user_address_in_db_example,
+)
 
 
 class AddressID(BaseModel):
@@ -15,12 +22,10 @@ class AddressID(BaseModel):
     Schema for representing an Address's ID.
     """
 
+    model_config = ConfigDict(json_schema_extra=id_example)
+
     id: UUID4 = Field(
         default_factory=UUID4, title="ID", description="ID of the Address"
-    )
-
-    model_config = ConfigDict(
-        json_schema_extra={"example": {"id": str(uuid4())}}
     )
 
 
@@ -29,18 +34,14 @@ class AddressUpdatedAt(BaseModel):
     Schema for representing the update timestamp of an Address.
     """
 
+    model_config = ConfigDict(
+        json_schema_extra=updated_at_example,
+    )
+
     updated_at: Optional[datetime] = Field(
         default=None,
         title="Updated at",
         description="Time the Address was updated",
-    )
-
-    model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "updated_at": str(datetime.now()),
-            }
-        },
     )
 
 
@@ -48,6 +49,10 @@ class AddressUpdate(BaseModel):
     """
     Schema for the Address of a User.
     """
+
+    model_config = ConfigDict(
+        json_schema_extra=address_update_example,
+    )
 
     street_address: str = Field(
         ...,
@@ -66,20 +71,15 @@ class AddressUpdate(BaseModel):
         max_length=85,
     )
 
-    model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "street_address": "Blvd 9 de Octubre",
-                "locality": "Guayaquil",
-            }
-        },
-    )
-
 
 class AddressResponse(AddressUpdate):
     """
     Schema for representing the Address of a User.
     """
+
+    model_config = ConfigDict(
+        json_schema_extra=address_response_example,
+    )
 
     region: str = Field(
         default=init_setting.DEFAULT_REGION,
@@ -96,22 +96,16 @@ class AddressResponse(AddressUpdate):
         max_length=60,
     )
 
-    model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "street_address": "Blvd 9 de Octubre",
-                "locality": "Guayaquil",
-                "region": init_setting.DEFAULT_REGION,
-                "country": init_setting.DEFAULT_COUNTRY,
-            }
-        },
-    )
-
 
 class Address(AddressResponse):
     """
     Schema for representing the Address for JWT.
     """
+
+    model_config = ConfigDict(
+        from_attributes=True,
+        json_schema_extra=common_address_data,
+    )
 
     postal_code: Optional[str] = Field(
         None,
@@ -122,19 +116,6 @@ class Address(AddressResponse):
         description="Postal code should be a 6-digit number.",
     )
 
-    model_config = ConfigDict(
-        from_attributes=True,
-        json_schema_extra={
-            "example": {
-                "street_address": "Blvd 9 de Octubre",
-                "locality": "Guayaquil",
-                "region": init_setting.DEFAULT_REGION,
-                "country": init_setting.DEFAULT_COUNTRY,
-                "postal_code": "090312",
-            }
-        },
-    )
-
 
 class UserAddressInDB(AddressID, Address, AddressUpdatedAt):
     """
@@ -143,18 +124,7 @@ class UserAddressInDB(AddressID, Address, AddressUpdatedAt):
 
     model_config = ConfigDict(
         from_attributes=True,
-        json_schema_extra={
-            "example": {
-                "id": str(uuid4()),
-                "street_address": "Blvd 9 de Octubre",
-                "locality": "Guayaquil",
-                "region": init_setting.DEFAULT_REGION,
-                "country": init_setting.DEFAULT_COUNTRY,
-                "postal_code": "090312",
-                "created_at": str(datetime.now()),
-                "updated_at": str(datetime.now()),
-            }
-        },
+        json_schema_extra=user_address_in_db_example,
     )
 
     created_at: datetime = Field(

@@ -25,6 +25,7 @@ from app.schemas.infrastructure.common_attributes import CommonUserToken
 from app.schemas.infrastructure.gender import Gender
 from app.schemas.infrastructure.http_method import HttpMethod
 from app.schemas.infrastructure.scope import Scope
+from app.schemas.schemas import token_example, token_response_example
 from app.utils.utils import validate_password
 
 
@@ -32,27 +33,6 @@ class PublicClaimsToken(CommonUserToken):
     """
     Token class based on Pydantic Base Model with Public claims (IANA).
     """
-
-    email: EmailStr = Field(
-        ...,
-        title="Email",
-        description="Preferred e-mail address of the User",
-    )
-    nickname: str = Field(
-        ...,
-        title="Casual name",
-        description="Casual name of the User (First Name)",
-        min_length=1,
-        max_length=50,
-    )
-    preferred_username: str = Field(
-        ...,
-        title="Preferred username",
-        description="Shorthand name by which the End-User wishes to be "
-        "referred to (Username)",
-        min_length=1,
-        max_length=50,
-    )
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -78,12 +58,54 @@ class PublicClaimsToken(CommonUserToken):
         },
     )
 
+    email: EmailStr = Field(
+        ...,
+        title="Email",
+        description="Preferred e-mail address of the User",
+    )
+    nickname: str = Field(
+        ...,
+        title="Casual name",
+        description="Casual name of the User (First Name)",
+        min_length=1,
+        max_length=50,
+    )
+    preferred_username: str = Field(
+        ...,
+        title="Preferred username",
+        description="Shorthand name by which the End-User wishes to be "
+        "referred to (Username)",
+        min_length=1,
+        max_length=50,
+    )
+
 
 class RegisteredClaimsToken(BaseModel):
     """
     Registered Claims Token class based on Pydantic Base Model with
     Registered claims.
     """
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "iss": auth_setting.SERVER_URL.__str__(),
+                "sub": "username:c3ee0ef6-3a18-4251-af6d-138a8c8fec25",
+                "aud": f"{auth_setting.SERVER_URL.__str__()}:80"
+                f"/{auth_setting.TOKEN_URL}",
+                "exp": 1672433102,
+                "nbf": 1672413301,
+                "iat": 1672413302,
+                "jti": str(uuid4()),
+                "sid": str(uuid4()),
+                "scope": Scope.ACCESS_TOKEN,
+                "at_use_nbr": 1,
+                "nationalities": ["ECU"],
+                "htm": str(HttpMethod.POST),
+                "htu": str(auth_setting.AUDIENCE),
+            }
+        },
+    )
 
     iss: Optional[AnyUrl] = Field(
         default=auth_setting.SERVER_URL,
@@ -175,27 +197,6 @@ class RegisteredClaimsToken(BaseModel):
             "sub must start with 'username:' followed by non-zero digits"
         )
 
-    model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "iss": auth_setting.SERVER_URL.__str__(),
-                "sub": "username:c3ee0ef6-3a18-4251-af6d-138a8c8fec25",
-                "aud": f"{auth_setting.SERVER_URL.__str__()}:80"
-                f"/{auth_setting.TOKEN_URL}",
-                "exp": 1672433102,
-                "nbf": 1672413301,
-                "iat": 1672413302,
-                "jti": str(uuid4()),
-                "sid": str(uuid4()),
-                "scope": Scope.ACCESS_TOKEN,
-                "at_use_nbr": 1,
-                "nationalities": ["ECU"],
-                "htm": str(HttpMethod.POST),
-                "htu": str(auth_setting.AUDIENCE),
-            }
-        },
-    )
-
 
 class TokenPayload(PublicClaimsToken, RegisteredClaimsToken):
     """
@@ -246,20 +247,15 @@ class Token(BaseModel):
     Token that inherits from Pydantic Base Model.
     """
 
+    model_config = ConfigDict(
+        json_schema_extra=token_example,
+    )
+
     access_token: str = Field(
         ..., title="Token", description="Access token", min_length=30
     )
     refresh_token: str = Field(
         ..., title="Refresh Token", description="Refresh token", min_length=30
-    )
-
-    model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-                "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-            }
-        }
     )
 
 
@@ -268,18 +264,12 @@ class TokenResponse(Token):
     Token for Response based on Pydantic Base Model.
     """
 
-    token_type: str = Field(
-        default="bearer", title="Token type", description="Type of the token"
+    model_config = ConfigDict(
+        json_schema_extra=token_response_example,
     )
 
-    model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-                "token_type": "bearer",
-                "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-            }
-        }
+    token_type: str = Field(
+        default="bearer", title="Token type", description="Type of the token"
     )
 
 
@@ -287,6 +277,15 @@ class TokenResetPassword(BaseModel):
     """
     Token Reset Password for Request based on Pydantic Base Model.
     """
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+                "password": "Hk7pH9*35Fu&3U",
+            }
+        }
+    )
 
     token: str = Field(
         ..., title="Token", description="Access token", min_length=30
@@ -311,12 +310,3 @@ class TokenResetPassword(BaseModel):
         """
         # pylint: disable=no-self-argument
         return validate_password(v)
-
-    model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-                "password": "Hk7pH9*35Fu&3U",
-            }
-        }
-    )

@@ -13,7 +13,7 @@ from app.config.config import auth_setting, get_auth_settings
 from app.config.db.auth_settings import AuthSettings
 from app.exceptions.exceptions import raise_unauthorized_error
 from app.models.sql.user import User
-from app.schemas.external.user import UserAuth
+from app.schemas.infrastructure.user import UserAuth
 from app.services.infrastructure.cached_user import CachedUserService
 from app.services.infrastructure.token import TokenService
 from app.services.infrastructure.user import UserService, get_user_service

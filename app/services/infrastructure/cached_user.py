@@ -11,7 +11,8 @@ from app.config.config import auth_setting
 from app.models.sql.address import Address as AddressDB
 from app.models.sql.user import User
 from app.schemas.external.address import Address
-from app.schemas.external.user import UserResponse, custom_serializer
+from app.schemas.external.user import UserResponse
+from app.schemas.schemas import custom_serializer
 
 
 class CachedUserService:

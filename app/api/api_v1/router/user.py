@@ -34,7 +34,6 @@ from app.config.init_settings import InitSettings
 from app.config.settings import Settings
 from app.exceptions.exceptions import NotFoundException, ServiceException
 from app.schemas.external.user import (
-    UserAuth,
     UserCreate,
     UserCreateResponse,
     UserResponse,
@@ -42,6 +41,7 @@ from app.schemas.external.user import (
     UserUpdate,
     UserUpdateResponse,
 )
+from app.schemas.infrastructure.user import UserAuth
 from app.services.infrastructure.cached_user import CachedUserService
 from app.services.infrastructure.user import UserService, get_user_service
 from app.tasks.email_tasks.email_tasks import (

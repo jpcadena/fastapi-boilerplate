@@ -1526,13 +1526,13 @@ files = [
 
 [[package]]
 name = "types-passlib"
-version = "1.7.7.13"
+version = "1.7.7.20240105"
 description = "Typing stubs for passlib"
 optional = false
-python-versions = "*"
+python-versions = ">=3.8"
 files = [
-    {file = "types-passlib-1.7.7.13.tar.gz", hash = "sha256:f152639f1f2103d7f59a56e2aec5f9398a75a80830991d0d68aac5c2b9c32a77"},
-    {file = "types_passlib-1.7.7.13-py3-none-any.whl", hash = "sha256:414b5ee9c88313357c9261cfcf816509b1e8e4673f0796bd61e9ef249f6fe076"},
+    {file = "types-passlib-1.7.7.20240105.tar.gz", hash = "sha256:7c523ac5df981fdfe6da4b77a195d95c016e67cb7ecf0f121168c35861bdfcd8"},
+    {file = "types_passlib-1.7.7.20240105-py3-none-any.whl", hash = "sha256:8b71b44a1b4ff336a3548ecd3febb4ed1e0405f571e5edbd20a2f8833388e8ec"},
 ]
 
 [[package]]

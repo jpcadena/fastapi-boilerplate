@@ -28,7 +28,6 @@ from app.utils.files_utils.openapi_utils import (
 logging_config.setup_logging(setting, init_setting)
 logger: logging.Logger = logging.getLogger(__name__)
 
-
 app: FastAPI = FastAPI(
     debug=True,
     openapi_url=f"{auth_setting.API_V1_STR}{init_setting.OPENAPI_FILE_PATH}",

@@ -118,7 +118,7 @@ def _configure_file_handler(
     :rtype: logging.FileHandle
     """
     formatter: logging.Formatter = logging.Formatter(
-        init_settings.LOG_FORMAT, init_settings.DATE_FORMAT
+        init_settings.LOG_FORMAT, init_settings.DATETIME_FORMAT
     )
     file_handler: logging.FileHandler = logging.FileHandler(log_filename)
     file_handler.setLevel(log_level)

@@ -37,11 +37,11 @@ from app.models.sql.user import User as UserDB
 from app.schemas.external.msg import Msg
 from app.schemas.external.token import TokenResetPassword, TokenResponse
 from app.schemas.external.user import (
-    UserAuth,
     UserResponse,
     UserUpdate,
     UserUpdateResponse,
 )
+from app.schemas.infrastructure.user import UserAuth
 from app.services.infrastructure.auth import common_auth_procedure
 from app.services.infrastructure.token import TokenService
 from app.services.infrastructure.user import UserService, get_user_service
