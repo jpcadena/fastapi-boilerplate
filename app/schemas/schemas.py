@@ -9,8 +9,10 @@ from uuid import UUID, uuid4
 from pydantic.config import JsonDict
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
-from app.config.config import init_setting
+from app.config.config import auth_setting, init_setting
 from app.schemas.infrastructure.gender import Gender
+from app.schemas.infrastructure.http_method import HttpMethod
+from app.schemas.infrastructure.scope import Scope
 
 # Centralized common example data
 common_address_data: JsonDict = {
@@ -82,8 +84,17 @@ token_response_example: JsonDict = merge_examples(
 
 user_base_auth_example: JsonDict = {"example": common_user_data}
 
+updated_user_base_auth_example: JsonDict = common_user_data.copy()
+updated_user_base_auth_example.pop("first_name")
+updated_user_base_auth_example.pop("last_name")
+updated_user_base_auth_example.pop("middle_name")
+updated_user_base_auth_example.pop("gender")
+updated_user_base_auth_example.pop("birthdate")
+updated_user_base_auth_example.pop("phone_number")
+
+
 user_auth_example: JsonDict = merge_examples(
-    id_example["example"], user_base_auth_example["example"]
+    id_example["example"], updated_user_base_auth_example
 )
 
 username_example: JsonDict = {
@@ -150,6 +161,47 @@ user_response_example: JsonDict = merge_examples(
     user_optional_example["example"],
     {"address_id": fixed_uuid},
     user_in_db_example["example"],
+)
+
+updated_common_user_data: JsonDict = common_user_data.copy()
+updated_common_user_data["nickname"] = updated_common_user_data.pop("username")
+updated_common_user_data["given_name"] = updated_common_user_data.pop(
+    "first_name"
+)
+updated_common_user_data["family_name"] = updated_common_user_data.pop(
+    "last_name"
+)
+updated_common_user_data["preferred_name"] = updated_common_user_data[
+    "nickname"
+]
+
+public_claims_token_example: JsonDict = merge_examples(
+    updated_common_user_data,
+    updated_at_example["example"],
+    common_address_data,
+)
+
+registered_claims_token_example: JsonDict = {
+    "example": {
+        "iss": f"{auth_setting.SERVER_URL}",
+        "sub": "username:c3ee0ef6-3a18-4251-af6d-138a8c8fec25",
+        "aud": f"{auth_setting.SERVER_URL}:80" f"/{auth_setting.TOKEN_URL}",
+        "exp": 1672433102,
+        "nbf": 1672413301,
+        "iat": 1672413302,
+        "jti": str(uuid4()),
+        "sid": str(uuid4()),
+        "scope": f"{Scope.ACCESS_TOKEN}",
+        "at_use_nbr": 1,
+        "nationalities": ["ECU"],
+        "htm": f"{HttpMethod.POST}",
+        "htu": f"{auth_setting.AUDIENCE}",
+    }
+}
+
+token_payload_example: JsonDict = merge_examples(
+    public_claims_token_example["example"],
+    registered_claims_token_example["example"],
 )
 
 

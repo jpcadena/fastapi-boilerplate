@@ -2,7 +2,6 @@
 A module for token in the app-schemas package.
 """
 import re
-from datetime import date, datetime
 from typing import Literal, Optional
 from uuid import uuid4
 
@@ -18,14 +17,18 @@ from pydantic import (
     field_validator,
 )
 
-from app.config.config import auth_setting, init_setting
+from app.config.config import auth_setting
 from app.exceptions.exceptions import ServiceException
-from app.schemas.external.address import Address
 from app.schemas.infrastructure.common_attributes import CommonUserToken
-from app.schemas.infrastructure.gender import Gender
 from app.schemas.infrastructure.http_method import HttpMethod
 from app.schemas.infrastructure.scope import Scope
-from app.schemas.schemas import token_example, token_response_example
+from app.schemas.schemas import (
+    public_claims_token_example,
+    registered_claims_token_example,
+    token_example,
+    token_payload_example,
+    token_response_example,
+)
 from app.utils.utils import validate_password
 
 
@@ -35,27 +38,7 @@ class PublicClaimsToken(CommonUserToken):
     """
 
     model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "email": "someone@example.com",
-                "nickname": "Some",
-                "preferred_username": "some",
-                "given_name": "Some",
-                "family_name": "Example",
-                "middle_name": "One",
-                "gender": Gender.MALE,
-                "birthdate": str(date(2002, 1, 1)),
-                "updated_at": str(datetime.now()),
-                "phone_number": "+5939987654321",
-                "address": Address(
-                    street_address="Blvd 9 de Octubre",
-                    locality="Guayaquil",
-                    region=init_setting.DEFAULT_REGION,
-                    country=init_setting.DEFAULT_COUNTRY,
-                    postal_code="090312",
-                ).model_dump(),
-            }
-        },
+        json_schema_extra=public_claims_token_example,
     )
 
     email: EmailStr = Field(
@@ -87,24 +70,7 @@ class RegisteredClaimsToken(BaseModel):
     """
 
     model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "iss": auth_setting.SERVER_URL.__str__(),
-                "sub": "username:c3ee0ef6-3a18-4251-af6d-138a8c8fec25",
-                "aud": f"{auth_setting.SERVER_URL.__str__()}:80"
-                f"/{auth_setting.TOKEN_URL}",
-                "exp": 1672433102,
-                "nbf": 1672413301,
-                "iat": 1672413302,
-                "jti": str(uuid4()),
-                "sid": str(uuid4()),
-                "scope": Scope.ACCESS_TOKEN,
-                "at_use_nbr": 1,
-                "nationalities": ["ECU"],
-                "htm": str(HttpMethod.POST),
-                "htu": str(auth_setting.AUDIENCE),
-            }
-        },
+        json_schema_extra=registered_claims_token_example,
     )
 
     iss: Optional[AnyUrl] = Field(
@@ -204,41 +170,7 @@ class TokenPayload(PublicClaimsToken, RegisteredClaimsToken):
     """
 
     model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "iss": auth_setting.SERVER_URL.__str__(),
-                "sub": "username:c3ee0ef6-3a18-4251-af6d-138a8c8fec25",
-                "aud": f"{auth_setting.SERVER_URL.__str__()}:80"
-                f"/{auth_setting.TOKEN_URL}",
-                "exp": 1672433102,
-                "nbf": 1672413301,
-                "iat": 1672413302,
-                "jti": str(uuid4()),
-                "sid": str(uuid4()),
-                "scope": Scope.ACCESS_TOKEN,
-                "at_use_nbr": 1,
-                "nationalities": ["ECU"],
-                "htm": str(HttpMethod.POST),
-                "htu": str(auth_setting.AUDIENCE),
-                "email": "someone@example.com",
-                "nickname": "Some",
-                "preferred_username": "some",
-                "given_name": "Some",
-                "family_name": "Example",
-                "middle_name": "One",
-                "gender": Gender.MALE,
-                "birthdate": str(date(2002, 1, 1)),
-                "updated_at": None,
-                "phone_number": "+5939987654321",
-                "address": Address(
-                    street_address="Blvd 9 de Octubre",
-                    locality="Guayaquil",
-                    region=init_setting.DEFAULT_REGION,
-                    country=init_setting.DEFAULT_COUNTRY,
-                    postal_code="090312",
-                ).model_dump(),
-            }
-        },
+        json_schema_extra=token_payload_example,
     )
 
 

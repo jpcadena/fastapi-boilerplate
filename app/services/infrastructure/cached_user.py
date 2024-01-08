@@ -39,11 +39,14 @@ class CachedUserService:
         if not value:
             return None
         user_data: dict[str, Any] = json.loads(value)
-        address_data: dict[str, Any] = user_data.pop("address", {})
-        address_instance: Address = Address(**address_data)
-        address_create: AddressDB = AddressDB(**address_instance.model_dump())
-        user_instance: User = User(address=address_create, **user_data)
-        return user_instance
+        if address_data := user_data.pop("address", None):
+            address_instance: Address = Address(**address_data)
+            address_create: AddressDB = AddressDB(
+                **address_instance.model_dump()
+            )
+            user_instance: User = User(address=address_create, **user_data)
+            return user_instance
+        return None
 
     async def get_schema_from_cache(self, key: UUID4) -> Optional[UserResponse]:
         """

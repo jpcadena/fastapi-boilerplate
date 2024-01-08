@@ -234,7 +234,7 @@ async def get_user_by_id(
             title="User ID",
             annotation=UUID4,
             description="ID of the User to be searched",
-            examples=[uuid4().__str__()],
+            example=uuid4(),
         ),
     ],
     redis: Annotated[Redis, Depends(get_redis_dep)],  # type: ignore
