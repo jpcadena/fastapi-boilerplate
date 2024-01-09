@@ -88,7 +88,7 @@ class RegisteredClaimsToken(BaseModel):
         max_length=45,
     )
     aud: Optional[str] = Field(
-        default=auth_setting.AUDIENCE.__str__(),
+        default=f"{auth_setting.AUDIENCE}",
         title="Audience",
         description="Recipient of JWT",
         min_length=1,
@@ -139,7 +139,7 @@ class RegisteredClaimsToken(BaseModel):
     htm: Optional[Literal[HttpMethod.POST]] = HttpMethod.POST
     htu: Optional[AnyHttpUrl] = Field(
         default=AnyHttpUrl(
-            f"{auth_setting.SERVER_URL.__str__()}{auth_setting.TOKEN_URL}",
+            f"{auth_setting.SERVER_URL}{auth_setting.TOKEN_URL}",
         ),
         title="HTTP URI",
         description="The HTTP URI of the request",

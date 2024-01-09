@@ -10,6 +10,7 @@ from typing import Any, Optional
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.serializer import dumps
 
 from app.core.decorators import benchmark, with_logging
 from app.crud.filter import (
@@ -128,7 +129,7 @@ class AddressRepository:
                 address_db: Optional[AddressDB] = await self.read_by_id(
                     address_id
                 )
-                updated_address: Address = Address(**address_db.__dict__)
+                updated_address: Address = Address(**dumps(address_db))
             except DatabaseException as db_exc:
                 logger.error(db_exc)
                 raise DatabaseException(str(db_exc)) from db_exc

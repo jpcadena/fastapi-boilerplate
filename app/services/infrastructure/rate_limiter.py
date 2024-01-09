@@ -56,7 +56,7 @@ class RateLimiterService:
             rate_limit_key, "-inf", min_timestamp.timestamp()
         )
         await self._redis.zadd(
-            rate_limit_key, {now_timestamp.__str__(): now_timestamp}
+            rate_limit_key, {f"{now_timestamp}": now_timestamp}
         )
 
     @handle_redis_exceptions

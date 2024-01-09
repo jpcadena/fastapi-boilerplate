@@ -23,7 +23,7 @@ class RedisConnectionManager:
     """
 
     def __init__(self, auth_settings: AuthSettings):
-        self.url: str = auth_settings.REDIS_DATABASE_URI.__str__()
+        self.url: str = f"{auth_settings.REDIS_DATABASE_URI}"
         self.pool: Optional[Redis] = None  # type: ignore
 
     async def start(self) -> None:

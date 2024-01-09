@@ -7,6 +7,7 @@ from uuid import UUID
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from redis.asyncio import Redis
+from sqlalchemy.ext.serializer import dumps
 
 from app.api.deps import get_redis_dep
 from app.config.config import auth_setting, get_auth_settings
@@ -63,9 +64,9 @@ async def authenticate_user(
         user_id
     )
     if cached_user:
-        return UserAuth(**cached_user.__dict__)
+        return UserAuth(**dumps(cached_user))
     user: User = await user_service.get_login_user(username)
-    user_auth: UserAuth = UserAuth(**user.__dict__)
+    user_auth: UserAuth = UserAuth(**dumps(user))
     await cached_service.set_to_cache(user_id, user_auth.model_dump())
     return user_auth
 

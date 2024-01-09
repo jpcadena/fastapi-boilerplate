@@ -62,4 +62,4 @@ class SQLDatabaseSettings(BaseSettings):
             port=info.data.get("POSTGRES_PORT"),
             path=info.data.get("POSTGRES_DB"),
         )
-        return PostgresDsn(uri.__str__())
+        return PostgresDsn(f"{uri}")

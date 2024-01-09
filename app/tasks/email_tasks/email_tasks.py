@@ -70,7 +70,7 @@ async def send_reset_password_email(
         "reset_password.html", init_settings
     )
     link: str = (
-        f"{auth_settings.SERVER_URL.__str__()}"
+        f"{auth_settings.SERVER_URL}"
         f"{auth_settings.AUTH_URL}reset-password?token={token}"
     )
     is_sent: bool = await send_email(
@@ -128,7 +128,7 @@ async def send_new_account_email(
             "project_name": init_settings.PROJECT_NAME,
             "username": username,
             "email": email_to,
-            "link": auth_settings.SERVER_URL.__str__(),
+            "link": f"{auth_settings.SERVER_URL}",
         },
         settings=settings,
     )
@@ -172,7 +172,7 @@ async def send_welcome_email(
             "project_name": init_settings.PROJECT_NAME,
             "username": username,
             "email": email_to,
-            "link": auth_settings.SERVER_URL.__str__(),
+            "link": f"{auth_settings.SERVER_URL}",
         },
         settings=settings,
     )
@@ -213,7 +213,7 @@ async def send_password_changed_confirmation_email(
             "project_name": init_settings.PROJECT_NAME,
             "username": username,
             "email": email_to,
-            "link": f"mailto:{settings.CONTACT_EMAIL.__str__()}?subject="
+            "link": f"mailto:{settings.CONTACT_EMAIL}?subject="
             f"{init_settings.PROJECT_NAME} password changed",
         },
         settings=settings,
@@ -253,7 +253,7 @@ async def send_delete_account_email(
             "project_name": init_settings.PROJECT_NAME,
             "username": username,
             "email": email_to,
-            "link": f"mailto:{settings.CONTACT_EMAIL.__str__()}?subject="
+            "link": f"mailto:{settings.CONTACT_EMAIL}?subject="
             f"{init_settings.PROJECT_NAME} account deleted",
         },
         settings=settings,

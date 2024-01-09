@@ -91,8 +91,12 @@ class CommonUserToken(EditableData):
                 "family_name": "Example",
                 "middle_name": "One",
                 "gender": Gender.MALE,
-                "birthdate": str(date(2002, 1, 1)),
-                "updated_at": str(datetime.now()),
+                "birthdate": date(2002, 1, 1).strftime(
+                    init_setting.DATE_FORMAT
+                ),
+                "updated_at": datetime.now().strftime(
+                    init_setting.DATETIME_FORMAT
+                ),
                 "phone_number": "+5939987654321",
                 "address": Address(
                     street_address="Blvd 9 de Octubre",

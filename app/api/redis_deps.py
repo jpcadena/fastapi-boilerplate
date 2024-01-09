@@ -19,7 +19,7 @@ class RedisDependency:
     """
 
     def __init__(self) -> None:
-        self._url: str = auth_setting.REDIS_DATABASE_URI.__str__()
+        self._url: str = f"{auth_setting.REDIS_DATABASE_URI}"
         self._redis: Optional[Redis] = None  # type: ignore
         self.auth_settings: AuthSettings = auth_setting
 

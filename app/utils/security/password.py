@@ -35,7 +35,7 @@ def generate_password_reset_payload(
     )
     exp: float = expires.timestamp()
     payload: dict[str, Any] = {
-        "iss": auth_settings.SERVER_URL.__str__(),
+        "iss": f"{auth_settings.SERVER_URL}",
         "exp": exp,
         "nbf": now,
         "sub": email,

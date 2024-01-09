@@ -51,8 +51,8 @@ def decode_jwt(
             key=auth_settings.SECRET_KEY,
             algorithms=[auth_settings.ALGORITHM],
             options={"verify_subject": False},
-            audience=auth_settings.AUDIENCE.__str__(),
-            issuer=auth_settings.SERVER_URL.__str__(),
+            audience=f"{auth_settings.AUDIENCE}",
+            issuer=f"{auth_settings.SERVER_URL}",
         )
     except exceptions.ExpiredSignatureError as es_exc:
         logger.error(es_exc)

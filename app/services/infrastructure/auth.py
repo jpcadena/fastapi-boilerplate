@@ -3,7 +3,7 @@ A module for auth in the app.services package.
 """
 import logging
 import time
-from typing import Annotated, Any
+from typing import Annotated, Any, Optional
 
 from fastapi import Depends, HTTPException, status
 from redis.asyncio import Redis
@@ -14,6 +14,7 @@ from app.core.security.jwt import create_access_token, create_refresh_token
 from app.models.sql.user import User
 from app.models.unstructured.token import Token as TokenDB
 from app.schemas.external.token import Token, TokenPayload, TokenResponse
+from app.schemas.infrastructure.scope import Scope
 from app.services.infrastructure.token import TokenService
 from app.utils.utils import get_nationality_code
 
@@ -29,6 +30,7 @@ class AuthService:
     def _build_payload(
         user: User,
         auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
+        scope: Optional[Scope] = None,
     ) -> TokenPayload:
         """
         Build JWT payload for authentication
@@ -36,12 +38,22 @@ class AuthService:
         :type user: User
         :param auth_settings: Dependency method for cached setting object
         :type auth_settings: AuthSettings
+        :param scope: The scope for the token creation. Default value is None
+        :type scope: Scope
         :return: Payload for JWT
         :rtype: TokenPayload
         """
         current_time: int = int(time.time())
-        expiration_time: int = current_time + int(
+        access_expiration_time: int = current_time + int(
             auth_settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60
+        )
+        refresh_expiration_time: int = current_time + int(
+            auth_settings.REFRESH_TOKEN_EXPIRE_MINUTES * 60
+        )
+        expiration_time: int = (
+            access_expiration_time
+            if scope != Scope.REFRESH_TOKEN
+            else refresh_expiration_time
         )
         user_data: dict[str, Any] = {
             "sub": f"username:{str(user.id)}",
@@ -61,6 +73,8 @@ class AuthService:
             "nbf": current_time - 1,
             "iat": current_time,
         }
+        if scope:
+            user_data["scope"] = scope
         return TokenPayload(**user_data)
 
     @staticmethod
@@ -77,12 +91,17 @@ class AuthService:
         :return: Token object with access and refresh tokens
         :rtype: Token
         """
-        payload: TokenPayload = AuthService._build_payload(user, auth_settings)
+        access_payload: TokenPayload = AuthService._build_payload(
+            user, auth_settings
+        )
+        refresh_payload: TokenPayload = AuthService._build_payload(
+            user, auth_settings, Scope.REFRESH_TOKEN
+        )
         access_token: str = create_access_token(
-            payload=payload, auth_settings=auth_settings
+            payload=access_payload, auth_settings=auth_settings
         )
         refresh_token: str = create_refresh_token(
-            payload=payload, auth_settings=auth_settings
+            payload=refresh_payload, auth_settings=auth_settings
         )
         return Token(access_token=access_token, refresh_token=refresh_token)
 
