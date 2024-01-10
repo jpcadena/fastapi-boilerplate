@@ -2,15 +2,15 @@
 A module for common attributes between User and Token in the app-schemas
 package.
 """
-from datetime import date, datetime
+from datetime import datetime
 from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field, PastDate
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
-from app.config.config import init_setting
 from app.schemas.external.address import Address
 from app.schemas.infrastructure.gender import Gender
+from app.schemas.schemas import common_user_token_example, editable_data_example
 
 
 class EditableData(BaseModel):
@@ -18,6 +18,10 @@ class EditableData(BaseModel):
     Editable fields for User and Token classes based on Pydantic
      Base Model.
     """
+
+    model_config = ConfigDict(
+        json_schema_extra=editable_data_example,
+    )
 
     phone_number: Optional[PhoneNumber] = Field(
         default=None,
@@ -31,26 +35,15 @@ class EditableData(BaseModel):
         description="Preferred postal address of the User",
     )
 
-    model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "phone_number": "+5939987654321",
-                "address": Address(
-                    street_address="Blvd 9 de Octubre",
-                    locality="Guayaquil",
-                    region=init_setting.DEFAULT_REGION,
-                    country=init_setting.DEFAULT_COUNTRY,
-                    postal_code="090312",
-                ).model_dump(),
-            }
-        },
-    )
-
 
 class CommonUserToken(EditableData):
     """
     Common fields for User and Token classes based on EditableData.
     """
+
+    model_config = ConfigDict(
+        json_schema_extra=common_user_token_example,
+    )
 
     given_name: str = Field(
         ...,
@@ -82,29 +75,4 @@ class CommonUserToken(EditableData):
         default=None,
         title="Updated at",
         description="Time the User information was last updated",
-    )
-
-    model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "given_name": "Some",
-                "family_name": "Example",
-                "middle_name": "One",
-                "gender": Gender.MALE,
-                "birthdate": date(2002, 1, 1).strftime(
-                    init_setting.DATE_FORMAT
-                ),
-                "updated_at": datetime.now().strftime(
-                    init_setting.DATETIME_FORMAT
-                ),
-                "phone_number": "+5939987654321",
-                "address": Address(
-                    street_address="Blvd 9 de Octubre",
-                    locality="Guayaquil",
-                    region=init_setting.DEFAULT_REGION,
-                    country=init_setting.DEFAULT_COUNTRY,
-                    postal_code="090312",
-                ).model_dump(),
-            }
-        },
     )

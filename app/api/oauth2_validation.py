@@ -7,7 +7,6 @@ from uuid import UUID
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from redis.asyncio import Redis
-from sqlalchemy.ext.serializer import dumps
 
 from app.api.deps import get_redis_dep
 from app.config.config import auth_setting, get_auth_settings
@@ -16,19 +15,20 @@ from app.exceptions.exceptions import raise_unauthorized_error
 from app.models.sql.user import User
 from app.schemas.infrastructure.user import UserAuth
 from app.services.infrastructure.cached_user import CachedUserService
+from app.services.infrastructure.services import model_to_dict
 from app.services.infrastructure.token import TokenService
 from app.services.infrastructure.user import UserService, get_user_service
 from app.utils.security.jwt import decode_jwt
 
 oauth2_scheme: OAuth2PasswordBearer = OAuth2PasswordBearer(
     tokenUrl=auth_setting.TOKEN_URL,
-    scheme_name="JWT",
-    description="JWT token used to authenticate most of the API endpoints.",
+    scheme_name=auth_setting.OAUTH2_SCHEME,
+    description=auth_setting.OAUTH2_TOKEN_DESCRIPTION,
 )
 refresh_token_scheme: OAuth2PasswordBearer = OAuth2PasswordBearer(
     tokenUrl="api/v1/auth/refresh",
-    scheme_name="JWT",
-    description="JWT token used specifically for refreshing access tokens.",
+    scheme_name=auth_setting.OAUTH2_SCHEME,
+    description=auth_setting.OAUTH2_REFRESH_TOKEN_DESCRIPTION,
 )
 
 
@@ -64,9 +64,9 @@ async def authenticate_user(
         user_id
     )
     if cached_user:
-        return UserAuth(**dumps(cached_user))
+        return UserAuth(**model_to_dict(cached_user))
     user: User = await user_service.get_login_user(username)
-    user_auth: UserAuth = UserAuth(**dumps(user))
+    user_auth: UserAuth = UserAuth(**model_to_dict(user))
     await cached_service.set_to_cache(user_id, user_auth.model_dump())
     return user_auth
 

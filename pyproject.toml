@@ -75,7 +75,7 @@ uvicorn = { extras = ["standard"], version = "^0.25.0" }
 starlette = "0.32.0.post1"
 pydantic = "^2.5.3"
 pydantic-settings = "^2.1.0"
-pydantic-extra-types = "^2.3.0"
+pydantic-extra-types = "^2.4.0"
 email-validator = "^2.1.0.post1"
 phonenumbers = "^8.13.27"
 pycountry = "^23.12.11"

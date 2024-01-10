@@ -16,6 +16,7 @@ from pydantic_extra_types.phone_numbers import PhoneNumber
 from starlette.datastructures import Address
 
 from app.config.config import get_init_settings, sql_database_setting
+from app.config.db.auth_settings import AuthSettings
 from app.config.init_settings import InitSettings
 from app.exceptions.exceptions import NotFoundException, ServiceException
 from app.utils.files_utils.json_utils import (
@@ -113,7 +114,7 @@ def validate_password(password: Optional[str]) -> str:
     :rtype: str
     """
     if not password:
-        raise ServiceException("Password is empty")
+        raise ServiceException("Password cannot be empty or None")
     if not (
         re.search("[A-Z]", password)
         and re.search("[a-z]", password)
@@ -127,17 +128,21 @@ def validate_password(password: Optional[str]) -> str:
     return password
 
 
-def get_client_ip(request: Request) -> Union[IPv4Address, IPv6Address]:
+def get_client_ip(
+    request: Request, auth_settings: AuthSettings
+) -> Union[IPv4Address, IPv6Address]:
     """
     Extract the client IP address from the request.
     :param request: The FastAPI request object.
     :type request: Request
+    :param auth_settings: Dependency method for cached setting object
+    :type auth_settings: AuthSettings
     :return: The extracted IP address.
     :rtype: Union[IPv4Address, IPv6Address]
     """
     client: Optional[Address] = request.client
     if not client:
-        raise NotFoundException("No client found on the request")
+        raise NotFoundException(auth_settings.NO_CLIENT_FOUND)
     client_ip: str = client.host
     try:
         return ip_address(client_ip)

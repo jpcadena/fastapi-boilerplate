@@ -82,8 +82,6 @@ async def blacklist_middleware(
     :rtype: Response
     """
     if not any(request.url.path.startswith(route) for route in SKIP_ROUTES):
-        logger.info("Start of blacklist_middleware")
         await process_request(request)
-        logger.info("End of blacklist_middleware")
     response: Response = await call_next(request)
     return response

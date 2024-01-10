@@ -93,7 +93,9 @@ class RateLimiterMiddleware:
         :return: None
         :rtype: NoneType
         """
-        client_ip: Union[IPv4Address, IPv6Address] = get_client_ip(request)
+        client_ip: Union[IPv4Address, IPv6Address] = get_client_ip(
+            request, request.app.state.auth_settings
+        )
         user_agent: str = request.headers.get("user-agent", "unknown")
         request_path: str = request.url.path
         rate_limiter: RateLimiter = RateLimiter(

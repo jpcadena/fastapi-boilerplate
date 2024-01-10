@@ -178,7 +178,7 @@ updated_common_user_data["preferred_name"] = updated_common_user_data[
 public_claims_token_example: JsonDict = merge_examples(
     updated_common_user_data,
     updated_at_example["example"],
-    common_address_data,
+    address_response_example["example"],
 )
 
 registered_claims_token_example: JsonDict = {
@@ -202,6 +202,13 @@ registered_claims_token_example: JsonDict = {
 token_payload_example: JsonDict = merge_examples(
     public_claims_token_example["example"],
     registered_claims_token_example["example"],
+)
+common_user_token_example: JsonDict = updated_common_user_data.copy()
+common_user_token_example.pop("nickname")
+common_user_token_example.pop("preferred_name")
+
+editable_data_example: JsonDict = merge_examples(
+    {"phone_number": common_user_data["phone_number"]}, address_update_example
 )
 
 

@@ -269,7 +269,7 @@
                             "normal": {
                                 "summary": "A normal example",
                                 "description": "A **normal** authorization token object that works correctly.",
-                                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZTphYmJiNWI1OS1kYzVjLTQyZWEtODhkZi01ZmIzMmZkZjc3NzQiLCJuYXRpb25hbGl0aWVzIjpbIkVDVSJdLCJlbWFpbCI6ImV4YW1wbGVAbWFpbC5jb20iLCJuaWNrbmFtZSI6ImV4YW1wbGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJleGFtcGxlIiwiZ2l2ZW5fbmFtZSI6IlNvbWUiLCJmYW1pbHlfbmFtZSI6IkV4YW1wbGUiLCJtaWRkbGVfbmFtZSI6Ik9uZSIsImdlbmRlciI6Im1hbGUiLCJiaXJ0aGRhdGUiOiIyMDA0LTEyLTMxIiwidXBkYXRlZF9hdCI6IjIwMjQtMDEtMDhUMTk6MTE6NTIuNzIzNjYxIiwicGhvbmVfbnVtYmVyIjoiKzU5Mzk4NzY1NDMyMSIsImFkZHJlc3MiOnsic3RyZWV0X2FkZHJlc3MiOiJVcmRlc2EgTm9ydGUgbXogQTEgdiA5OSIsImxvY2FsaXR5IjoiR3VheWFxdWlsIiwicmVnaW9uIjoiR3VheWFzIiwiY291bnRyeSI6IkVjdWFkb3IiLCJwb3N0YWxfY29kZSI6IjA5MDUwNSJ9LCJleHAiOjE3MDQ3NjA5MTIsIm5iZiI6MTcwNDc1OTExMSwiaWF0IjoxNzA0NzU5MTEyfQ.6ms8-YL4IXrYa6dnU8R7wIMh0aCvgYJXBeuFxLHb_U0"
+                                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZTo1NDY1NzAwNC0wMmFkLTRhMzctYmEyMC1hYzE4ZTVmNDU0MzMiLCJuYXRpb25hbGl0aWVzIjpbIkVDVSJdLCJlbWFpbCI6ImV4YW1wbGVAbWFpbC5jb20iLCJuaWNrbmFtZSI6ImV4YW1wbGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJleGFtcGxlIiwiZ2l2ZW5fbmFtZSI6IlNvbWUiLCJmYW1pbHlfbmFtZSI6IkV4YW1wbGUiLCJtaWRkbGVfbmFtZSI6Ik9uZSIsImdlbmRlciI6Im1hbGUiLCJiaXJ0aGRhdGUiOiIyMDA0LTEyLTMxIiwidXBkYXRlZF9hdCI6IjIwMjQtMDEtMDlUMjI6MDA6MzcuMTI2Mjc1IiwicGhvbmVfbnVtYmVyIjoiKzU5Mzk4NzY1NDMyMSIsImFkZHJlc3MiOnsic3RyZWV0X2FkZHJlc3MiOiJVcmRlc2EgTm9ydGUgbXogQTEgdiA5OSIsImxvY2FsaXR5IjoiR3VheWFxdWlsIiwicmVnaW9uIjoiR3VheWFzIiwiY291bnRyeSI6IkVjdWFkb3IiLCJwb3N0YWxfY29kZSI6IjA5MDUwNSJ9LCJleHAiOjE3MDQ4NTc0MzcsIm5iZiI6MTcwNDg1NTYzNiwiaWF0IjoxNzA0ODU1NjM3fQ.-EXY2N5TyHhA4zSgeJOUaktfR7DUvWqJBXu7oaQyGXk"
                             },
                             "invalid": {
                                 "summary": "Invalid data is rejected with an error",
@@ -573,7 +573,7 @@
                             "description": "ID of the User to be searched"
                         },
                         "description": "ID of the User to be searched",
-                        "example": "ee5f0cbd-633d-4241-bb6f-e59fd9d31fb3"
+                        "example": "6f3869e1-d386-4874-b3fd-cc9ed679cb9b"
                     }
                 ],
                 "responses": {
@@ -623,7 +623,7 @@
                             "description": "ID of the User to be searched"
                         },
                         "description": "ID of the User to be searched",
-                        "example": "0606ada6-e9f0-4715-9980-2e5ecdfe99a2"
+                        "example": "2c6c3d06-dd9a-4aa5-bed8-af28d3fe55de"
                     }
                 ],
                 "requestBody": {
@@ -747,7 +747,7 @@
                             "description": "ID of the User to be searched"
                         },
                         "description": "ID of the User to be searched",
-                        "example": "0f02fc11-3424-4ade-ae9e-6ddb30a23f4b"
+                        "example": "848cbfb1-63cf-49bf-ade5-ed1fb7ed6941"
                     }
                 ],
                 "responses": {
@@ -1050,7 +1050,7 @@
                 "description": "User Auth that inherits from UserID.",
                 "example": {
                     "email": "example@mail.com",
-                    "id": "b38107ea-2f42-4c01-88a8-5c3705dd0d7f",
+                    "id": "e48811b6-750b-4fe7-92ce-bbb0449c2f9d",
                     "username": "username"
                 }
             },
@@ -1235,7 +1235,7 @@
                     "email": "example@mail.com",
                     "first_name": "Some",
                     "gender": "male",
-                    "id": "b38107ea-2f42-4c01-88a8-5c3705dd0d7f",
+                    "id": "e48811b6-750b-4fe7-92ce-bbb0449c2f9d",
                     "last_name": "Example",
                     "middle_name": "One",
                     "phone_number": "+593987654321",
@@ -1391,19 +1391,19 @@
                         "region": "Guayas",
                         "street_address": "Blvd 9 de Octubre"
                     },
-                    "address_id": "b38107ea-2f42-4c01-88a8-5c3705dd0d7f",
+                    "address_id": "e48811b6-750b-4fe7-92ce-bbb0449c2f9d",
                     "birthdate": "2004-01-01",
-                    "created_at": "2024-01-08 19:11:52",
+                    "created_at": "2024-01-09 22:00:37",
                     "email": "example@mail.com",
                     "first_name": "Some",
                     "gender": "male",
-                    "id": "b38107ea-2f42-4c01-88a8-5c3705dd0d7f",
+                    "id": "e48811b6-750b-4fe7-92ce-bbb0449c2f9d",
                     "is_active": true,
                     "is_superuser": false,
                     "last_name": "Example",
                     "middle_name": "One",
                     "phone_number": "+593987654321",
-                    "updated_at": "2024-01-08 19:11:52",
+                    "updated_at": "2024-01-09 22:00:37",
                     "username": "username"
                 }
             },
@@ -1723,20 +1723,20 @@
                         "region": "Guayas",
                         "street_address": "Blvd 9 de Octubre"
                     },
-                    "address_id": "b38107ea-2f42-4c01-88a8-5c3705dd0d7f",
+                    "address_id": "e48811b6-750b-4fe7-92ce-bbb0449c2f9d",
                     "birthdate": "2004-01-01",
-                    "created_at": "2024-01-08 19:11:52",
+                    "created_at": "2024-01-09 22:00:37",
                     "email": "example@mail.com",
                     "first_name": "Some",
                     "gender": "male",
-                    "id": "b38107ea-2f42-4c01-88a8-5c3705dd0d7f",
+                    "id": "e48811b6-750b-4fe7-92ce-bbb0449c2f9d",
                     "is_active": true,
                     "is_superuser": false,
                     "last_name": "Example",
                     "middle_name": "One",
                     "password": "Hk7pH9*Hk7pH9*35Fu&3UHk7pH9*35Fu&3U35Fu&3U",
                     "phone_number": "+593987654321",
-                    "updated_at": "2024-01-08 19:11:52",
+                    "updated_at": "2024-01-09 22:00:37",
                     "username": "username"
                 }
             },

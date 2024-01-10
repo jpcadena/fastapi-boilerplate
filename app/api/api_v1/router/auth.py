@@ -88,7 +88,7 @@ async def login(
     """
     client: Optional[Address] = request.client
     if not client:
-        raise NotFoundException("No client found on the request")
+        raise NotFoundException(auth_settings.NO_CLIENT_FOUND)
     client_ip: str = client.host
     try:
         found_user: UserDB = await user_service.get_login_user(user.username)
@@ -149,7 +149,7 @@ async def refresh_token(
     """
     client: Optional[Address]
     if not (client := request.client):
-        raise NotFoundException("No client found on the request")
+        raise NotFoundException(auth_settings.NO_CLIENT_FOUND)
     client_ip: str = client.host
     try:
         user: UserDB = await user_service.get_login_user(

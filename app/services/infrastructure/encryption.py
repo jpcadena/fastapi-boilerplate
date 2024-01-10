@@ -7,7 +7,6 @@ from os import urandom
 from typing import Any
 
 import aiofiles
-from cryptography.exceptions import InvalidKey, UnsupportedAlgorithm
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.backends.openssl.backend import Backend
 from cryptography.hazmat.primitives import hashes, serialization
@@ -43,72 +42,91 @@ class EncryptionService:
         self._backend: Backend = backend
         self._iterations: PositiveInt = init_setting.ITERATIONS
 
+    def _load_public_key(self, public_key_pem: str) -> PublicKeyTypes:
+        """
+        Load a public key from a PEM-formatted string.
+        :param public_key_pem: The public key in PEM format.
+        :type public_key_pem: str
+        :return: The loaded public key.
+        :rtype: PublicKeyTypes
+        """
+        try:
+            return serialization.load_pem_public_key(
+                public_key_pem.encode(), backend=self._backend
+            )
+        except Exception as e:
+            logger.error(f"Error loading public key: {e}")
+            raise
+
+    def _load_private_key(self, private_key_pem: str) -> PrivateKeyTypes:
+        """
+        Load a private key from a PEM-formatted string.
+        :param private_key_pem: The private key in PEM format.
+        :type private_key_pem: str
+        :return: The loaded private key.
+        :rtype: PrivateKeyTypes
+        """
+        try:
+            return serialization.load_pem_private_key(
+                private_key_pem.encode(), None, backend=self._backend
+            )
+        except Exception as e:
+            logger.error(f"Error loading private key: {e}")
+            raise
+
+    @staticmethod
+    def _get_padding_scheme() -> padding.OAEP:
+        """
+        Get the padding scheme used for RSA encryption and decryption.
+        :return: The padding scheme.
+        :rtype: padding.OAEP
+        """
+        return padding.OAEP(
+            mgf=padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None,
+        )
+
     def encrypt_aes_key_with_rsa(
         self, public_key_pem: str, aes_key: bytes
     ) -> bytes:
         """
-        Encrypt AES key using a public RSA key.
-        :param public_key_pem: The public key
+        Encrypt an AES key using a public RSA key.
+        :param public_key_pem: The public RSA key in PEM format.
         :type public_key_pem: str
-        :param aes_key: The AES key
+        :param aes_key: The AES key to encrypt.
         :type aes_key: bytes
-        :return: The encrypted AES key
+        :return: The encrypted AES key.
         :rtype: bytes
         """
+        public_key: PublicKeyTypes = self._load_public_key(public_key_pem)
         try:
-            public_key: PublicKeyTypes = serialization.load_pem_public_key(
-                public_key_pem.encode(), backend=self._backend
-            )
             return public_key.encrypt(  # type: ignore
-                aes_key,
-                padding.OAEP(
-                    mgf=padding.MGF1(algorithm=hashes.SHA256()),
-                    algorithm=hashes.SHA256(),
-                    label=None,
-                ),
+                aes_key, self._get_padding_scheme()
             )
-        except UnsupportedAlgorithm as exc:
-            logger.error("The algorithm is not supported.")
-            raise ValueError("Unsupported algorithm.") from exc
-        except InvalidKey as exc:
-            logger.error("The provided public key is invalid.")
-            raise ValueError("Invalid public key.") from exc
         except Exception as e:
-            logger.error("An unexpected error occurred: %s", e)
+            logger.error(f"Error encrypting AES key: {e}")
             raise
 
     def decrypt_aes_key_with_rsa(
         self, private_key_pem: str, encrypted_aes_key: bytes
     ) -> bytes:
         """
-        Decrypt AES key using a private RSA key.
-        :param private_key_pem: The private RSA key
+        Decrypt an AES key using a private RSA key.
+        :param private_key_pem: The private RSA key in PEM format.
         :type private_key_pem: str
-        :param encrypted_aes_key: The encrypted AES key
+        :param encrypted_aes_key: The encrypted AES key.
         :type encrypted_aes_key: bytes
-        :return: The decrypted AES key
+        :return: The decrypted AES key.
         :rtype: bytes
         """
+        private_key: PrivateKeyTypes = self._load_private_key(private_key_pem)
         try:
-            private_key: PrivateKeyTypes = serialization.load_pem_private_key(
-                private_key_pem.encode(), None, backend=self._backend
-            )
             return private_key.decrypt(  # type: ignore
-                encrypted_aes_key,
-                padding.OAEP(
-                    mgf=padding.MGF1(algorithm=hashes.SHA256()),
-                    algorithm=hashes.SHA256(),
-                    label=None,
-                ),
+                encrypted_aes_key, self._get_padding_scheme()
             )
-        except UnsupportedAlgorithm as exc:
-            logger.error("The algorithm is not supported.")
-            raise ValueError("Unsupported algorithm.") from exc
-        except InvalidKey as exc:
-            logger.error("The provided public key is invalid.")
-            raise ValueError("Invalid public key.") from exc
         except Exception as e:
-            logger.error("An unexpected error occurred: %s", e)
+            logger.error(f"Error decrypting AES key: {e}")
             raise
 
     def encrypt_data(self, data: str, public_key_pem: str) -> dict[str, bytes]:

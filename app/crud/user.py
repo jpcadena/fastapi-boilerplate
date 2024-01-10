@@ -284,7 +284,7 @@ class UserRepository:
             except SQLAlchemyError as sa_exc:
                 logger.error(sa_exc)
                 await session.rollback()
-                raise DatabaseException(str(sa_exc)) from sa_exc
+                return False
             return True
 
 

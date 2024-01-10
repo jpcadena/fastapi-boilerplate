@@ -28,6 +28,13 @@ class AuthSettings(BaseSettings):
     ALGORITHM: str = "HS256"
     AUTH_URL: str = "api/v1/auth/"
     TOKEN_URL: str = "api/v1/auth/login"
+    OAUTH2_SCHEME: str = "JWT"
+    OAUTH2_TOKEN_DESCRIPTION: str = (
+        "JWT token used to authenticate most of" " the API endpoints."
+    )
+    OAUTH2_REFRESH_TOKEN_DESCRIPTION: str = (
+        "JWT token used to authenticate" " most ofhe API endpoints."
+    )
     TOKEN_USER_INFO_REGEX: str = (
         r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-"
         r"[0-9a-f]{4}-[0-9a-f]{12}:\d{1,3}\."
@@ -39,6 +46,7 @@ class AuthSettings(BaseSettings):
     )
     HEADERS: dict[str, str] = {"WWW-Authenticate": "Bearer"}
     DETAIL: str = "Could not validate credentials"
+    NO_CLIENT_FOUND: str = "No client found on the request"
     SECRET_KEY: str
     SERVER_URL: AnyHttpUrl
     SERVER_DESCRIPTION: str
