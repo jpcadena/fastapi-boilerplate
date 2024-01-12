@@ -44,9 +44,11 @@ repos:
     rev: v1.8.0
     hooks:
       - id: mypy
+        additional_dependencies:
+          - 'pydantic'
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.11
+    rev: v0.1.12
     hooks:
       - id: ruff
         args: [ --fix, --exit-non-zero-on-fix ]

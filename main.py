@@ -39,8 +39,8 @@ app.openapi = partial(custom_openapi, app)  # type: ignore
 
 # Register middlewares
 app.add_middleware(SecurityHeadersMiddleware)
-app.add_middleware(RateLimiterMiddleware)
-app.add_middleware(IPBlacklistMiddleware)
+app.add_middleware(RateLimiterMiddleware)  # type: ignore
+app.add_middleware(IPBlacklistMiddleware)  # type: ignore
 app.add_middleware(
     CORSMiddleware,
     allow_origins=setting.BACKEND_CORS_ORIGINS,
