@@ -15,7 +15,6 @@ from app.exceptions.exceptions import raise_unauthorized_error
 from app.models.sql.user import User
 from app.schemas.infrastructure.user import UserAuth
 from app.services.infrastructure.cached_user import CachedUserService
-from app.services.infrastructure.services import model_to_dict
 from app.services.infrastructure.token import TokenService
 from app.services.infrastructure.user import UserService, get_user_service
 from app.utils.security.jwt import decode_jwt
@@ -64,9 +63,9 @@ async def authenticate_user(
         user_id
     )
     if cached_user:
-        return UserAuth(**model_to_dict(cached_user))
+        return UserAuth.model_validate(cached_user)
     user: User = await user_service.get_login_user(username)
-    user_auth: UserAuth = UserAuth(**model_to_dict(user))
+    user_auth: UserAuth = UserAuth.model_validate(user)
     await cached_service.set_to_cache(user_id, user_auth.model_dump())
     return user_auth
 

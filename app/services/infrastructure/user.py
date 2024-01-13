@@ -31,7 +31,6 @@ from app.schemas.external.user import (
     UserUpdate,
     UserUpdateResponse,
 )
-from app.services.infrastructure.services import model_to_response
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -68,11 +67,7 @@ class UserService:
             detail: str = f"User with id {user_id} not found in the system."
             logger.error(detail)
             raise NotFoundException(detail)
-        user_response: Optional[
-            UserResponse
-        ] = await model_to_response(  # type: ignore
-            user, UserResponse
-        )
+        user_response: UserResponse = UserResponse.model_validate(user)
         return user_response
 
     async def get_login_user(self, username: str) -> User:
@@ -94,9 +89,7 @@ class UserService:
             raise ServiceException(f"User not found with username: {username}")
         return user
 
-    async def get_user_by_username(
-        self, username: str
-    ) -> Optional[UserResponse]:
+    async def get_user_by_username(self, username: str) -> UserResponse:
         """
         Retrieve user information by its username
         :param username: The username to retrieve User from
@@ -109,17 +102,15 @@ class UserService:
         except DatabaseException as db_exc:
             logger.error(str(db_exc))
             raise ServiceException(str(db_exc)) from db_exc
-        return await model_to_response(user, UserResponse)  # type: ignore
+        return UserResponse.model_validate(user)
 
-    async def get_user_by_email(
-        self, email: EmailStr
-    ) -> Optional[UserResponse]:
+    async def get_user_by_email(self, email: EmailStr) -> UserResponse:
         """
         Retrieve user information by its unique email.
         :param email: The email to retrieve User from
         :type email: EmailStr
         :return: User found in database
-        :rtype: Optional[UserResponse]
+        :rtype: UserResponse
         """
         try:
             user: Optional[User] = await self._user_repo.read_by_email(
@@ -130,7 +121,7 @@ class UserService:
             raise ServiceException(str(db_exc)) from db_exc
         if not user:
             raise ServiceException(f"User not found with email: {email}")
-        return await model_to_response(user, UserResponse)  # type: ignore
+        return UserResponse.model_validate(user)
 
     async def get_user_id_by_email(self, email: EmailStr) -> UUID4:
         """
@@ -153,7 +144,7 @@ class UserService:
 
     async def register_user(
         self, user: Union[UserCreate, UserSuperCreate]
-    ) -> Optional[UserCreateResponse]:
+    ) -> UserCreateResponse:
         """
         Register a new user in the database
         :param user: Request object representing the user
@@ -167,9 +158,7 @@ class UserService:
         except DatabaseException as db_exc:
             logger.error(str(db_exc))
             raise ServiceException(str(db_exc)) from db_exc
-        return await model_to_response(
-            created_user, UserCreateResponse  # type: ignore
-        )
+        return UserCreateResponse.model_validate(created_user)
 
     async def get_users(
         self, offset: Optional[NonNegativeInt], limit: Optional[PositiveInt]
@@ -189,14 +178,13 @@ class UserService:
             logger.error(str(db_exc))
             raise ServiceException(str(db_exc)) from db_exc
         found_users: list[UserResponse] = [
-            await model_to_response(user, UserResponse)  # type: ignore
-            for user in users
+            UserResponse.model_validate(user) for user in users
         ]
         return found_users
 
     async def update_user(
         self, user_id: UUID4, user: UserUpdate
-    ) -> Optional[UserUpdateResponse]:
+    ) -> UserUpdateResponse:
         """
         Update user information from table
         :param user_id: Unique identifier of the user
@@ -204,7 +192,7 @@ class UserService:
         :param user: Requested user information to update
         :type user: UserUpdate
         :return: User information
-        :rtype: Optional[UserUpdateResponse]
+        :rtype: UserUpdateResponse
         """
         try:
             updated_user: Optional[User] = await self._user_repo.update_user(
@@ -217,9 +205,7 @@ class UserService:
             raise ServiceException(
                 f"User with user_id: {user_id} could not be updated"
             )
-        return await model_to_response(
-            updated_user, UserUpdateResponse  # type: ignore
-        )
+        return UserUpdateResponse.model_validate(updated_user)
 
     async def delete_user(self, user_id: UUID4) -> dict[str, Any]:
         """

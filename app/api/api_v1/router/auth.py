@@ -297,7 +297,7 @@ async def reset_password(
     user_data: dict[str, Any] = found_user.model_dump()
     user_data["password"] = token_reset_password.password
     user_update: UserUpdate = UserUpdate(**user_data)
-    user: UserUpdateResponse = await user_service.update_user(  # type: ignore
+    user: UserUpdateResponse = await user_service.update_user(
         found_user.id, user_update
     )
     await send_password_changed_confirmation_email(

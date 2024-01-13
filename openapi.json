@@ -1,1011 +1,1011 @@
 {
-    "components": {
-        "schemas": {
-            "Address": {
-              "country": "Ecuador",
-              "description": "Schema for representing the Address for JWT.",
-              "locality": "Guayaquil",
-              "postal_code": "090312",
-                "properties": {
-                    "country": {
-                      "default": "Ecuador",
-                      "description": "Country name component.",
-                        "maxLength": 60,
-                        "minLength": 4,
-                        "title": "Country",
-                      "type": "string"
-                    },
-                  "locality": {
-                    "description": "City or locality component.",
-                    "maxLength": 85,
-                    "minLength": 3,
-                    "title": "Locality (City)",
-                    "type": "string"
-                    },
-                    "postal_code": {
-                        "anyOf": [
-                            {
-                                "maxLength": 6,
-                                "minLength": 6,
-                              "pattern": "^(0[1-9]|1[0-9]|2[0-4])[0-9]{4}$",
-                              "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                      "description": "Postal code should be a 6-digit number.",
-                      "title": "Postal Code"
-                    },
-                  "region": {
-                    "default": "Guayas",
-                    "description": "State, province, prefecture, or region component.",
-                    "maxLength": 35,
-                    "minLength": 4,
-                    "title": "Region (State/Province)",
-                    "type": "string"
-                  },
-                  "street_address": {
-                    "description": "Full street address component, which may include house number, street name, Post Office Box, and multi-line extended street address information. This field may contain multiple lines, separated by newlines.",
-                    "minLength": 3,
-                    "title": "Street Address",
-                    "type": "string"
-                    }
-                },
-              "region": "Guayas",
-                "required": [
-                    "street_address",
-                    "locality"
-                ],
-              "street_address": "Blvd 9 de Octubre",
-                "title": "Address",
-              "type": "object"
-            },
-            "Body_auth-login": {
-                "properties": {
-                    "client_id": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Client Id"
-                    },
-                    "client_secret": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Client Secret"
-                    },
-                  "grant_type": {
-                    "anyOf": [
-                      {
-                        "pattern": "password",
-                        "type": "string"
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ],
-                    "title": "Grant Type"
-                  },
-                  "password": {
-                    "title": "Password",
-                    "type": "string"
-                  },
-                  "scope": {
-                    "default": "",
-                    "title": "Scope",
-                    "type": "string"
-                  },
-                  "username": {
-                    "title": "Username",
-                    "type": "string"
-                    }
-                },
-                "required": [
-                    "username",
-                    "password"
-                ],
-              "title": "Body_auth-login",
-              "type": "object"
-            },
-            "Gender": {
-              "description": "Enum representing different gender options",
-                "enum": [
-                    "male",
-                    "female",
-                    "other"
-                ],
-                "title": "Gender",
-              "type": "string"
-            },
-            "HTTPValidationError": {
-                "properties": {
-                    "detail": {
-                        "items": {
-                            "$ref": "#/components/schemas/ValidationError"
-                        },
-                      "title": "Detail",
-                      "type": "array"
-                    }
-                },
-              "title": "HTTPValidationError",
-              "type": "object"
-            },
-            "Msg": {
-              "description": "Schema for representing a message.",
-              "example": {
-                "msg": "Hello, World!!!"
+  "components": {
+    "schemas": {
+      "Address": {
+        "country": "Ecuador",
+        "description": "Schema for representing the Address for JWT.",
+        "locality": "Guayaquil",
+        "postal_code": "090312",
+        "properties": {
+          "country": {
+            "default": "Ecuador",
+            "description": "Country name component.",
+            "maxLength": 60,
+            "minLength": 4,
+            "title": "Country",
+            "type": "string"
+          },
+          "locality": {
+            "description": "City or locality component.",
+            "maxLength": 85,
+            "minLength": 3,
+            "title": "Locality (City)",
+            "type": "string"
+          },
+          "postal_code": {
+            "anyOf": [
+              {
+                "maxLength": 6,
+                "minLength": 6,
+                "pattern": "^(0[1-9]|1[0-9]|2[0-4])[0-9]{4}$",
+                "type": "string"
               },
-                "properties": {
-                    "msg": {
-                      "description": "Message to display",
-                        "title": "Message",
-                      "type": "string"
-                    }
-                },
-                "required": [
-                    "msg"
-                ],
-                "title": "Msg",
-              "type": "object"
-            },
-          "TokenResetPassword": {
-            "description": "Token Reset Password for Request based on Pydantic Base Model.",
-                "example": {
-                  "password": "Hk7pH9*35Fu&3U",
-                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-                },
-                "properties": {
-                    "password": {
-                      "description": "New password to reset",
-                        "maxLength": 14,
-                        "minLength": 8,
-                        "title": "New password",
-                      "type": "string"
-                    },
-                  "token": {
-                    "description": "Access token",
-                    "minLength": 30,
-                    "title": "Token",
-                    "type": "string"
-                    }
-                },
-                "required": [
-                    "token",
-                    "password"
-                ],
-                "title": "TokenResetPassword",
-            "type": "object"
-            },
-            "TokenResponse": {
-              "description": "Token for Response based on Pydantic Base Model.",
-              "example": {
-                "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-                "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-                "token_type": "bearer"
-              },
-                "properties": {
-                    "access_token": {
-                      "description": "Access token",
-                        "minLength": 30,
-                        "title": "Token",
-                      "type": "string"
-                    },
-                    "refresh_token": {
-                      "description": "Refresh token",
-                        "minLength": 30,
-                        "title": "Refresh Token",
-                      "type": "string"
-                    },
-                    "token_type": {
-                      "default": "bearer",
-                      "description": "Type of the token",
-                        "title": "Token type",
-                      "type": "string"
-                    }
-                },
-                "required": [
-                    "access_token",
-                    "refresh_token"
-                ],
-                "title": "TokenResponse",
-              "type": "object"
-            },
-          "UserAuth": {
-            "description": "User Auth that inherits from UserID.",
-                "example": {
-                  "email": "example@mail.com",
-                  "id": "db39a7d5-759e-4857-8c3b-c5a33c4ba546",
-                  "username": "username"
-                },
-                "properties": {
-                    "email": {
-                      "description": "Preferred e-mail address of the User",
-                        "format": "email",
-                        "title": "Email",
-                      "type": "string"
-                    },
-                    "id": {
-                      "description": "ID of the User",
-                        "format": "uuid4",
-                        "title": "ID",
-                      "type": "string"
-                    },
-                  "username": {
-                    "description": "Username to identify the user",
-                    "maxLength": 15,
-                    "minLength": 4,
-                    "title": "Username",
-                    "type": "string"
-                    }
-                },
-                "required": [
-                    "username",
-                    "email"
-                ],
-                "title": "UserAuth",
-            "type": "object"
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Postal code should be a 6-digit number.",
+            "title": "Postal Code"
           },
-          "UserCreate": {
-            "description": "Schema for creating a User record.",
-                "example": {
-                  "address": {
-                    "country": "Ecuador",
-                    "locality": "Guayaquil",
-                    "postal_code": "090312",
-                    "region": "Guayas",
-                    "street_address": "Blvd 9 de Octubre"
-                  },
-                  "birthdate": "2004-01-01",
-                    "email": "example@mail.com",
-                  "first_name": "Some",
-                  "gender": "male",
-                  "last_name": "Example",
-                  "middle_name": "One",
-                  "password": "Hk7pH9*35Fu&3U",
-                  "phone_number": "+593987654321",
-                    "username": "username"
-                },
-                "properties": {
-                  "address": {
-                        "anyOf": [
-                            {
-                              "$ref": "#/components/schemas/Address"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                    "description": "Address of the User",
-                    "title": "Address"
-                    },
-                    "birthdate": {
-                        "anyOf": [
-                            {
-                              "format": "date",
-                              "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                      "description": "Birthday of the User",
-                      "title": "Birthdate"
-                    },
-                  "email": {
-                    "description": "Preferred e-mail address of the User",
-                    "format": "email",
-                    "title": "Email",
-                    "type": "string"
-                    },
-                    "first_name": {
-                      "description": "First name(s) of the User",
-                        "maxLength": 50,
-                        "minLength": 4,
-                        "title": "First name",
-                      "type": "string"
-                    },
-                  "gender": {
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/Gender"
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ],
-                    "description": "Gender of the User",
-                    "title": "Gender"
-                    },
-                    "last_name": {
-                      "description": "Last name(s) of the User",
-                        "maxLength": 100,
-                        "minLength": 4,
-                        "title": "Last name",
-                      "type": "string"
-                    },
-                  "middle_name": {
-                    "anyOf": [
-                      {
-                        "maxLength": 50,
-                        "type": "string"
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ],
-                    "description": "Middle name(s) of the User",
-                    "title": "Middle Name"
-                    },
-                    "password": {
-                      "description": "Password of the User",
-                        "maxLength": 14,
-                        "minLength": 8,
-                        "title": "Password",
-                      "type": "string"
-                    },
-                  "phone_number": {
-                    "anyOf": [
-                      {
-                        "format": "phone",
-                        "maxLength": 64,
-                        "minLength": 7,
-                        "type": "string"
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ],
-                    "description": "Preferred telephone number of the User",
-                    "title": "Phone number"
-                  },
-                  "username": {
-                    "description": "Username to identify the user",
-                    "maxLength": 15,
-                    "minLength": 4,
-                    "title": "Username",
-                    "type": "string"
-                    }
-                },
-                "required": [
-                    "first_name",
-                    "last_name",
-                    "username",
-                    "email",
-                    "password"
-                ],
-                "title": "UserCreate",
-            "type": "object"
+          "region": {
+            "default": "Guayas",
+            "description": "State, province, prefecture, or region component.",
+            "maxLength": 35,
+            "minLength": 4,
+            "title": "Region (State/Province)",
+            "type": "string"
           },
-          "UserCreateResponse": {
-            "description": "Schema for the response when creating a User.",
-                "example": {
-                    "birthdate": "2004-01-01",
-                    "email": "example@mail.com",
-                    "first_name": "Some",
-                    "gender": "male",
-                  "id": "db39a7d5-759e-4857-8c3b-c5a33c4ba546",
-                    "last_name": "Example",
-                    "middle_name": "One",
-                    "phone_number": "+593987654321",
-                    "username": "username"
-                },
-                "properties": {
-                  "email": {
-                    "description": "Preferred e-mail address of the User",
-                    "format": "email",
-                    "title": "Email",
-                    "type": "string"
-                  },
-                    "first_name": {
-                      "description": "First name(s) of the User",
-                        "maxLength": 50,
-                        "minLength": 4,
-                        "title": "First name",
-                      "type": "string"
-                    },
-                  "id": {
-                    "description": "ID of the User",
-                    "format": "uuid4",
-                    "title": "ID",
-                    "type": "string"
-                    },
-                    "last_name": {
-                      "description": "Last name(s) of the User",
-                        "maxLength": 100,
-                        "minLength": 4,
-                        "title": "Last name",
-                      "type": "string"
-                    },
-                    "username": {
-                      "description": "Username to identify the user",
-                        "maxLength": 15,
-                        "minLength": 4,
-                        "title": "Username",
-                      "type": "string"
-                    }
-                },
-                "required": [
-                    "first_name",
-                    "last_name",
-                    "username",
-                    "email"
-                ],
-                "title": "UserCreateResponse",
-            "type": "object"
-          },
-          "UserResponse": {
-            "description": "Schema for the response when retrieving a User.",
-                "example": {
-                  "address": {
-                    "country": "Ecuador",
-                    "locality": "Guayaquil",
-                    "postal_code": "090312",
-                    "region": "Guayas",
-                    "street_address": "Blvd 9 de Octubre"
-                  },
-                  "address_id": "db39a7d5-759e-4857-8c3b-c5a33c4ba546",
-                    "birthdate": "2004-01-01",
-                  "created_at": "2024-01-11 19:29:34",
-                    "email": "example@mail.com",
-                    "first_name": "Some",
-                    "gender": "male",
-                  "id": "db39a7d5-759e-4857-8c3b-c5a33c4ba546",
-                  "is_active": true,
-                  "is_superuser": false,
-                    "last_name": "Example",
-                    "middle_name": "One",
-                    "phone_number": "+593987654321",
-                  "updated_at": "2024-01-11 19:29:34",
-                    "username": "username"
-                },
-                "properties": {
-                  "address": {
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/Address"
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ],
-                    "description": "Address of the User",
-                    "title": "Address"
-                  },
-                  "birthdate": {
-                        "anyOf": [
-                            {
-                              "format": "date",
-                              "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                    "description": "Birthday of the User",
-                    "title": "Birthdate"
-                    },
-                    "created_at": {
-                      "description": "Time the User was created",
-                        "format": "date-time",
-                        "title": "Created at",
-                      "type": "string"
-                    },
-                  "email": {
-                    "description": "Preferred e-mail address of the User",
-                    "format": "email",
-                    "title": "Email",
-                    "type": "string"
-                  },
-                  "first_name": {
-                    "description": "First name(s) of the User",
-                    "maxLength": 50,
-                    "minLength": 4,
-                    "title": "First name",
-                    "type": "string"
-                    },
-                    "gender": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/components/schemas/Gender"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                      "description": "Gender of the User",
-                      "title": "Gender"
-                    },
-                  "id": {
-                    "description": "ID of the User",
-                    "format": "uuid4",
-                    "title": "ID",
-                    "type": "string"
-                  },
-                  "is_active": {
-                    "description": "True if the user is active; otherwise false",
-                    "title": "Is active?",
-                    "type": "boolean"
-                  },
-                  "is_superuser": {
-                    "description": "True if the user is super user; otherwise false",
-                    "title": "Is super user?",
-                    "type": "boolean"
-                    },
-                  "last_name": {
-                    "description": "Last name(s) of the User",
-                    "maxLength": 100,
-                    "minLength": 4,
-                    "title": "Last name",
-                    "type": "string"
-                  },
-                  "middle_name": {
-                        "anyOf": [
-                            {
-                              "maxLength": 50,
-                              "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                    "description": "Middle name(s) of the User",
-                    "title": "Middle Name"
-                    },
-                    "phone_number": {
-                        "anyOf": [
-                            {
-                              "format": "phone",
-                                "maxLength": 64,
-                                "minLength": 7,
-                              "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                      "description": "Preferred telephone number of the User",
-                      "title": "Phone number"
-                    },
-                  "updated_at": {
-                        "anyOf": [
-                            {
-                              "format": "date-time",
-                              "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                    "description": "Time the User was updated",
-                    "title": "Updated at"
-                    },
-                    "username": {
-                      "description": "Username to identify the user",
-                        "maxLength": 15,
-                        "minLength": 4,
-                        "title": "Username",
-                      "type": "string"
-                    }
-                },
-                "required": [
-                    "is_active",
-                    "is_superuser",
-                    "first_name",
-                    "last_name",
-                    "username",
-                    "email"
-                ],
-                "title": "UserResponse",
-            "type": "object"
-          },
-          "UserUpdate": {
-            "description": "Schema for updating a User record.",
-                "example": {
-                    "address": {
-                        "country": "Ecuador",
-                        "locality": "Guayaquil",
-                        "postal_code": "090312",
-                        "region": "Guayas",
-                        "street_address": "Blvd 9 de Octubre"
-                    },
-                    "birthdate": "2004-01-01",
-                    "email": "example@mail.com",
-                    "first_name": "Some",
-                    "gender": "male",
-                    "last_name": "Example",
-                    "middle_name": "One",
-                  "password": "Hk7pH9*35Fu&3U",
-                    "phone_number": "+593987654321",
-                    "username": "username"
-                },
-                "properties": {
-                  "address": {
-                        "anyOf": [
-                            {
-                              "$ref": "#/components/schemas/Address"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                    "description": "Address of the User",
-                    "title": "Address"
-                  },
-                  "birthdate": {
-                    "anyOf": [
-                      {
-                        "format": "date",
-                        "type": "string"
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ],
-                    "description": "Birthday of the User",
-                    "title": "Birthdate"
-                    },
-                    "email": {
-                        "anyOf": [
-                            {
-                              "format": "email",
-                              "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                      "description": "Preferred e-mail address of the User",
-                      "title": "Email"
-                    },
-                    "first_name": {
-                        "anyOf": [
-                            {
-                                "maxLength": 50,
-                              "minLength": 1,
-                              "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                      "description": "First name(s) of the User",
-                      "title": "First name"
-                    },
-                  "gender": {
-                        "anyOf": [
-                            {
-                              "$ref": "#/components/schemas/Gender"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                    "description": "Gender of the User",
-                    "title": "Gender"
-                    },
-                    "last_name": {
-                        "anyOf": [
-                            {
-                                "maxLength": 100,
-                              "minLength": 1,
-                              "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                      "description": "Last name(s) of the User",
-                      "title": "Last name"
-                    },
-                  "middle_name": {
-                    "anyOf": [
-                      {
-                        "maxLength": 50,
-                        "type": "string"
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ],
-                    "description": "Middle name(s) of the User",
-                    "title": "Middle Name"
-                    },
-                    "password": {
-                        "anyOf": [
-                            {
-                                "maxLength": 14,
-                              "minLength": 8,
-                              "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                      "description": "New Password of the User",
-                      "title": "New Password"
-                    },
-                    "phone_number": {
-                        "anyOf": [
-                            {
-                              "format": "phone",
-                                "maxLength": 64,
-                                "minLength": 7,
-                              "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                      "description": "Preferred telephone number of the User",
-                      "title": "Phone number"
-                    },
-                  "username": {
-                        "anyOf": [
-                            {
-                              "maxLength": 15,
-                              "minLength": 4,
-                              "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                    "description": "Username to identify the user",
-                    "title": "Username"
-                    }
-                },
-                "title": "UserUpdate",
-            "type": "object"
-          },
-          "UserUpdateResponse": {
-            "description": "Schema for the response when updating a User.",
-                "example": {
-                    "address": {
-                        "country": "Ecuador",
-                        "locality": "Guayaquil",
-                        "postal_code": "090312",
-                        "region": "Guayas",
-                        "street_address": "Blvd 9 de Octubre"
-                    },
-                  "address_id": "db39a7d5-759e-4857-8c3b-c5a33c4ba546",
-                    "birthdate": "2004-01-01",
-                  "created_at": "2024-01-11 19:29:34",
-                    "email": "example@mail.com",
-                    "first_name": "Some",
-                    "gender": "male",
-                  "id": "db39a7d5-759e-4857-8c3b-c5a33c4ba546",
-                  "is_active": true,
-                  "is_superuser": false,
-                    "last_name": "Example",
-                    "middle_name": "One",
-                  "password": "Hk7pH9*Hk7pH9*35Fu&3UHk7pH9*35Fu&3U35Fu&3U",
-                    "phone_number": "+593987654321",
-                  "updated_at": "2024-01-11 19:29:34",
-                    "username": "username"
-                },
-                "properties": {
-                  "address": {
-                        "anyOf": [
-                            {
-                              "$ref": "#/components/schemas/Address"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                    "description": "Address of the User",
-                    "title": "Address"
-                    },
-                  "birthdate": {
-                    "anyOf": [
-                      {
-                        "format": "date",
-                        "type": "string"
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ],
-                    "description": "Birthday of the User",
-                    "title": "Birthdate"
-                    },
-                    "created_at": {
-                      "description": "Time the User was created",
-                        "format": "date-time",
-                        "title": "Created at",
-                      "type": "string"
-                    },
-                  "email": {
-                    "description": "Preferred e-mail address of the User",
-                    "format": "email",
-                    "title": "Email",
-                    "type": "string"
-                  },
-                  "first_name": {
-                    "description": "First name(s) of the User",
-                    "maxLength": 50,
-                    "minLength": 4,
-                    "title": "First name",
-                    "type": "string"
-                    },
-                    "gender": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/components/schemas/Gender"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                      "description": "Gender of the User",
-                      "title": "Gender"
-                    },
-                  "id": {
-                    "description": "ID of the User",
-                    "format": "uuid4",
-                    "title": "ID",
-                    "type": "string"
-                  },
-                  "is_active": {
-                    "description": "True if the user is active; otherwise false",
-                    "title": "Is active?",
-                    "type": "boolean"
-                  },
-                  "is_superuser": {
-                    "description": "True if the user is super user; otherwise false",
-                    "title": "Is super user?",
-                    "type": "boolean"
-                    },
-                  "last_name": {
-                    "description": "Last name(s) of the User",
-                    "maxLength": 100,
-                    "minLength": 4,
-                    "title": "Last name",
-                    "type": "string"
-                  },
-                  "middle_name": {
-                        "anyOf": [
-                            {
-                              "maxLength": 50,
-                              "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                    "description": "Middle name(s) of the User",
-                    "title": "Middle Name"
-                  },
-                  "password": {
-                    "description": "Hashed Password of the User",
-                    "maxLength": 60,
-                    "minLength": 60,
-                    "title": "Hashed Password",
-                    "type": "string"
-                    },
-                    "phone_number": {
-                        "anyOf": [
-                            {
-                              "format": "phone",
-                                "maxLength": 64,
-                                "minLength": 7,
-                              "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                      "description": "Preferred telephone number of the User",
-                      "title": "Phone number"
-                    },
-                  "updated_at": {
-                        "anyOf": [
-                            {
-                              "format": "date-time",
-                              "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                    "description": "Time the User was updated",
-                    "title": "Updated at"
-                    },
-                    "username": {
-                      "description": "Username to identify the user",
-                        "maxLength": 15,
-                        "minLength": 4,
-                        "title": "Username",
-                      "type": "string"
-                    }
-                },
-                "required": [
-                    "is_active",
-                    "is_superuser",
-                    "password",
-                    "first_name",
-                    "last_name",
-                    "username",
-                    "email"
-                ],
-                "title": "UserUpdateResponse",
-            "type": "object"
-            },
-            "UsersResponse": {
-              "description": "Class representation for a list of users response",
-                "properties": {
-                    "users": {
-                        "items": {
-                            "$ref": "#/components/schemas/UserResponse"
-                        },
-                      "title": "Users",
-                      "type": "array"
-                    }
-                },
-                "required": [
-                    "users"
-                ],
-                "title": "UsersResponse",
-              "type": "object"
-            },
-            "ValidationError": {
-                "properties": {
-                    "loc": {
-                        "items": {
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "integer"
-                                }
-                            ]
-                        },
-                      "title": "Location",
-                      "type": "array"
-                    },
-                    "msg": {
-                      "title": "Message",
-                      "type": "string"
-                    },
-                    "type": {
-                      "title": "Error Type",
-                      "type": "string"
-                    }
-                },
-                "required": [
-                    "loc",
-                    "msg",
-                    "type"
-                ],
-              "title": "ValidationError",
-              "type": "object"
-            }
+          "street_address": {
+            "description": "Full street address component, which may include house number, street name, Post Office Box, and multi-line extended street address information. This field may contain multiple lines, separated by newlines.",
+            "minLength": 3,
+            "title": "Street Address",
+            "type": "string"
+          }
         },
-        "securitySchemes": {
-            "JWT": {
-                "description": "JWT token used to authenticate most of the API endpoints.",
-                "flows": {
-                    "password": {
-                        "scopes": {},
-                        "tokenUrl": "api/v1/auth/login"
-                    }
+        "region": "Guayas",
+        "required": [
+          "street_address",
+          "locality"
+        ],
+        "street_address": "Blvd 9 de Octubre",
+        "title": "Address",
+        "type": "object"
+      },
+      "Body_auth-login": {
+        "properties": {
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Secret"
+          },
+          "grant_type": {
+            "anyOf": [
+              {
+                "pattern": "password",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grant Type"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "scope": {
+            "default": "",
+            "title": "Scope",
+            "type": "string"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "Body_auth-login",
+        "type": "object"
+      },
+      "Gender": {
+        "description": "Enum representing different gender options",
+        "enum": [
+          "male",
+          "female",
+          "other"
+        ],
+        "title": "Gender",
+        "type": "string"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "Msg": {
+        "description": "Schema for representing a message.",
+        "example": {
+          "msg": "Hello, World!!!"
+        },
+        "properties": {
+          "msg": {
+            "description": "Message to display",
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "msg"
+        ],
+        "title": "Msg",
+        "type": "object"
+      },
+      "TokenResetPassword": {
+        "description": "Token Reset Password for Request based on Pydantic Base Model.",
+        "example": {
+          "password": "Hk7pH9*35Fu&3U",
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+        },
+        "properties": {
+          "password": {
+            "description": "New password to reset",
+            "maxLength": 14,
+            "minLength": 8,
+            "title": "New password",
+            "type": "string"
+          },
+          "token": {
+            "description": "Access token",
+            "minLength": 30,
+            "title": "Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "password"
+        ],
+        "title": "TokenResetPassword",
+        "type": "object"
+      },
+      "TokenResponse": {
+        "description": "Token for Response based on Pydantic Base Model.",
+        "example": {
+          "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+          "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+          "token_type": "bearer"
+        },
+        "properties": {
+          "access_token": {
+            "description": "Access token",
+            "minLength": 30,
+            "title": "Token",
+            "type": "string"
+          },
+          "refresh_token": {
+            "description": "Refresh token",
+            "minLength": 30,
+            "title": "Refresh Token",
+            "type": "string"
+          },
+          "token_type": {
+            "default": "bearer",
+            "description": "Type of the token",
+            "title": "Token type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "access_token",
+          "refresh_token"
+        ],
+        "title": "TokenResponse",
+        "type": "object"
+      },
+      "UserAuth": {
+        "description": "User Auth that inherits from UserID.",
+        "example": {
+          "email": "example@mail.com",
+          "id": "905b5bd1-8961-4d29-b1e1-7fb65c6e0978",
+          "username": "username"
+        },
+        "properties": {
+          "email": {
+            "description": "Preferred e-mail address of the User",
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "id": {
+            "description": "ID of the User",
+            "format": "uuid4",
+            "title": "ID",
+            "type": "string"
+          },
+          "username": {
+            "description": "Username to identify the user",
+            "maxLength": 15,
+            "minLength": 4,
+            "title": "Username",
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "email"
+        ],
+        "title": "UserAuth",
+        "type": "object"
+      },
+      "UserCreate": {
+        "description": "Schema for creating a User record.",
+        "example": {
+          "address": {
+            "country": "Ecuador",
+            "locality": "Guayaquil",
+            "postal_code": "090312",
+            "region": "Guayas",
+            "street_address": "Blvd 9 de Octubre"
+          },
+          "birthdate": "2004-01-01",
+          "email": "example@mail.com",
+          "first_name": "Some",
+          "gender": "male",
+          "last_name": "Example",
+          "middle_name": "One",
+          "password": "Hk7pH9*35Fu&3U",
+          "phone_number": "+593987654321",
+          "username": "username"
+        },
+        "properties": {
+          "address": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Address of the User",
+            "title": "Address"
+          },
+          "birthdate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Birthday of the User",
+            "title": "Birthdate"
+          },
+          "email": {
+            "description": "Preferred e-mail address of the User",
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "first_name": {
+            "description": "First name(s) of the User",
+            "maxLength": 50,
+            "minLength": 4,
+            "title": "First name",
+            "type": "string"
+          },
+          "gender": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Gender"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Gender of the User",
+            "title": "Gender"
+          },
+          "last_name": {
+            "description": "Last name(s) of the User",
+            "maxLength": 100,
+            "minLength": 4,
+            "title": "Last name",
+            "type": "string"
+          },
+          "middle_name": {
+            "anyOf": [
+              {
+                "maxLength": 50,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Middle name(s) of the User",
+            "title": "Middle Name"
+          },
+          "password": {
+            "description": "Password of the User",
+            "maxLength": 14,
+            "minLength": 8,
+            "title": "Password",
+            "type": "string"
+          },
+          "phone_number": {
+            "anyOf": [
+              {
+                "format": "phone",
+                "maxLength": 64,
+                "minLength": 7,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Preferred telephone number of the User",
+            "title": "Phone number"
+          },
+          "username": {
+            "description": "Username to identify the user",
+            "maxLength": 15,
+            "minLength": 4,
+            "title": "Username",
+            "type": "string"
+          }
+        },
+        "required": [
+          "first_name",
+          "last_name",
+          "username",
+          "email",
+          "password"
+        ],
+        "title": "UserCreate",
+        "type": "object"
+      },
+      "UserCreateResponse": {
+        "description": "Schema for the response when creating a User.",
+        "example": {
+          "birthdate": "2004-01-01",
+          "email": "example@mail.com",
+          "first_name": "Some",
+          "gender": "male",
+          "id": "905b5bd1-8961-4d29-b1e1-7fb65c6e0978",
+          "last_name": "Example",
+          "middle_name": "One",
+          "phone_number": "+593987654321",
+          "username": "username"
+        },
+        "properties": {
+          "email": {
+            "description": "Preferred e-mail address of the User",
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "first_name": {
+            "description": "First name(s) of the User",
+            "maxLength": 50,
+            "minLength": 4,
+            "title": "First name",
+            "type": "string"
+          },
+          "id": {
+            "description": "ID of the User",
+            "format": "uuid4",
+            "title": "ID",
+            "type": "string"
+          },
+          "last_name": {
+            "description": "Last name(s) of the User",
+            "maxLength": 100,
+            "minLength": 4,
+            "title": "Last name",
+            "type": "string"
+          },
+          "username": {
+            "description": "Username to identify the user",
+            "maxLength": 15,
+            "minLength": 4,
+            "title": "Username",
+            "type": "string"
+          }
+        },
+        "required": [
+          "first_name",
+          "last_name",
+          "username",
+          "email"
+        ],
+        "title": "UserCreateResponse",
+        "type": "object"
+      },
+      "UserResponse": {
+        "description": "Schema for the response when retrieving a User.",
+        "example": {
+          "address": {
+            "country": "Ecuador",
+            "locality": "Guayaquil",
+            "postal_code": "090312",
+            "region": "Guayas",
+            "street_address": "Blvd 9 de Octubre"
+          },
+          "address_id": "905b5bd1-8961-4d29-b1e1-7fb65c6e0978",
+          "birthdate": "2004-01-01",
+          "created_at": "2024-01-13 14:50:53",
+          "email": "example@mail.com",
+          "first_name": "Some",
+          "gender": "male",
+          "id": "905b5bd1-8961-4d29-b1e1-7fb65c6e0978",
+          "is_active": true,
+          "is_superuser": false,
+          "last_name": "Example",
+          "middle_name": "One",
+          "phone_number": "+593987654321",
+          "updated_at": "2024-01-13 14:50:53",
+          "username": "username"
+        },
+        "properties": {
+          "address": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Address of the User",
+            "title": "Address"
+          },
+          "birthdate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Birthday of the User",
+            "title": "Birthdate"
+          },
+          "created_at": {
+            "description": "Time the User was created",
+            "format": "date-time",
+            "title": "Created at",
+            "type": "string"
+          },
+          "email": {
+            "description": "Preferred e-mail address of the User",
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "first_name": {
+            "description": "First name(s) of the User",
+            "maxLength": 50,
+            "minLength": 4,
+            "title": "First name",
+            "type": "string"
+          },
+          "gender": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Gender"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Gender of the User",
+            "title": "Gender"
+          },
+          "id": {
+            "description": "ID of the User",
+            "format": "uuid4",
+            "title": "ID",
+            "type": "string"
+          },
+          "is_active": {
+            "description": "True if the user is active; otherwise false",
+            "title": "Is active?",
+            "type": "boolean"
+          },
+          "is_superuser": {
+            "description": "True if the user is super user; otherwise false",
+            "title": "Is super user?",
+            "type": "boolean"
+          },
+          "last_name": {
+            "description": "Last name(s) of the User",
+            "maxLength": 100,
+            "minLength": 4,
+            "title": "Last name",
+            "type": "string"
+          },
+          "middle_name": {
+            "anyOf": [
+              {
+                "maxLength": 50,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Middle name(s) of the User",
+            "title": "Middle Name"
+          },
+          "phone_number": {
+            "anyOf": [
+              {
+                "format": "phone",
+                "maxLength": 64,
+                "minLength": 7,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Preferred telephone number of the User",
+            "title": "Phone number"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Time the User was updated",
+            "title": "Updated at"
+          },
+          "username": {
+            "description": "Username to identify the user",
+            "maxLength": 15,
+            "minLength": 4,
+            "title": "Username",
+            "type": "string"
+          }
+        },
+        "required": [
+          "is_active",
+          "is_superuser",
+          "first_name",
+          "last_name",
+          "username",
+          "email"
+        ],
+        "title": "UserResponse",
+        "type": "object"
+      },
+      "UserUpdate": {
+        "description": "Schema for updating a User record.",
+        "example": {
+          "address": {
+            "country": "Ecuador",
+            "locality": "Guayaquil",
+            "postal_code": "090312",
+            "region": "Guayas",
+            "street_address": "Blvd 9 de Octubre"
+          },
+          "birthdate": "2004-01-01",
+          "email": "example@mail.com",
+          "first_name": "Some",
+          "gender": "male",
+          "last_name": "Example",
+          "middle_name": "One",
+          "password": "Hk7pH9*35Fu&3U",
+          "phone_number": "+593987654321",
+          "username": "username"
+        },
+        "properties": {
+          "address": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Address of the User",
+            "title": "Address"
+          },
+          "birthdate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Birthday of the User",
+            "title": "Birthdate"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "format": "email",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Preferred e-mail address of the User",
+            "title": "Email"
+          },
+          "first_name": {
+            "anyOf": [
+              {
+                "maxLength": 50,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "First name(s) of the User",
+            "title": "First name"
+          },
+          "gender": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Gender"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Gender of the User",
+            "title": "Gender"
+          },
+          "last_name": {
+            "anyOf": [
+              {
+                "maxLength": 100,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Last name(s) of the User",
+            "title": "Last name"
+          },
+          "middle_name": {
+            "anyOf": [
+              {
+                "maxLength": 50,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Middle name(s) of the User",
+            "title": "Middle Name"
+          },
+          "password": {
+            "anyOf": [
+              {
+                "maxLength": 14,
+                "minLength": 8,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "New Password of the User",
+            "title": "New Password"
+          },
+          "phone_number": {
+            "anyOf": [
+              {
+                "format": "phone",
+                "maxLength": 64,
+                "minLength": 7,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Preferred telephone number of the User",
+            "title": "Phone number"
+          },
+          "username": {
+            "anyOf": [
+              {
+                "maxLength": 15,
+                "minLength": 4,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Username to identify the user",
+            "title": "Username"
+          }
+        },
+        "title": "UserUpdate",
+        "type": "object"
+      },
+      "UserUpdateResponse": {
+        "description": "Schema for the response when updating a User.",
+        "example": {
+          "address": {
+            "country": "Ecuador",
+            "locality": "Guayaquil",
+            "postal_code": "090312",
+            "region": "Guayas",
+            "street_address": "Blvd 9 de Octubre"
+          },
+          "address_id": "905b5bd1-8961-4d29-b1e1-7fb65c6e0978",
+          "birthdate": "2004-01-01",
+          "created_at": "2024-01-13 14:50:53",
+          "email": "example@mail.com",
+          "first_name": "Some",
+          "gender": "male",
+          "id": "905b5bd1-8961-4d29-b1e1-7fb65c6e0978",
+          "is_active": true,
+          "is_superuser": false,
+          "last_name": "Example",
+          "middle_name": "One",
+          "password": "Hk7pH9*Hk7pH9*35Fu&3UHk7pH9*35Fu&3U35Fu&3U",
+          "phone_number": "+593987654321",
+          "updated_at": "2024-01-13 14:50:53",
+          "username": "username"
+        },
+        "properties": {
+          "address": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Address of the User",
+            "title": "Address"
+          },
+          "birthdate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Birthday of the User",
+            "title": "Birthdate"
+          },
+          "created_at": {
+            "description": "Time the User was created",
+            "format": "date-time",
+            "title": "Created at",
+            "type": "string"
+          },
+          "email": {
+            "description": "Preferred e-mail address of the User",
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "first_name": {
+            "description": "First name(s) of the User",
+            "maxLength": 50,
+            "minLength": 4,
+            "title": "First name",
+            "type": "string"
+          },
+          "gender": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Gender"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Gender of the User",
+            "title": "Gender"
+          },
+          "id": {
+            "description": "ID of the User",
+            "format": "uuid4",
+            "title": "ID",
+            "type": "string"
+          },
+          "is_active": {
+            "description": "True if the user is active; otherwise false",
+            "title": "Is active?",
+            "type": "boolean"
+          },
+          "is_superuser": {
+            "description": "True if the user is super user; otherwise false",
+            "title": "Is super user?",
+            "type": "boolean"
+          },
+          "last_name": {
+            "description": "Last name(s) of the User",
+            "maxLength": 100,
+            "minLength": 4,
+            "title": "Last name",
+            "type": "string"
+          },
+          "middle_name": {
+            "anyOf": [
+              {
+                "maxLength": 50,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Middle name(s) of the User",
+            "title": "Middle Name"
+          },
+          "password": {
+            "description": "Hashed Password of the User",
+            "maxLength": 60,
+            "minLength": 60,
+            "title": "Hashed Password",
+            "type": "string"
+          },
+          "phone_number": {
+            "anyOf": [
+              {
+                "format": "phone",
+                "maxLength": 64,
+                "minLength": 7,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Preferred telephone number of the User",
+            "title": "Phone number"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Time the User was updated",
+            "title": "Updated at"
+          },
+          "username": {
+            "description": "Username to identify the user",
+            "maxLength": 15,
+            "minLength": 4,
+            "title": "Username",
+            "type": "string"
+          }
+        },
+        "required": [
+          "is_active",
+          "is_superuser",
+          "password",
+          "first_name",
+          "last_name",
+          "username",
+          "email"
+        ],
+        "title": "UserUpdateResponse",
+        "type": "object"
+      },
+      "UsersResponse": {
+        "description": "Class representation for a list of users response",
+        "properties": {
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/UserResponse"
+            },
+            "title": "Users",
+            "type": "array"
+          }
+        },
+        "required": [
+          "users"
+        ],
+        "title": "UsersResponse",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
                 },
-              "type": "oauth2"
-            }
-        }
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      }
     },
+    "securitySchemes": {
+      "JWT": {
+        "description": "JWT token used to authenticate most of the API endpoints.",
+        "flows": {
+          "password": {
+            "scopes": {},
+            "tokenUrl": "api/v1/auth/login"
+          }
+        },
+        "type": "oauth2"
+      }
+    }
+  },
   "info": {
     "contact": {
       "email": "jpcadena@espol.edu.ec",
@@ -1092,7 +1092,7 @@
               "normal": {
                 "description": "A **normal** authorization token object that works correctly.",
                 "summary": "A normal example",
-                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZTo3OGVlNDllMy05OTBhLTQyODMtYjk3NS1jNjc5OGFjMjVhMTUiLCJuYXRpb25hbGl0aWVzIjpbIkVDVSJdLCJlbWFpbCI6ImV4YW1wbGVAbWFpbC5jb20iLCJuaWNrbmFtZSI6ImV4YW1wbGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJleGFtcGxlIiwiZ2l2ZW5fbmFtZSI6IlNvbWUiLCJmYW1pbHlfbmFtZSI6IkV4YW1wbGUiLCJtaWRkbGVfbmFtZSI6Ik9uZSIsImdlbmRlciI6Im1hbGUiLCJiaXJ0aGRhdGUiOiIyMDA0LTEyLTMxIiwidXBkYXRlZF9hdCI6IjIwMjQtMDEtMTFUMTk6Mjk6MzQuNTgxMTAzIiwicGhvbmVfbnVtYmVyIjoiKzU5Mzk4NzY1NDMyMSIsImFkZHJlc3MiOnsic3RyZWV0X2FkZHJlc3MiOiJVcmRlc2EgTm9ydGUgbXogQTEgdiA5OSIsImxvY2FsaXR5IjoiR3VheWFxdWlsIiwicmVnaW9uIjoiR3VheWFzIiwiY291bnRyeSI6IkVjdWFkb3IiLCJwb3N0YWxfY29kZSI6IjA5MDUwNSJ9LCJleHAiOjE3MDUwMjExNzQsIm5iZiI6MTcwNTAxOTM3MywiaWF0IjoxNzA1MDE5Mzc0fQ.KPIcP2jwyb0RjB1WMei3T4Qke1vbEO0cdKB6_4sEVjs"
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZTpmZDU3Y2JiZi1iNDJiLTQ0MmEtOWQ1OC1kODViMTk0ZWI3MzUiLCJuYXRpb25hbGl0aWVzIjpbIkVDVSJdLCJlbWFpbCI6ImV4YW1wbGVAbWFpbC5jb20iLCJuaWNrbmFtZSI6ImV4YW1wbGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJleGFtcGxlIiwiZ2l2ZW5fbmFtZSI6IlNvbWUiLCJmYW1pbHlfbmFtZSI6IkV4YW1wbGUiLCJtaWRkbGVfbmFtZSI6Ik9uZSIsImdlbmRlciI6Im1hbGUiLCJiaXJ0aGRhdGUiOiIyMDA0LTEyLTMxIiwidXBkYXRlZF9hdCI6IjIwMjQtMDEtMTNUMTQ6NTA6NTMuNTM1MDcwIiwicGhvbmVfbnVtYmVyIjoiKzU5Mzk4NzY1NDMyMSIsImFkZHJlc3MiOnsic3RyZWV0X2FkZHJlc3MiOiJVcmRlc2EgTm9ydGUgbXogQTEgdiA5OSIsImxvY2FsaXR5IjoiR3VheWFxdWlsIiwicmVnaW9uIjoiR3VheWFzIiwiY291bnRyeSI6IkVjdWFkb3IiLCJwb3N0YWxfY29kZSI6IjA5MDUwNSJ9LCJleHAiOjE3MDUxNzcyNTMsIm5iZiI6MTcwNTE3NTQ1MiwiaWF0IjoxNzA1MTc1NDUzfQ.dXGwUd66o0UBIHyrowg4un3SRd7OsmpYPiF-hs0bfYg"
               }
             },
             "in": "header",
@@ -1568,7 +1568,7 @@
         "parameters": [
           {
             "description": "ID of the User to be searched",
-            "example": "635150a2-ebb4-438a-8be9-4b9e3d0266ef",
+            "example": "cdd7fd5b-eae7-4cae-8d0b-c95794f2400e",
             "in": "path",
             "name": "user_id",
             "required": true,
@@ -1611,7 +1611,7 @@
         "parameters": [
           {
             "description": "ID of the User to be searched",
-            "example": "cda2b961-a4be-423e-8329-264868f978bd",
+            "example": "9fffe953-3c89-4d47-afee-27133a74d12f",
             "in": "path",
             "name": "user_id",
             "required": true,
@@ -1661,7 +1661,7 @@
         "parameters": [
           {
             "description": "ID of the User to be searched",
-            "example": "836804c3-9dd7-4809-bcb2-e581111347b0",
+            "example": "a4bc751b-4d33-42af-86bd-79dadda8ef03",
             "in": "path",
             "name": "user_id",
             "required": true,

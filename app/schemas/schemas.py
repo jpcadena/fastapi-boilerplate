@@ -225,7 +225,7 @@ def custom_serializer(my_dict: dict[str, Any]) -> dict[str, Any]:
             my_dict[key] = str(value)
         elif isinstance(value, Enum):
             my_dict[key] = value.value
-        elif isinstance(value, datetime):
+        elif isinstance(value, (datetime, date)):
             my_dict[key] = value.isoformat()
         elif isinstance(value, dict):
             custom_serializer(value)

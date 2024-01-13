@@ -23,7 +23,6 @@ from app.db.session import get_session
 from app.exceptions.exceptions import DatabaseException
 from app.models.sql.address import Address as AddressDB
 from app.schemas.external.address import Address, AddressUpdate
-from app.services.infrastructure.services import model_to_response
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -130,10 +129,8 @@ class AddressRepository:
                     address_id
                 )
                 if address_db:
-                    updated_address: Optional[
-                        Address
-                    ] = await model_to_response(  # type: ignore
-                        address_db, Address
+                    updated_address: Address = Address.model_validate(
+                        address_db
                     )
             except DatabaseException as db_exc:
                 logger.error(db_exc)
