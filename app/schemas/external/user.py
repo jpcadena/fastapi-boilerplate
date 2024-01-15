@@ -26,7 +26,7 @@ from app.schemas.schemas import (
     user_update_example,
     user_update_response_example,
 )
-from app.utils.utils import validate_password
+from app.utils.utils import validate_password, validate_phone_number
 
 
 class UserCreate(UserBase, UserOptional):
@@ -163,6 +163,19 @@ class UserUpdate(BaseModel):
         """
         # pylint: disable=no-self-argument
         return validate_password(v)
+
+    @field_validator("phone_number", mode="before")
+    def validate_phone_number(
+        cls, v: Optional[PhoneNumber]
+    ) -> Optional[PhoneNumber]:
+        """
+        Validates the phone number attribute
+        :param v: The phone number value to validate
+        :type v: Optional[PhoneNumber]
+        :return: The validated phone number
+        :rtype: Optional[PhoneNumber]
+        """
+        return validate_phone_number(v)
 
 
 class UserUpdateResponse(

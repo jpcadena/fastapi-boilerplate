@@ -5,12 +5,13 @@ package.
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict, Field, PastDate
+from pydantic import BaseModel, ConfigDict, Field, PastDate, field_validator
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from app.schemas.external.address import Address
 from app.schemas.infrastructure.gender import Gender
 from app.schemas.schemas import common_user_token_example, editable_data_example
+from app.utils.utils import validate_phone_number
 
 
 class EditableData(BaseModel):
@@ -34,6 +35,19 @@ class EditableData(BaseModel):
         title="Address",
         description="Preferred postal address of the User",
     )
+
+    @field_validator("phone_number", mode="before")
+    def validate_phone_number(
+        cls, v: Optional[PhoneNumber]
+    ) -> Optional[PhoneNumber]:
+        """
+        Validates the phone number attribute
+        :param v: The phone number value to validate
+        :type v: Optional[PhoneNumber]
+        :return: The validated phone number
+        :rtype: Optional[PhoneNumber]
+        """
+        return validate_phone_number(v)
 
 
 class CommonUserToken(EditableData):

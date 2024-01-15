@@ -6,46 +6,20 @@ import logging
 import math
 import re
 from ipaddress import AddressValueError, IPv4Address, IPv6Address, ip_address
-from typing import Annotated, Any, Optional, Union
+from typing import Optional, Union
 
 import phonenumbers
 import pycountry
-from fastapi import Depends, Request
+from fastapi import Request
 from pydantic import EmailStr, PositiveInt
 from pydantic_extra_types.phone_numbers import PhoneNumber
 from starlette.datastructures import Address
 
-from app.config.config import get_init_settings, sql_database_setting
+from app.config.config import sql_database_setting
 from app.config.db.auth_settings import AuthSettings
-from app.config.init_settings import InitSettings
 from app.exceptions.exceptions import NotFoundException, ServiceException
-from app.utils.files_utils.json_utils import (
-    get_json_file_path,
-    read_json_file,
-    write_json_file,
-)
-from app.utils.files_utils.openapi_utils import modify_json_data
 
 logger: logging.Logger = logging.getLogger(__name__)
-
-
-async def update_json(
-    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
-) -> None:
-    """
-    Update JSON file for client
-    :param init_settings: Dependency method for cached setting object
-    :type init_settings: InitSettings
-    :return: None
-    :rtype: NoneType
-    """
-    file_path: str = get_json_file_path(init_settings)
-    data: dict[str, Any] = await read_json_file(
-        file_path, init_settings.ENCODING
-    )
-    data = modify_json_data(data)
-    await write_json_file(data, file_path, init_settings.ENCODING)
-    logger.info("Updated OpenAPI JSON file")
 
 
 def hide_email(email: EmailStr) -> str:
@@ -88,16 +62,20 @@ def get_nationality_code(country_name: str) -> str:
     return ""
 
 
-def validate_phone_number(phone_number: PhoneNumber) -> PhoneNumber:
+def validate_phone_number(
+    phone_number: Optional[PhoneNumber],
+) -> Optional[PhoneNumber]:
     """
     Validate the phone number format
     :param phone_number: The phone number to validate
-    :type phone_number: str
+    :type phone_number: Optional[PhoneNumber]
     :return: The validated phone number
-    :rtype: str
+    :rtype: Optional[PhoneNumber]
     """
+    if phone_number is None:
+        return None
     try:
-        parsed_number = phonenumbers.parse(phone_number, None)
+        parsed_number = phonenumbers.parse(str(phone_number), None)
     except phonenumbers.phonenumberutil.NumberParseException as exc:
         raise ValueError from exc
     if not phonenumbers.is_valid_number(parsed_number):

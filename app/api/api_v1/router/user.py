@@ -45,6 +45,7 @@ from app.schemas.infrastructure.user import UserAuth
 from app.services.infrastructure.cached_user import CachedUserService
 from app.services.infrastructure.user import UserService, get_user_service
 from app.tasks.email_tasks.email_tasks import (
+    send_delete_account_email,
     send_new_account_email,
     send_welcome_email,
 )
@@ -338,6 +339,7 @@ async def update_user(
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user(
+    background_tasks: BackgroundTasks,
     user_service: Annotated[UserService, Depends(get_user_service)],
     current_user: Annotated[UserAuth, Depends(get_current_user)],
     user_id: Annotated[
@@ -350,6 +352,8 @@ async def delete_user(
             example=uuid4(),
         ),
     ],
+    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
+    settings: Annotated[Settings, Depends(get_settings)],
 ) -> Response:
     """
     Delete an existing user given their user ID.
@@ -360,15 +364,36 @@ async def delete_user(
     - `:return:` **Json Response object with the deleted information**
     - `:rtype:` **Response**
     \f
+    :param background_tasks: Used for sending an email to confirm delete of
+    account in the background
+    :type background_tasks: BackgroundTasks
     :param user_service: Dependency method for user service layer
     :type user_service: UserService
     :param current_user: Dependency method for authorization by current user
     :type current_user: UserAuth
+    :param init_settings: Dependency method for cached init setting object
+    :type init_settings: InitSettings
+    :param settings: Dependency method for cached setting object
+    :type settings: Settings
     """
+    detail: str = f"User with id {user_id} not found in the system."
+    try:
+        user: Optional[UserResponse] = await user_service.get_user_by_id(
+            user_id
+        )
+    except ServiceException as exc:
+        logger.error(detail)
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=detail
+        ) from exc
+    except NotFoundException as not_found_exc:
+        logger.error(not_found_exc)
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=str(not_found_exc)
+        ) from not_found_exc
     try:
         data: dict[str, Any] = await user_service.delete_user(user_id)
     except SQLAlchemyError as sa_err:
-        detail: str = "The user with this username does not exist in the system"
         logger.error(detail)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=detail
@@ -378,4 +403,12 @@ async def delete_user(
     )
     response.headers["deleted"] = str(data["ok"]).lower()
     response.headers["deleted_at"] = str(data["deleted_at"])
+    if data["ok"] is True and user:
+        background_tasks.add_task(
+            send_delete_account_email,
+            email_to=user.email,
+            username=user.username,
+            init_settings=init_settings,
+            settings=settings,
+        )
     return response

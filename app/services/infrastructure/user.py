@@ -89,21 +89,6 @@ class UserService:
             raise ServiceException(f"User not found with username: {username}")
         return user
 
-    async def get_user_by_username(self, username: str) -> UserResponse:
-        """
-        Retrieve user information by its username
-        :param username: The username to retrieve User from
-        :type username: str
-        :return: User information
-        :rtype: UserResponse
-        """
-        try:
-            user: User = await self.get_login_user(username)
-        except DatabaseException as db_exc:
-            logger.error(str(db_exc))
-            raise ServiceException(str(db_exc)) from db_exc
-        return UserResponse.model_validate(user)
-
     async def get_user_by_email(self, email: EmailStr) -> UserResponse:
         """
         Retrieve user information by its unique email.
@@ -122,25 +107,6 @@ class UserService:
         if not user:
             raise ServiceException(f"User not found with email: {email}")
         return UserResponse.model_validate(user)
-
-    async def get_user_id_by_email(self, email: EmailStr) -> UUID4:
-        """
-        Read the user ID from the database with unique email.
-        :param email: Email to retrieve User from
-        :type email: EmailStr
-        :return: User ID found in database
-        :rtype: UUID4
-        """
-        try:
-            user_id: Optional[UUID4] = await self._user_repo.read_id_by_email(
-                EmailSpecification(email)
-            )
-        except DatabaseException as db_exc:
-            logger.error(str(db_exc))
-            raise ServiceException(str(db_exc)) from db_exc
-        if not user_id:
-            raise ServiceException(f"User ID not found with email: {email}")
-        return user_id
 
     async def register_user(
         self, user: Union[UserCreate, UserSuperCreate]

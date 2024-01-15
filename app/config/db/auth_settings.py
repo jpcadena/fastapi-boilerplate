@@ -33,7 +33,7 @@ class AuthSettings(BaseSettings):
         "JWT token used to authenticate most of" " the API endpoints."
     )
     OAUTH2_REFRESH_TOKEN_DESCRIPTION: str = (
-        "JWT token used to authenticate" " most ofhe API endpoints."
+        "JWT token used to authenticate" " most of he API endpoints."
     )
     TOKEN_USER_INFO_REGEX: str = (
         r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-"

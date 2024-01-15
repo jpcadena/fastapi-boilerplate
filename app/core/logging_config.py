@@ -62,7 +62,7 @@ def _setup_mail_handler(
             settings.SMTP_USER,
             settings.SMTP_PASSWORD,
         )
-        mail_handler = SMTPHandler(
+        mail_handler: SMTPHandler = SMTPHandler(
             mailhost=settings.SMTP_USER,
             fromaddr=settings.EMAILS_FROM_EMAIL,
             toaddrs=settings.SMTP_USER,

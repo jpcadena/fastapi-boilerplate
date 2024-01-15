@@ -4,7 +4,14 @@ A module for user base in the app.schemas.infrastructure package.
 from datetime import date, datetime
 from typing import Optional
 
-from pydantic import UUID4, BaseModel, ConfigDict, EmailStr, Field
+from pydantic import (
+    UUID4,
+    BaseModel,
+    ConfigDict,
+    EmailStr,
+    Field,
+    field_validator,
+)
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from app.schemas.external.address import Address
@@ -17,6 +24,7 @@ from app.schemas.schemas import (
     user_password_example,
     username_example,
 )
+from app.utils.utils import validate_phone_number
 
 
 class UserID(BaseModel):
@@ -96,6 +104,19 @@ class UserOptional(BaseModel):
     address: Optional[Address] = Field(
         default=None, title="Address", description="Address of the User"
     )
+
+    @field_validator("phone_number", mode="before")
+    def validate_phone_number(
+        cls, v: Optional[PhoneNumber]
+    ) -> Optional[PhoneNumber]:
+        """
+        Validates the phone number attribute
+        :param v: The phone number value to validate
+        :type v: Optional[PhoneNumber]
+        :return: The validated phone number
+        :rtype: Optional[PhoneNumber]
+        """
+        return validate_phone_number(v)
 
 
 class UserBaseAuth(BaseModel):
