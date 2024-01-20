@@ -1,7 +1,6 @@
 """
 A module for password in the app.utils.security package.
 """
-
 import logging
 from datetime import datetime, timedelta, timezone
 from typing import Annotated, Any, Optional

@@ -1,7 +1,6 @@
 """
 A module for ip blacklist in the app.services.infrastructure package.
 """
-
 import logging
 from datetime import datetime, timezone
 from typing import Annotated

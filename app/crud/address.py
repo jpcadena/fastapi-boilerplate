@@ -2,7 +2,6 @@
 This script handles CRUD (Create, Read, Update, Delete) operations for
  Address objects in the database.
 """
-
 import logging
 from datetime import datetime, timezone
 from typing import Any, Optional

@@ -2,7 +2,6 @@
 This module handles JSON Web Token (JWT) creation for authentication
  and authorization.
 """
-
 import logging
 from datetime import datetime, timedelta, timezone
 from typing import Annotated, Any, Optional
