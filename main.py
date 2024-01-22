@@ -6,6 +6,7 @@ This module sets up the application configuration including logging,
 import logging
 from functools import partial
 
+import uvicorn
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
@@ -83,3 +84,7 @@ async def check_health() -> JSONResponse:
     - `rtype:` **JSONResponse**
     """
     return JSONResponse({"status": "healthy"})
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=80, reload=True)
