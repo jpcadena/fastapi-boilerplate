@@ -90,7 +90,7 @@ class AddressRepository:
     @benchmark
     async def update_address(
         self, address_id: IdSpecification, address: AddressUpdate
-    ) -> Optional[Address]:
+    ) -> Address:
         """
         Update the information of an address in the database
         :param address_id: The id of the address to update
@@ -99,7 +99,7 @@ class AddressRepository:
          address
         :type address: AddressUpdate
         :return: The updated address, or None if no such address exists
-        :rtype: Optional[Address]
+        :rtype: Address
         """
         async with self.session as session:
             try:
@@ -127,10 +127,11 @@ class AddressRepository:
                 address_db: Optional[AddressDB] = await self.read_by_id(
                     address_id
                 )
-                if address_db:
-                    updated_address: Address = Address.model_validate(
-                        address_db
+                if not address_db:
+                    raise DatabaseException(
+                        f"Address with ID {address_id} not found"
                     )
+                updated_address: Address = Address.model_validate(address_db)
             except DatabaseException as db_exc:
                 logger.error(db_exc)
                 raise DatabaseException(str(db_exc)) from db_exc

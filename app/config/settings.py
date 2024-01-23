@@ -8,6 +8,7 @@ from pydantic import (
     AnyHttpUrl,
     EmailStr,
     FilePath,
+    IPvAnyAddress,
     PositiveInt,
     field_validator,
 )
@@ -27,6 +28,10 @@ class Settings(BaseSettings):
         extra="allow",
     )
 
+    SERVER_HOST: IPvAnyAddress
+    SERVER_PORT: PositiveInt
+    SERVER_RELOAD: bool
+    SERVER_LOG_LEVEL: str
     SMTP_PORT: PositiveInt
     SMTP_HOST: str
     SMTP_USER: str
