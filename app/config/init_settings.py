@@ -7,9 +7,9 @@ from datetime import date, datetime
 from pathlib import Path
 from uuid import uuid4
 
+from authlib.jose import jwt
 from fastapi.encoders import jsonable_encoder
 from fastapi.openapi.models import Example
-from jose import jwt
 from pydantic import PositiveInt
 from pydantic_extra_types.phone_numbers import PhoneNumber
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -275,7 +275,8 @@ class InitSettings(BaseSettings):
             "description": "A **normal** authorization token object that works "
             "correctly.",
             "value": jwt.encode(
-                claims=jsonable_encoder(
+                header={"alg": "HS256"},
+                payload=jsonable_encoder(
                     {
                         "sub": f"username:{str(uuid4())}",
                         "nationalities": ["ECU"],
@@ -303,7 +304,6 @@ class InitSettings(BaseSettings):
                 ),
                 key="f52e826e62cdd364c86f129cb18db2fe2be93859c5104cac9585f"
                 "305378dce65",
-                algorithm="HS256",
             ),
         },
         "invalid": {

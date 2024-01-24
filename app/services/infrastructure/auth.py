@@ -98,10 +98,10 @@ class AuthService:
             user, auth_settings, Scope.REFRESH_TOKEN
         )
         access_token: str = create_access_token(
-            payload=access_payload, auth_settings=auth_settings
+            token_payload=access_payload, auth_settings=auth_settings
         )
         refresh_token: str = create_refresh_token(
-            payload=refresh_payload, auth_settings=auth_settings
+            token_payload=refresh_payload, auth_settings=auth_settings
         )
         return Token(access_token=access_token, refresh_token=refresh_token)
 

@@ -225,7 +225,7 @@ async def recover_password(
         user = None
     if user:
         password_reset_token: str = generate_password_reset_token(
-            email, auth_settings
+            email, auth_settings, init_settings
         )
         await send_reset_password_email(
             user.email,
