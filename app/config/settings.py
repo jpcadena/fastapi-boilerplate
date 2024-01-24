@@ -98,7 +98,7 @@ class Settings(BaseSettings):
 
     @field_validator("CONTACT", mode="before")
     def assemble_contact(
-        cls, v: Optional[str], info: ValidationInfo
+        cls, v: Optional[str], info: ValidationInfo  # noqa: argument-unused
     ) -> dict[str, str]:
         """
         Assemble contact information
@@ -109,7 +109,6 @@ class Settings(BaseSettings):
         :return: The contact attribute
         :rtype: dict[str, str]
         """
-        # pylint: disable=unused-argument,no-self-argument,invalid-name
         if info.config is None:
             raise ValueError("info.config cannot be None")
         contact: dict[str, Any] = {}

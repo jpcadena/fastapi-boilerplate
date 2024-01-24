@@ -40,7 +40,7 @@ class SQLDatabaseSettings(BaseSettings):
 
     @field_validator("SQLALCHEMY_DATABASE_URI", mode="before")
     def assemble_postgresql_connection(
-        cls, v: Optional[str], info: ValidationInfo
+        cls, v: Optional[str], info: ValidationInfo  # noqa: argument-unused
     ) -> PostgresDsn:
         """
         Assemble the database connection as URI string
@@ -51,7 +51,6 @@ class SQLDatabaseSettings(BaseSettings):
         :return: SQLAlchemy URI
         :rtype: PostgresDsn
         """
-        # pylint: disable=no-self-argument,invalid-name
         if info.config is None:
             raise ValueError("info.config cannot be None")
         uri: MultiHostUrl = MultiHostUrl.build(

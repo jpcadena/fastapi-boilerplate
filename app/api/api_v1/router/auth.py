@@ -327,7 +327,9 @@ async def logout(
             openapi_examples=init_setting.AUTHORIZATION_HEADER_EXAMPLES,
         ),
     ],
-    current_user: Annotated[UserAuth, Depends(get_current_user)],
+    current_user: Annotated[  # noqa: argument-unused
+        UserAuth, Depends(get_current_user)
+    ],
     redis: Annotated[Redis, Depends(get_redis_dep)],  # type: ignore
 ) -> Msg:
     """

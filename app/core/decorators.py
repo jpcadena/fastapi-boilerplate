@@ -59,10 +59,7 @@ def with_logging(func: Callable[..., Any]) -> Callable[..., Any]:
         logger.info("Finished %s", func.__name__)
         return value
 
-    if asyncio.iscoroutinefunction(func):
-        return async_wrapper
-    else:
-        return sync_wrapper
+    return async_wrapper if asyncio.iscoroutinefunction(func) else sync_wrapper
 
 
 def benchmark(func: Callable[..., Any]) -> Callable[..., Any]:
@@ -117,7 +114,4 @@ def benchmark(func: Callable[..., Any]) -> Callable[..., Any]:
         logger.info("Execution of %s took %s seconds.", func.__name__, run_time)
         return value
 
-    if asyncio.iscoroutinefunction(func):
-        return async_wrapper
-    else:
-        return sync_wrapper
+    return async_wrapper if asyncio.iscoroutinefunction(func) else sync_wrapper

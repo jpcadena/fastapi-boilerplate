@@ -56,7 +56,9 @@ router: APIRouter = APIRouter(prefix="/user", tags=["user"])
 
 @router.get("", response_model=UsersResponse)
 async def get_users(
-    current_user: Annotated[UserAuth, Depends(get_current_user)],
+    current_user: Annotated[  # noqa: argument-unused
+        UserAuth, Depends(get_current_user)
+    ],
     user_service: Annotated[UserService, Depends(get_user_service)],
     skip: Annotated[
         NonNegativeInt,
@@ -227,7 +229,9 @@ async def get_user_me(
 @router.get("/{user_id}", response_model=UserResponse)
 async def get_user_by_id(
     user_service: Annotated[UserService, Depends(get_user_service)],
-    current_user: Annotated[UserAuth, Depends(get_current_user)],
+    current_user: Annotated[  # noqa: argument-unused
+        UserAuth, Depends(get_current_user)
+    ],
     user_id: Annotated[
         UUID4,
         Path(
@@ -284,7 +288,9 @@ async def get_user_by_id(
 @router.put("/{user_id}", response_model=UserUpdateResponse)
 async def update_user(
     user_service: Annotated[UserService, Depends(get_user_service)],
-    current_user: Annotated[UserAuth, Depends(get_current_user)],
+    current_user: Annotated[  # noqa: argument-unused
+        UserAuth, Depends(get_current_user)
+    ],
     user_id: Annotated[
         UUID4,
         Path(
@@ -341,7 +347,9 @@ async def update_user(
 async def delete_user(
     background_tasks: BackgroundTasks,
     user_service: Annotated[UserService, Depends(get_user_service)],
-    current_user: Annotated[UserAuth, Depends(get_current_user)],
+    current_user: Annotated[  # noqa: argument-unused
+        UserAuth, Depends(get_current_user)
+    ],
     user_id: Annotated[
         UUID4,
         Path(

@@ -59,7 +59,7 @@ class AuthSettings(BaseSettings):
 
     @field_validator("AUDIENCE", mode="before")
     def assemble_audience(
-        cls, v: Optional[str], info: ValidationInfo
+        cls, v: Optional[str], info: ValidationInfo  # noqa: argument-unused
     ) -> AnyHttpUrl:
         """
         Combine server host and API_V1_STR to create the audience
@@ -71,7 +71,6 @@ class AuthSettings(BaseSettings):
         :return: The AUDIENCE attribute
         :rtype: AnyHttpUrl
         """
-        # pylint: disable=unused-argument,no-self-argument,invalid-name
         if info.config is None:
             raise ValueError("info.config cannot be None")
         return AnyHttpUrl(
@@ -88,7 +87,7 @@ class AuthSettings(BaseSettings):
 
     @field_validator("REDIS_DATABASE_URI", mode="before")
     def assemble_redis_connection(
-        cls, v: Optional[str], info: ValidationInfo
+        cls, v: Optional[str], info: ValidationInfo  # noqa: argument-unused
     ) -> RedisDsn:
         """
         Assemble the cache database connection as URI string
@@ -99,7 +98,6 @@ class AuthSettings(BaseSettings):
         :return: Redis URI
         :rtype: RedisDsn
         """
-        # pylint: disable=no-self-argument,invalid-name
         if info.config is None:
             raise ValueError("info.config cannot be None")
         return RedisDsn(

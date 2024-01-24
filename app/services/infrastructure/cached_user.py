@@ -39,7 +39,8 @@ class CachedUserService:
         if not value:
             return None
         user_data: dict[str, Any] = json.loads(value)
-        if address_data := user_data.pop("address", None):
+        address_data: dict[str, Any] = user_data.pop("address", {})
+        if address_data is not None:
             address_instance: Address = Address(**address_data)
             address_create: AddressDB = AddressDB(
                 **address_instance.model_dump()

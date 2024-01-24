@@ -181,17 +181,15 @@ class UserService:
         :return: Data to confirmation info about the delete process
         :rtype: dict[str, Any]
         """
-        deleted: bool
-        deleted_at: Optional[datetime]
+        deleted: bool = False
+        deleted_at: Optional[datetime] = None
         try:
             deleted = await self._user_repo.delete_user(
                 IdSpecification(user_id)
             )
-            deleted_at = datetime.now()
+            deleted_at = datetime.now() if deleted else None
         except DatabaseException as db_exc:
             logger.error(str(db_exc))
-            deleted = False
-            deleted_at = None
         finally:
             return {"ok": deleted, "deleted_at": deleted_at}
 

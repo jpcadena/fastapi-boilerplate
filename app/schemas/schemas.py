@@ -92,7 +92,6 @@ updated_user_base_auth_example.pop("gender")
 updated_user_base_auth_example.pop("birthdate")
 updated_user_base_auth_example.pop("phone_number")
 
-
 user_auth_example: JsonDict = merge_examples(
     id_example["example"], updated_user_base_auth_example
 )
@@ -210,6 +209,19 @@ common_user_token_example.pop("preferred_name")
 editable_data_example: JsonDict = merge_examples(
     {"phone_number": common_user_data["phone_number"]}, address_update_example
 )
+user_agent_example: str = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/58.0.3029.110 Safari/537.3"
+)
+raw_rate_limiter_example: JsonDict = {
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+    " AppleWebKit/537.36 (KHTML, like Gecko)"
+    " Chrome/58.0.3029.110 Safari/537.3",
+    "request_path": "/api/v1/data",
+}
+rate_limiter_example: JsonDict = merge_examples(raw_rate_limiter_example)
 
 
 def custom_serializer(my_dict: dict[str, Any]) -> dict[str, Any]:
