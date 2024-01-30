@@ -73,7 +73,7 @@ python = "^3.11"
 fastapi = { extras = ["all"], version = "^0.109.0" }
 uvicorn = { extras = ["standard"], version = "^0.27.0" }
 starlette = "0.35.1"
-pydantic = "^2.5.3"
+pydantic = "^2.6.0"
 pydantic-settings = "^2.1.0"
 pydantic-extra-types = "^2.4.1"
 email-validator = "^2.1.0.post1"
