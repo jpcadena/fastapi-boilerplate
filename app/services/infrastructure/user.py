@@ -1,12 +1,13 @@
 """
 User Service to handle business logic
 """
+
 import logging
 from datetime import datetime
-from typing import Annotated, Any, Optional, Union
+from typing import Annotated, Any
 
 from fastapi import Depends
-from pydantic import UUID4, EmailStr, NonNegativeInt, PositiveInt
+from pydantic import EmailStr, NonNegativeInt, PositiveInt, UUID4
 from redis.asyncio import Redis
 
 from app.api.deps import get_redis_dep
@@ -49,7 +50,7 @@ class UserService:
         self._redis: Redis = redis  # type: ignore
         self._cache_seconds: PositiveInt = auth_setting.CACHE_SECONDS
 
-    async def get_user_by_id(self, user_id: UUID4) -> Optional[UserResponse]:
+    async def get_user_by_id(self, user_id: UUID4) -> UserResponse | None:
         """
         Retrieve user information by its unique identifier
         :param user_id: The unique identifier of the user
@@ -57,7 +58,7 @@ class UserService:
         :return: User information
         :rtype: Optional[UserResponse]
         """
-        user: Optional[User]
+        user: User | None
         try:
             user = await self._user_repo.read_by_id(IdSpecification(user_id))
         except DatabaseException as db_exc:
@@ -79,7 +80,7 @@ class UserService:
         :rtype: User
         """
         try:
-            user: Optional[User] = await self._user_repo.read_by_username(
+            user: User | None = await self._user_repo.read_by_username(
                 UsernameSpecification(username)
             )
         except DatabaseException as db_exc:
@@ -98,7 +99,7 @@ class UserService:
         :rtype: UserResponse
         """
         try:
-            user: Optional[User] = await self._user_repo.read_by_email(
+            user: User | None = await self._user_repo.read_by_email(
                 EmailSpecification(email)
             )
         except DatabaseException as db_exc:
@@ -109,7 +110,7 @@ class UserService:
         return UserResponse.model_validate(user)
 
     async def register_user(
-        self, user: Union[UserCreate, UserSuperCreate]
+            self, user: UserCreate | UserSuperCreate
     ) -> UserCreateResponse:
         """
         Register a new user in the database
@@ -127,7 +128,7 @@ class UserService:
         return UserCreateResponse.model_validate(created_user)
 
     async def get_users(
-        self, offset: Optional[NonNegativeInt], limit: Optional[PositiveInt]
+            self, offset: NonNegativeInt | None, limit: PositiveInt | None
     ) -> list[UserResponse]:
         """
         Retrieve users' information from the table
@@ -161,7 +162,7 @@ class UserService:
         :rtype: UserUpdateResponse
         """
         try:
-            updated_user: Optional[User] = await self._user_repo.update_user(
+            updated_user: User | None = await self._user_repo.update_user(
                 IdSpecification(user_id), user
             )
         except DatabaseException as db_exc:
@@ -182,7 +183,7 @@ class UserService:
         :rtype: dict[str, Any]
         """
         deleted: bool = False
-        deleted_at: Optional[datetime] = None
+        deleted_at: datetime | None = None
         try:
             deleted = await self._user_repo.delete_user(
                 IdSpecification(user_id)

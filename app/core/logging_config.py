@@ -3,6 +3,7 @@ This script sets up different logging handlers for the Core module.
 It provides console, file, and mail logging capabilities based on the
  provided settings.
 """
+
 import logging
 import os
 from datetime import datetime

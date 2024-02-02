@@ -1,8 +1,9 @@
 """
 A module for settings in the app.core.config package.
 """
+
 import os
-from typing import Any, Optional, Union
+from typing import Any
 
 from pydantic import (
     AnyHttpUrl,
@@ -38,8 +39,8 @@ class Settings(BaseSettings):
     SMTP_PASSWORD: str
     MAIL_SUBJECT: str
     MAIL_TIMEOUT: float
-    EMAILS_FROM_EMAIL: Optional[EmailStr] = None
-    EMAILS_FROM_NAME: Optional[str] = None
+    EMAILS_FROM_EMAIL: EmailStr | None = None
+    EMAILS_FROM_NAME: str | None = None
     SUPERUSER_EMAIL: EmailStr
     SUPERUSER_FIRST_NAME: str
     SUPERUSER_PASSWORD: str
@@ -73,9 +74,7 @@ class Settings(BaseSettings):
         return key_path
 
     @field_validator("BACKEND_CORS_ORIGINS", mode="before")
-    def assemble_cors_origins(
-        cls, v: Union[str, list[str]]
-    ) -> Union[list[str], str]:
+    def assemble_cors_origins(cls, v: str | list[str]) -> list[str] | str:
         """
         Assemble a list of allowed CORS origins.
         :param v: Provided CORS origins, either a string or a list of
@@ -91,14 +90,14 @@ class Settings(BaseSettings):
             return v
         raise ValueError(v)
 
-    CONTACT_NAME: Optional[str] = None
-    CONTACT_URL: Optional[AnyHttpUrl] = None
-    CONTACT_EMAIL: Optional[EmailStr] = None
-    CONTACT: Optional[dict[str, Any]] = None
+    CONTACT_NAME: str | None = None
+    CONTACT_URL: AnyHttpUrl | None = None
+    CONTACT_EMAIL: EmailStr | None = None
+    CONTACT: dict[str, Any] | None = None
 
     @field_validator("CONTACT", mode="before")
     def assemble_contact(
-        cls, v: Optional[str], info: ValidationInfo  # noqa: argument-unused
+            cls, v: str | None, info: ValidationInfo  # noqa: argument-unused
     ) -> dict[str, str]:
         """
         Assemble contact information

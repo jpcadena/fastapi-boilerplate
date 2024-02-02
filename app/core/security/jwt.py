@@ -2,9 +2,10 @@
 This module handles JSON Web Token (JWT) creation for authentication
  and authorization.
 """
+
 import logging
-from datetime import datetime, timedelta, timezone
-from typing import Annotated, Any, Optional
+from datetime import UTC, datetime, timedelta
+from typing import Annotated, Any
 
 from authlib.jose import JoseError, jwt
 from fastapi import Depends
@@ -19,7 +20,7 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 
 def _generate_expiration_time(
-    expires_delta: Optional[timedelta], minutes: Optional[float] = None
+        expires_delta: timedelta | None, minutes: float | None = None
 ) -> datetime:
     """
     Generate an expiration time for JWT
@@ -33,9 +34,9 @@ def _generate_expiration_time(
     :rtype: datetime
     """
     if expires_delta:
-        return datetime.now(timezone.utc) + expires_delta
+        return datetime.now(UTC) + expires_delta
     if minutes is not None:
-        return datetime.now(timezone.utc) + timedelta(minutes=minutes)
+        return datetime.now(UTC) + timedelta(minutes=minutes)
     value_error: ValueError = ValueError(
         "Either 'expires_delta' or 'minutes' must be provided."
     )
@@ -47,7 +48,7 @@ def create_access_token(
     token_payload: TokenPayload,
     auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
     scope: Scope = Scope.ACCESS_TOKEN,
-    expires_delta: Optional[timedelta] = None,
+        expires_delta: timedelta | None = None,
 ) -> str:
     """
     Create a new JWT access token

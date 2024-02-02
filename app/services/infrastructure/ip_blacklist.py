@@ -1,8 +1,9 @@
 """
 A module for ip blacklist in the app.services.infrastructure package.
 """
+
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Annotated
 
 from fastapi import Depends
@@ -53,7 +54,7 @@ class IPBlacklistService:
         await self._redis.setex(
             self.get_redis_key(ip),
             self._expiration_seconds,
-            f"Blacklisted at {datetime.now(timezone.utc).isoformat()}",
+            f"Blacklisted at {datetime.now(UTC).isoformat()}",
         )
 
     @staticmethod

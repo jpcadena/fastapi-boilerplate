@@ -1,6 +1,7 @@
 """
 A module for token in the app-models package for the Redis database.
 """
+
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.config.config import auth_setting

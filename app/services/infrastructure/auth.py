@@ -1,9 +1,10 @@
 """
 A module for auth in the app.services package.
 """
+
 import logging
 import time
-from typing import Annotated, Any, Optional
+from typing import Annotated, Any
 
 from fastapi import Depends, HTTPException, status
 from redis.asyncio import Redis
@@ -30,7 +31,7 @@ class AuthService:
     def _build_payload(
         user: User,
         auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
-        scope: Optional[Scope] = None,
+            scope: Scope | None = None,
     ) -> TokenPayload:
         """
         Build JWT payload for authentication

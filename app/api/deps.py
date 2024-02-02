@@ -4,9 +4,11 @@ This module provides API dependencies that can be utilized across
 It includes authentication utilities, connection handlers for external
  services like Redis, and factory functions for service classes.
 """
+
 import logging
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from typing import Annotated, Any, AsyncGenerator, Optional
+from typing import Annotated, Any
 
 from fastapi import Depends
 from redis.asyncio import Redis
@@ -24,7 +26,7 @@ class RedisConnectionManager:
 
     def __init__(self, auth_settings: AuthSettings):
         self.url: str = f"{auth_settings.REDIS_DATABASE_URI}"
-        self.pool: Optional[Redis] = None  # type: ignore
+        self.pool: Redis | None = None  # type: ignore
 
     async def start(self) -> None:
         """
@@ -44,7 +46,7 @@ class RedisConnectionManager:
         """
         await self.pool.close()  # type: ignore
 
-    async def get_connection(self) -> Optional[Redis]:  # type: ignore
+    async def get_connection(self) -> Redis | None:  # type: ignore
         """
         Get the connection
         :return: The redis connection

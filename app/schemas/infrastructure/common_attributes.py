@@ -2,8 +2,8 @@
 A module for common attributes between User and Token in the app-schemas
 package.
 """
+
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field, PastDate, field_validator
 from pydantic_extra_types.phone_numbers import PhoneNumber
@@ -24,7 +24,7 @@ class EditableData(BaseModel):
         json_schema_extra=editable_data_example,
     )
 
-    phone_number: Optional[PhoneNumber] = Field(
+    phone_number: PhoneNumber | None = Field(
         default=None,
         title="Telephone",
         description="Preferred telephone number of the User",
@@ -37,9 +37,7 @@ class EditableData(BaseModel):
     )
 
     @field_validator("phone_number", mode="before")
-    def validate_phone_number(
-        cls, v: Optional[PhoneNumber]
-    ) -> Optional[PhoneNumber]:
+    def validate_phone_number(cls, v: PhoneNumber | None) -> PhoneNumber | None:
         """
         Validates the phone number attribute
         :param v: The phone number value to validate
@@ -73,19 +71,19 @@ class CommonUserToken(EditableData):
         min_length=1,
         max_length=50,
     )
-    middle_name: Optional[str] = Field(
+    middle_name: str | None = Field(
         ...,
         title="Middle name",
         description="Middle name(s) of the User",
         max_length=50,
     )
-    gender: Optional[Gender] = Field(
+    gender: Gender | None = Field(
         default=Gender.MALE, title="Gender", description="Gender of the User"
     )
-    birthdate: Optional[PastDate] = Field(
+    birthdate: PastDate | None = Field(
         default=None, title="Birthdate", description="Birthday of the User"
     )
-    updated_at: Optional[datetime] = Field(
+    updated_at: datetime | None = Field(
         default=None,
         title="Updated at",
         description="Time the User information was last updated",

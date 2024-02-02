@@ -1,21 +1,14 @@
 """
 A module for token in the app-schemas package.
 """
+
 import re
-from typing import Literal, Optional
+from typing import Literal
 from uuid import uuid4
 
-from pydantic import (
-    UUID4,
-    AnyHttpUrl,
-    AnyUrl,
-    BaseModel,
-    ConfigDict,
-    EmailStr,
-    Field,
-    NonNegativeInt,
-    field_validator,
-)
+from pydantic import (AnyHttpUrl, AnyUrl, BaseModel, ConfigDict, EmailStr,
+                      Field, NonNegativeInt, UUID4, field_validator
+                      )
 
 from app.config.config import auth_setting
 from app.exceptions.exceptions import ServiceException
@@ -73,7 +66,7 @@ class RegisteredClaimsToken(BaseModel):
         json_schema_extra=registered_claims_token_example,
     )
 
-    iss: Optional[AnyUrl] = Field(
+    iss: AnyUrl | None = Field(
         default=auth_setting.SERVER_URL,
         title="Issuer",
         description="Principal that issued JWT as HTTP URL",
@@ -87,7 +80,7 @@ class RegisteredClaimsToken(BaseModel):
         min_length=45,
         max_length=45,
     )
-    aud: Optional[str] = Field(
+    aud: str | None = Field(
         default=f"{auth_setting.AUDIENCE}",
         title="Audience",
         description="Recipient of JWT",
@@ -108,17 +101,17 @@ class RegisteredClaimsToken(BaseModel):
     iat: NonNegativeInt = Field(
         ..., title="Issued At", description="Time at which the JWT was issued"
     )
-    jti: Optional[UUID4] = Field(
+    jti: UUID4 | None = Field(
         default_factory=uuid4,
         title="JWT ID",
         description="Unique Identifier for the JWT",
     )
-    sid: Optional[UUID4] = Field(
+    sid: UUID4 | None = Field(
         default_factory=uuid4,
         title="Session ID",
         description="Session ID",
     )
-    scope: Optional[Scope] = Field(
+    scope: Scope | None = Field(
         default=Scope.ACCESS_TOKEN, title="Scope", description="Scope value"
     )
     at_use_nbr: int = Field(
@@ -129,15 +122,15 @@ class RegisteredClaimsToken(BaseModel):
         gt=0,
         le=30,
     )
-    nationalities: Optional[list[str]] = Field(
+    nationalities: list[str] | None = Field(
         default=["ECU"],
         title="Nationalities",
         description="String array representing the End-User's nationalities",
         min_length=1,
         max_length=200,
     )
-    htm: Optional[Literal[HttpMethod.POST]] = HttpMethod.POST
-    htu: Optional[AnyHttpUrl] = Field(
+    htm: Literal[HttpMethod.POST] | None = HttpMethod.POST
+    htu: AnyHttpUrl | None = Field(
         default=AnyHttpUrl(
             f"{auth_setting.SERVER_URL}{auth_setting.TOKEN_URL}",
         ),
@@ -146,7 +139,7 @@ class RegisteredClaimsToken(BaseModel):
     )
 
     @field_validator("sub", mode="before")
-    def username_starts_with_non_zero(cls, v: Optional[str]) -> str:
+    def username_starts_with_non_zero(cls, v: str | None) -> str:
         """
         Validate that the username starts with a non-zero
         :param v: The sub value
@@ -232,7 +225,7 @@ class TokenResetPassword(BaseModel):
     )
 
     @field_validator("password", mode="before")
-    def validate_password(cls, v: Optional[str]) -> str:
+    def validate_password(cls, v: str | None) -> str:
         """
         Validates the password attribute
         :param v: The password to be validated

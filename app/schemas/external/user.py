@@ -1,8 +1,8 @@
 """
 A module for user schema in the app schemas package.
 """
+
 from datetime import date, datetime
-from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 from pydantic_extra_types.phone_numbers import PhoneNumber
@@ -48,7 +48,7 @@ class UserCreate(UserBase, UserOptional):
     )
 
     @field_validator("password", mode="before")
-    def validate_password(cls, v: Optional[str]) -> str:
+    def validate_password(cls, v: str | None) -> str:
         """
         Validates the password attribute
         :param v: The password to be validated
@@ -98,62 +98,62 @@ class UserUpdate(BaseModel):
         json_schema_extra=user_update_example,
     )
 
-    username: Optional[str] = Field(
+    username: str | None = Field(
         default=None,
         title="Username",
         description="Username to identify the user",
         min_length=4,
         max_length=15,
     )
-    email: Optional[EmailStr] = Field(
+    email: EmailStr | None = Field(
         default=None,
         title="Email",
         description="Preferred e-mail address of the User",
     )
-    first_name: Optional[str] = Field(
+    first_name: str | None = Field(
         default=None,
         title="First name",
         description="First name(s) of the User",
         min_length=1,
         max_length=50,
     )
-    middle_name: Optional[str] = Field(
+    middle_name: str | None = Field(
         default=None,
         title="Middle Name",
         description="Middle name(s) of the User",
         max_length=50,
     )
-    last_name: Optional[str] = Field(
+    last_name: str | None = Field(
         default=None,
         title="Last name",
         description="Last name(s) of the User",
         min_length=1,
         max_length=100,
     )
-    password: Optional[str] = Field(
+    password: str | None = Field(
         default=None,
         title="New Password",
         description="New Password of the User",
         min_length=8,
         max_length=14,
     )
-    gender: Optional[Gender] = Field(
+    gender: Gender | None = Field(
         default=None, title="Gender", description="Gender of the User"
     )
-    birthdate: Optional[date] = Field(
+    birthdate: date | None = Field(
         default=None, title="Birthdate", description="Birthday of the User"
     )
-    phone_number: Optional[PhoneNumber] = Field(
+    phone_number: PhoneNumber | None = Field(
         default=None,
         title="Phone number",
         description="Preferred telephone number of the User",
     )
-    address: Optional[Address] = Field(
+    address: Address | None = Field(
         default=None, title="Address", description="Address of the User"
     )
 
     @field_validator("password", mode="before")
-    def validate_password(cls, v: Optional[str]) -> str:
+    def validate_password(cls, v: str | None) -> str:
         """
         Validates the password attribute
         :param v: The password value to validate
@@ -165,9 +165,7 @@ class UserUpdate(BaseModel):
         return validate_password(v)
 
     @field_validator("phone_number", mode="before")
-    def validate_phone_number(
-        cls, v: Optional[PhoneNumber]
-    ) -> Optional[PhoneNumber]:
+    def validate_phone_number(cls, v: PhoneNumber | None) -> PhoneNumber | None:
         """
         Validates the phone number attribute
         :param v: The phone number value to validate

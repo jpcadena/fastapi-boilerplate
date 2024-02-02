@@ -1,6 +1,7 @@
 """
 A module for locality in the app-models package.
 """
+
 from datetime import datetime
 from typing import TYPE_CHECKING
 

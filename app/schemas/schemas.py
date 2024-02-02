@@ -1,6 +1,7 @@
 """
 A module for schemas in the app-schemas package.
 """
+
 from datetime import date, datetime
 from enum import Enum
 from typing import Any, cast

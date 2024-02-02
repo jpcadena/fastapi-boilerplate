@@ -1,8 +1,10 @@
 """
 A module for ip blacklisting in the app.middlewares package.
 """
+
+from collections.abc import Callable
 from ipaddress import IPv4Address, IPv6Address
-from typing import Any, Callable, Union
+from typing import Any
 
 from fastapi import FastAPI, HTTPException, Request, status
 
@@ -29,7 +31,7 @@ class IPBlacklistMiddleware:
             ip_blacklist_service: IPBlacklistService = (
                 request.app.state.ip_blacklist_service
             )
-            client_ip: Union[IPv4Address, IPv6Address] = get_client_ip(
+            client_ip: IPv4Address | IPv6Address = get_client_ip(
                 request, request.app.state.auth_settings
             )
             if await self.is_blacklisted(ip_blacklist_service, client_ip):
@@ -42,7 +44,7 @@ class IPBlacklistMiddleware:
     @staticmethod
     async def is_blacklisted(
         ip_blacklist_service: IPBlacklistService,
-        ip: Union[IPv4Address, IPv6Address],
+            ip: IPv4Address | IPv6Address,
     ) -> bool:
         """
         Check if the given IP address is blacklisted.

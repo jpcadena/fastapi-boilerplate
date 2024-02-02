@@ -1,6 +1,7 @@
 """
 A module for rate limiter in the app.services.infrastructure package.
 """
+
 from datetime import datetime, timedelta
 from typing import Any
 

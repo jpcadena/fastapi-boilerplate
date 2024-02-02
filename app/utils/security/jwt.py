@@ -1,11 +1,12 @@
 """
 A module for jwt in the app.utils.security package.
 """
+
 import logging
 import time
 from typing import Annotated, Any
 
-from authlib.jose import JoseError, JWTClaims, jwt
+from authlib.jose import JWTClaims, JoseError, jwt
 from authlib.jose.errors import BadSignatureError, ExpiredTokenError
 from fastapi import Depends, HTTPException, status
 

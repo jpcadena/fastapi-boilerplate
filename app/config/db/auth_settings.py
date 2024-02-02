@@ -1,7 +1,6 @@
 """
 A module for auth settings in the app.core.config package.
 """
-from typing import Optional
 
 from pydantic import AnyHttpUrl, PositiveInt, RedisDsn, field_validator
 from pydantic_core import Url
@@ -54,12 +53,12 @@ class AuthSettings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: float
     REFRESH_TOKEN_EXPIRE_MINUTES: PositiveInt
     EMAIL_RESET_TOKEN_EXPIRE_HOURS: PositiveInt
-    AUDIENCE: Optional[AnyHttpUrl] = None
+    AUDIENCE: AnyHttpUrl | None = None
     STRICT_TRANSPORT_SECURITY_MAX_AGE: PositiveInt
 
     @field_validator("AUDIENCE", mode="before")
     def assemble_audience(
-        cls, v: Optional[str], info: ValidationInfo  # noqa: argument-unused
+            cls, v: str | None, info: ValidationInfo  # noqa: argument-unused
     ) -> AnyHttpUrl:
         """
         Combine server host and API_V1_STR to create the audience
@@ -83,11 +82,11 @@ class AuthSettings(BaseSettings):
     REDIS_USERNAME: str
     REDIS_PASSWORD: str
     REDIS_PORT: PositiveInt
-    REDIS_DATABASE_URI: Optional[RedisDsn] = None
+    REDIS_DATABASE_URI: RedisDsn | None = None
 
     @field_validator("REDIS_DATABASE_URI", mode="before")
     def assemble_redis_connection(
-        cls, v: Optional[str], info: ValidationInfo  # noqa: argument-unused
+            cls, v: str | None, info: ValidationInfo  # noqa: argument-unused
     ) -> RedisDsn:
         """
         Assemble the cache database connection as URI string

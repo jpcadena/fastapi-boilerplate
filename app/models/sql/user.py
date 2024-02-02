@@ -1,10 +1,11 @@
 """
 A module for user in the app models package.
 """
+
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from pydantic import UUID4, EmailStr, PastDate
+from pydantic import EmailStr, PastDate, UUID4
 from pydantic_extra_types.phone_numbers import PhoneNumber
 from sqlalchemy import (
     Boolean,

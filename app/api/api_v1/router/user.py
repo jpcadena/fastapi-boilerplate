@@ -3,6 +3,7 @@ User API Router
 This module provides CRUD (Create, Retrieve, Update, Delete) operations
  for users.
 """
+
 import logging
 from typing import Annotated, Any, Optional
 from uuid import uuid4
@@ -17,7 +18,7 @@ from fastapi import (
     status,
 )
 from fastapi.params import Path, Query
-from pydantic import UUID4, NonNegativeInt, PositiveInt
+from pydantic import NonNegativeInt, PositiveInt, UUID4
 from redis.asyncio import Redis
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -33,14 +34,10 @@ from app.config.db.auth_settings import AuthSettings
 from app.config.init_settings import InitSettings
 from app.config.settings import Settings
 from app.exceptions.exceptions import NotFoundException, ServiceException
-from app.schemas.external.user import (
-    UserCreate,
-    UserCreateResponse,
-    UserResponse,
-    UsersResponse,
-    UserUpdate,
-    UserUpdateResponse,
-)
+from app.schemas.external.user import (UserCreate, UserCreateResponse,
+                                       UserResponse, UserUpdate,
+                                       UserUpdateResponse, UsersResponse
+                                       )
 from app.schemas.infrastructure.user import UserAuth
 from app.services.infrastructure.cached_user import CachedUserService
 from app.services.infrastructure.user import UserService, get_user_service
@@ -71,7 +68,7 @@ async def get_users(
         ),
     ] = 0,
     limit: Annotated[
-        Optional[PositiveInt],
+        PositiveInt | None,
         Query(
             annotation=Optional[PositiveInt],
             title="Limit",
@@ -154,9 +151,9 @@ async def create_user(
     :type user_service: UserService
     """
     try:
-        new_user: Optional[
-            UserCreateResponse
-        ] = await user_service.register_user(user)
+        new_user: UserCreateResponse | None = await user_service.register_user(
+            user
+        )
     except ServiceException as exc:
         detail: str = "Error at creating user."
         logger.error(detail)
@@ -207,9 +204,9 @@ async def get_user_me(
     :type redis: Redis
     """
     cached_service: CachedUserService = CachedUserService(redis)
-    cached_user: Optional[
-        UserResponse
-    ] = await cached_service.get_schema_from_cache(current_user.id)
+    cached_user: UserResponse | None = (
+        await cached_service.get_schema_from_cache(current_user.id)
+    )
     if cached_user is not None:
         return cached_user
     try:
@@ -261,9 +258,9 @@ async def get_user_by_id(
     :type redis: Redis
     """
     cached_service: CachedUserService = CachedUserService(redis)
-    cached_user: Optional[
-        UserResponse
-    ] = await cached_service.get_schema_from_cache(user_id)
+    cached_user: UserResponse | None = (
+        await cached_service.get_schema_from_cache(user_id)
+    )
     if cached_user is not None:
         return cached_user
     try:
@@ -310,7 +307,7 @@ async def update_user(
             openapi_examples=init_setting.USER_UPDATE_EXAMPLES,
         ),
     ],
-) -> Optional[UserUpdateResponse]:
+) -> UserUpdateResponse | None:
     """
     Update an existing user's information given their user ID and new
      information.
@@ -331,7 +328,7 @@ async def update_user(
     :type current_user: UserAuth
     """
     try:
-        user: Optional[UserUpdateResponse] = await user_service.update_user(
+        user: UserUpdateResponse | None = await user_service.update_user(
             user_id, user_in
         )
     except ServiceException as exc:
@@ -386,9 +383,7 @@ async def delete_user(
     """
     detail: str = f"User with id {user_id} not found in the system."
     try:
-        user: Optional[UserResponse] = await user_service.get_user_by_id(
-            user_id
-        )
+        user: UserResponse | None = await user_service.get_user_by_id(user_id)
     except ServiceException as exc:
         logger.error(detail)
         raise HTTPException(

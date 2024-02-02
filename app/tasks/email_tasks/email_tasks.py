@@ -1,6 +1,7 @@
 """
 A module for email utilities in the app.utils package.
 """
+
 from pathlib import Path
 from typing import Annotated
 

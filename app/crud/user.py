@@ -2,11 +2,12 @@
 This script handles CRUD (Create, Read, Update, Delete) operations for
  User objects in the database.
 """
-import logging
-from datetime import datetime, timezone
-from typing import Any, Optional, Union
 
-from pydantic import UUID4, NonNegativeInt, PositiveInt
+import logging
+from datetime import UTC, datetime
+from typing import Any
+
+from pydantic import NonNegativeInt, PositiveInt, UUID4
 from sqlalchemy import select
 from sqlalchemy.engine import Result, ScalarResult
 from sqlalchemy.exc import SQLAlchemyError
@@ -55,7 +56,7 @@ class UserRepository:
         self.model: User = User  # type: ignore
         # self._encryption_service: EncryptionService = get_encryption_service()
 
-    async def read_by_id(self, _id: IdSpecification) -> Optional[User]:
+    async def read_by_id(self, _id: IdSpecification) -> User | None:
         """
         Retrieve a user from the database by its id
         :param _id: The id of the user
@@ -76,7 +77,7 @@ class UserRepository:
 
     async def read_by_username(
         self, username: UsernameSpecification
-    ) -> Optional[User]:
+    ) -> User | None:
         """
         Retrieve a user from the database by its username
         :param username: The username of the user
@@ -94,7 +95,7 @@ class UserRepository:
                 raise DatabaseException(str(db_exc)) from db_exc
             return user
 
-    async def read_by_email(self, email: EmailSpecification) -> Optional[User]:
+    async def read_by_email(self, email: EmailSpecification) -> User | None:
         """
         Retrieve a user from the database by its email
         :param email: The email of the user
@@ -105,7 +106,7 @@ class UserRepository:
         """
         async with self.session as session:
             try:
-                user: Optional[User] = await self.unique_filter.filter(
+                user: User | None = await self.unique_filter.filter(
                     email, session, self.model, "email"
                 )
             except SQLAlchemyError as db_exc:
@@ -158,7 +159,7 @@ class UserRepository:
                     self.model.email == email.value
                 )
                 result: Result = await session.execute(stmt)
-                user_id: Optional[UUID4] = result.scalar()
+                user_id: UUID4 | None = result.scalar()
             except SQLAlchemyError as db_exc:
                 logger.error(db_exc)
                 raise DatabaseException(str(db_exc)) from db_exc
@@ -172,7 +173,7 @@ class UserRepository:
     @benchmark
     async def create_user(
         self,
-        user: Union[UserCreate, UserSuperCreate],
+            user: UserCreate | UserSuperCreate,
     ) -> User:
         """
         Create a new user in the database.
@@ -202,7 +203,7 @@ class UserRepository:
                 logger.error(sa_exc)
                 await session.rollback()
                 raise DatabaseException(str(sa_exc)) from sa_exc
-            created_user: Optional[User] = await self.read_by_id(
+            created_user: User | None = await self.read_by_id(
                 IdSpecification(user_create.id)
             )
             if not created_user:
@@ -211,7 +212,7 @@ class UserRepository:
 
     async def update_user(
         self, user_id: IdSpecification, user: UserUpdate
-    ) -> Optional[User]:
+    ) -> User | None:
         """
         Update the information of a user in the database
         :param user_id: The id of the user to update
@@ -224,7 +225,7 @@ class UserRepository:
         """
         async with self.session as session:
             try:
-                found_user: Optional[User] = await self.read_by_id(user_id)
+                found_user: User | None = await self.read_by_id(user_id)
             except DatabaseException as db_exc:
                 logger.error(db_exc)
                 raise DatabaseException(str(db_exc)) from db_exc
@@ -248,11 +249,11 @@ class UserRepository:
                             )
                     else:
                         setattr(found_user, field, value)
-            found_user.updated_at = datetime.now(timezone.utc)
+            found_user.updated_at = datetime.now(UTC)
             session.add(found_user)
             await session.commit()
             try:
-                updated_user: Optional[User] = await self.read_by_id(user_id)
+                updated_user: User | None = await self.read_by_id(user_id)
             except DatabaseException as db_exc:
                 logger.error(db_exc)
                 raise DatabaseException(str(db_exc)) from db_exc
@@ -270,7 +271,7 @@ class UserRepository:
         """
         async with self.session as session:
             try:
-                found_user: Optional[User] = await self.read_by_id(user_id)
+                found_user: User | None = await self.read_by_id(user_id)
             except DatabaseException as db_exc:
                 raise DatabaseException(str(db_exc)) from db_exc
             if not found_user:

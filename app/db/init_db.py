@@ -1,6 +1,7 @@
 """
 Initialization of the database (PostgreSQL) script
 """
+
 import logging
 
 from app.config.db.auth_settings import AuthSettings

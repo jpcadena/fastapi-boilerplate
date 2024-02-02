@@ -2,6 +2,7 @@
 This module handles password security functions such as hashing and
  verification.
 """
+
 import logging
 
 from passlib.context import CryptContext

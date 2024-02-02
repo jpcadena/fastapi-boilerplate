@@ -1,6 +1,7 @@
 """
 A module for email notifications in the app.utils package.
 """
+
 import logging
 from email.mime.text import MIMEText
 from typing import Annotated, Any

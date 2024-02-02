@@ -1,8 +1,8 @@
 """
 A module for locality in the app-crud package.
 """
+
 import logging
-from typing import Optional
 
 from pydantic import PositiveInt
 from sqlalchemy import select
@@ -26,7 +26,7 @@ class LocalityRepository:
 
     @with_logging
     @benchmark
-    async def get_locality(self, _id: PositiveInt) -> Optional[Locality]:
+    async def get_locality(self, _id: PositiveInt) -> Locality | None:
         """
         Get the locality by the given id
         :param _id: The id of the locality
@@ -35,7 +35,7 @@ class LocalityRepository:
         :rtype: Locality
         """
         async with self.session as async_session:
-            locality: Optional[Locality] = None
+            locality: Locality | None = None
             try:
                 locality = await async_session.get(Locality, _id)
                 logger.info("Retrieving locality with id: %s", _id)
@@ -45,7 +45,7 @@ class LocalityRepository:
 
     @with_logging
     @benchmark
-    async def get_locality_by_name(self, name: str) -> Optional[Locality]:
+    async def get_locality_by_name(self, name: str) -> Locality | None:
         """
         Get the locality object given its name
         :param name: The name of the city

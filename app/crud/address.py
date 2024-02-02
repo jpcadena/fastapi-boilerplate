@@ -2,9 +2,10 @@
 This script handles CRUD (Create, Read, Update, Delete) operations for
  Address objects in the database.
 """
+
 import logging
-from datetime import datetime, timezone
-from typing import Any, Optional
+from datetime import UTC, datetime
+from typing import Any
 
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.exc import SQLAlchemyError
@@ -43,7 +44,7 @@ class AddressRepository:
         self.unique_filter: UniqueFilter = unique_filter
         self.model: AddressDB = AddressDB  # type: ignore
 
-    async def read_by_id(self, _id: IdSpecification) -> Optional[AddressDB]:
+    async def read_by_id(self, _id: IdSpecification) -> AddressDB | None:
         """
         Retrieve an address from the database by its id
         :param _id: The id of the address
@@ -103,7 +104,7 @@ class AddressRepository:
         """
         async with self.session as session:
             try:
-                found_address: Optional[AddressDB] = await self.read_by_id(
+                found_address: AddressDB | None = await self.read_by_id(
                     address_id
                 )
             except DatabaseException as db_exc:
@@ -120,13 +121,11 @@ class AddressRepository:
                 if field in update_data:
                     setattr(found_address, field, update_data[field])
                 if field == "updated_at":
-                    setattr(found_address, field, datetime.now(timezone.utc))
+                    setattr(found_address, field, datetime.now(UTC))
             session.add(found_address)
             await session.commit()
             try:
-                address_db: Optional[AddressDB] = await self.read_by_id(
-                    address_id
-                )
+                address_db: AddressDB | None = await self.read_by_id(address_id)
                 if not address_db:
                     raise DatabaseException(
                         f"Address with ID {address_id} not found"

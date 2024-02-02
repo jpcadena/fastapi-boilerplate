@@ -1,8 +1,9 @@
 """
 A module for openapi utils in the app.utils.files utils package.
 """
+
 import json
-from typing import Any, Optional
+from typing import Any
 
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
@@ -49,7 +50,7 @@ def modify_json_data(
     :return: Modified JSON data
     :rtype: dict[str, Any]
     """
-    paths: Optional[dict[str, dict[str, dict[str, Any]]]] = data.get("paths")
+    paths: dict[str, dict[str, dict[str, Any]]] | None = data.get("paths")
     if not paths:
         return data
     for key, path_data in paths.items():

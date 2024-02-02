@@ -1,7 +1,8 @@
 """
 A module for scope in the app-schemas package.
 """
-from enum import UNIQUE, StrEnum, auto, verify
+
+from enum import StrEnum, UNIQUE, auto, verify
 
 
 @verify(UNIQUE)

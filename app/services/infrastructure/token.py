@@ -1,8 +1,8 @@
 """
 A module for token in the app.services package.
 """
+
 import logging
-from typing import Optional
 
 from pydantic import PositiveInt
 from redis.asyncio import Redis
@@ -27,9 +27,9 @@ class TokenService:
         auth_settings: AuthSettings,
     ):
         self._redis: Redis = redis  # type: ignore
-        self._refresh_token_expire_minutes: (
-            PositiveInt
-        ) = auth_settings.REFRESH_TOKEN_EXPIRE_MINUTES
+        self._refresh_token_expire_minutes: PositiveInt = (
+            auth_settings.REFRESH_TOKEN_EXPIRE_MINUTES
+        )
         self._blacklist_expiration_seconds: PositiveInt = (
             PositiveInt(
                 PositiveInt(auth_settings.ACCESS_TOKEN_EXPIRE_MINUTES) + 1
@@ -60,7 +60,7 @@ class TokenService:
 
     @handle_redis_exceptions
     @benchmark
-    async def get_token(self, key: str) -> Optional[str]:
+    async def get_token(self, key: str) -> str | None:
         """
         Read token from the authentication database
         :param key: The key to search for
@@ -108,7 +108,7 @@ class TokenService:
         :rtype: bool
         """
         try:
-            blacklisted: Optional[str] = await self._redis.get(
+            blacklisted: str | None = await self._redis.get(
                 f"blacklist" f":{token_key}"
             )
         except RedisError as r_exc:

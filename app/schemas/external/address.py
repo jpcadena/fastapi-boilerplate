@@ -1,10 +1,10 @@
 """
 A module for address in the app-schemas package.
 """
-from datetime import datetime
-from typing import Optional
 
-from pydantic import UUID4, BaseModel, ConfigDict, Field
+from datetime import datetime
+
+from pydantic import BaseModel, ConfigDict, Field, UUID4
 
 from app.config.config import init_setting, sql_database_setting
 from app.schemas.schemas import (
@@ -38,7 +38,7 @@ class AddressUpdatedAt(BaseModel):
         json_schema_extra=updated_at_example,
     )
 
-    updated_at: Optional[datetime] = Field(
+    updated_at: datetime | None = Field(
         default=None,
         title="Updated at",
         description="Time the Address was updated",
@@ -107,7 +107,7 @@ class Address(AddressResponse):
         json_schema_extra=common_address_data,
     )
 
-    postal_code: Optional[str] = Field(
+    postal_code: str | None = Field(
         None,
         title="Postal Code",
         min_length=6,

@@ -1,8 +1,8 @@
 """
 A module for blacklist token in the app.middlewares package.
 """
+
 import logging
-from typing import Optional
 
 from fastapi import HTTPException, Request, Response, status
 from starlette.middleware.base import RequestResponseEndpoint
@@ -20,7 +20,7 @@ SKIP_ROUTES: list[str] = [
 ]
 
 
-def extract_token(request: Request) -> Optional[str]:
+def extract_token(request: Request) -> str | None:
     """
     Extract token from the Authorization headers of the request
     :param request: The upcoming request instance
@@ -28,7 +28,7 @@ def extract_token(request: Request) -> Optional[str]:
     :return: The token
     :rtype: Optional[str]
     """
-    auth_header: Optional[str] = request.headers.get("Authorization")
+    auth_header: str | None = request.headers.get("Authorization")
     if auth_header and auth_header.startswith("Bearer "):
         return auth_header.replace("Bearer ", "", 1)
     return None
@@ -64,7 +64,7 @@ async def process_request(request: Request) -> None:
     :return: None
     :rtype: NoneType
     """
-    token: Optional[str]
+    token: str | None
     if token := extract_token(request):
         await check_blacklist(token, request)
 

@@ -71,7 +71,7 @@ packages = [{include = "fastapi_boilerplate"}]
 [tool.poetry.dependencies]
 python = "^3.11"
 fastapi = { extras = ["all"], version = "^0.109.0" }
-uvicorn = { extras = ["standard"], version = "^0.27.0" }
+uvicorn = { extras = ["standard"], version = "^0.27.0.post1" }
 starlette = "0.35.1"
 pydantic = "^2.6.0"
 pydantic-settings = "^2.1.0"
@@ -93,7 +93,7 @@ redis = "^5.0.1"
 types-redis = "^4.6.0.20240106"
 isort = "^5.13.2"
 black = "^24.1.1"
-ruff = "^0.1.15"
+ruff = "^0.2.0"
 mypy = "^1.8.0"
 pre-commit = "^3.6.0"
 bcrypt = "^4.1.2"
@@ -138,8 +138,47 @@ exclude = '''
 skip-string-normalization = true
 
 [tool.ruff]
-select = ["E", "F"]
-ignore = []
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".pytest_cache",
+    "cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+line-length = 80
+indent-width = 4
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # pyflakes
+    "I", # isort
+    "C4", # flake8-comprehensions
+]
+ignore = [
+    "E501", # line too long, handled by black
+    "B008", # do not perform function calls in argument defaults
+]
 fixable = [
     "A",
     "B",
@@ -186,40 +225,26 @@ fixable = [
     "UP",
     "YTT",
 ]
-exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".git-rewrite",
-    ".hg",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".pytype",
-    ".ruff_cache",
-    ".pytest_cache",
-    "cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "venv",
-]
-line-length = 80
+unfixable = []
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-target-version = "py311"
 
-[tool.ruff.mccabe]
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "tab"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = 80
+
+[tool.ruff.lint.isort]
+known-third-party = ["fastapi", "pydantic", "starlette"]
+
+[tool.ruff.lint.mccabe]
 max-complexity = 10
 
-[tool.ruff.isort]
-known-third-party = ["fastapi", "pydantic", "starlette"]
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+ignore-decorators = ["typing.overload"]
 
 [tool.mypy]
 python_version = "3.11"

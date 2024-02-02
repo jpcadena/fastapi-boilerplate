@@ -3,6 +3,7 @@ Centralized API routing script.
 This module integrates the individual routers from the different
  modules of the API.
 """
+
 from fastapi import APIRouter
 
 from app.api.api_v1.router import auth, user

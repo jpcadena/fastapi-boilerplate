@@ -1,8 +1,8 @@
 """
 A module for region in the app-crud package.
 """
+
 import logging
-from typing import Optional
 
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
@@ -25,7 +25,7 @@ class RegionRepository:
 
     @with_logging
     @benchmark
-    async def get_region(self, _id: str) -> Optional[Region]:
+    async def get_region(self, _id: str) -> Region | None:
         """
         Get a region by id
         :param _id: The id of the region
@@ -33,7 +33,7 @@ class RegionRepository:
         :return: The region object
         :rtype: Region
         """
-        db_obj: Optional[Region] = None
+        db_obj: Region | None = None
         async with self.session as async_session:
             try:
                 db_obj = await async_session.get(Region, _id)
@@ -42,7 +42,7 @@ class RegionRepository:
                 logger.error(sa_exc)
             return db_obj
 
-    async def get_region_code_by_region(self, region: str) -> Optional[str]:
+    async def get_region_code_by_region(self, region: str) -> str | None:
         """
         Get the region code by the given region
         :param region: The region to search
@@ -50,7 +50,7 @@ class RegionRepository:
         :return: The region code
         :rtype: str
         """
-        region_code: Optional[str] = None
+        region_code: str | None = None
         async with self.session as async_session:
             stmt = select(Region).where(Region.region == region)
             try:
@@ -60,7 +60,7 @@ class RegionRepository:
                 logger.error(sa_exc)
             return region_code
 
-    async def get_capital_by_region(self, region: str) -> Optional[str]:
+    async def get_capital_by_region(self, region: str) -> str | None:
         """
         Get the capital by the given region
         :param region: The region to search
@@ -71,7 +71,7 @@ class RegionRepository:
         async with self.session as session:
             stmt = select(Region).where(Region.region == region)
             try:
-                capital: Optional[str] = await session.scalar(stmt)
+                capital: str | None = await session.scalar(stmt)
                 logger.info("Retrieving capital for region: %s", region)
             except SQLAlchemyError as sa_exc:
                 logger.error(sa_exc)

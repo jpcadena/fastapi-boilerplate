@@ -1,7 +1,6 @@
 """
 A module for sql database settings in the app.core.config package.
 """
-from typing import Optional
 
 from pydantic import PositiveInt, PostgresDsn, field_validator
 from pydantic_core import MultiHostUrl
@@ -24,9 +23,9 @@ class SQLDatabaseSettings(BaseSettings):
     DB_EMAIL_CONSTRAINT: str = (
         "email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\" ".[A-Z|a-z]{2,}$'"
     )
-    DB_PHONE_NUMBER_CONSTRAINT: (
-        str
-    ) = "phone_number ~ '^tel:\\+\\d{3}-\\d{2}-\\d{3}-\\d{4}$'"
+    DB_PHONE_NUMBER_CONSTRAINT: str = (
+        "phone_number ~ '^tel:\\+\\d{3}-\\d{2}-\\d{3}-\\d{4}$'"
+    )
     DB_USER_PASSWORD_CONSTRAINT: str = "[#?!@$%^&*-]"
     DB_REGION_CODE_CONSTRAINT: str = "code ~ '^[0-9]{2}$'"
     DB_POSTAL_CODE_CONSTRAINT: str = "^(0[1-9]|1[0-9]|2[0-4])[0-9]{4}$"
@@ -36,11 +35,11 @@ class SQLDatabaseSettings(BaseSettings):
     POSTGRES_HOST: str
     POSTGRES_PORT: PositiveInt
     POSTGRES_DB: str
-    SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = None
+    SQLALCHEMY_DATABASE_URI: PostgresDsn | None = None
 
     @field_validator("SQLALCHEMY_DATABASE_URI", mode="before")
     def assemble_postgresql_connection(
-        cls, v: Optional[str], info: ValidationInfo  # noqa: argument-unused
+            cls, v: str | None, info: ValidationInfo  # noqa: argument-unused
     ) -> PostgresDsn:
         """
         Assemble the database connection as URI string

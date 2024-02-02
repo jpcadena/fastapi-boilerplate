@@ -1,9 +1,11 @@
 """
 A module for rate limiter in the app.middlewares package.
 """
+
+from collections.abc import Callable
 from datetime import datetime
 from ipaddress import IPv4Address, IPv6Address
-from typing import Any, Callable, Union
+from typing import Any
 
 from fastapi import FastAPI, HTTPException, Request, status
 from pydantic import IPvAnyAddress
@@ -93,7 +95,7 @@ class RateLimiterMiddleware:
         :return: None
         :rtype: NoneType
         """
-        client_ip: Union[IPv4Address, IPv6Address] = get_client_ip(
+        client_ip: IPv4Address | IPv6Address = get_client_ip(
             request, request.app.state.auth_settings
         )
         user_agent: str = request.headers.get("user-agent", "unknown")

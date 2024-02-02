@@ -3,6 +3,7 @@ The main script that initiates and runs the FastAPI application.
 This module sets up the application configuration including logging,
  CORS, database connection, static files routing and API routes.
 """
+
 import logging
 from functools import partial
 

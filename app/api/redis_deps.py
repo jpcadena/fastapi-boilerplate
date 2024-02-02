@@ -1,8 +1,9 @@
 """
 A module for redis deps in the app.api package.
 """
+
 import logging
-from typing import Any, Optional
+from typing import Any
 
 from redis.asyncio import Redis
 from redis.exceptions import RedisError
@@ -20,7 +21,7 @@ class RedisDependency:
 
     def __init__(self) -> None:
         self._url: str = f"{auth_setting.REDIS_DATABASE_URI}"
-        self._redis: Optional[Redis] = None  # type: ignore
+        self._redis: Redis | None = None  # type: ignore
         self.auth_settings: AuthSettings = auth_setting
 
     async def init_redis(self) -> None:

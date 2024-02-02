@@ -1,6 +1,7 @@
 """
 A module for msg in the app schemas package.
 """
+
 from pydantic import BaseModel, ConfigDict, Field
 
 

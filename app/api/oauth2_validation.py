@@ -1,7 +1,8 @@
 """
 A module for oauth2 validation in the app.api package.
 """
-from typing import Annotated, Any, Optional
+
+from typing import Annotated, Any
 from uuid import UUID
 
 from fastapi import Depends, HTTPException, status
@@ -59,7 +60,7 @@ async def authenticate_user(
         )
     user_id: UUID = UUID(sub.replace("username:", ""))
     cached_service: CachedUserService = CachedUserService(redis)
-    cached_user: Optional[User] = await cached_service.get_model_from_cache(
+    cached_user: User | None = await cached_service.get_model_from_cache(
         user_id
     )
     if cached_user:

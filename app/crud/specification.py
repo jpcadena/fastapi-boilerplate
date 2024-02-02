@@ -4,9 +4,10 @@ This script contains abstract and concrete classes to represent
 These specification objects encapsulate the rules to filter or select
  specific data.
 """
+
 from typing import Any
 
-from pydantic import UUID4, EmailStr
+from pydantic import EmailStr, UUID4
 
 
 class Specification:

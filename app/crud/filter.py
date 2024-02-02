@@ -2,9 +2,9 @@
 This script contains abstract and concrete filter classes for data
  models.
 """
+
 import logging
 from abc import ABC, abstractmethod
-from typing import Optional, Union
 
 from pydantic import UUID4
 from sqlalchemy import select
@@ -36,9 +36,9 @@ class Filter(ABC):
         self,
         spec: Specification,
         session: AsyncSession,
-        model: Union[User, Address],
+            model: User | Address,
         field: str,
-    ) -> Optional[Union[User, Address]]:
+    ) -> User | Address | None:
         """
         Filter method to be implemented by subclasses
         :param spec: Specification to filter by
@@ -66,11 +66,11 @@ class IndexFilter(Filter):
         self,
         spec: IdSpecification,
         session: AsyncSession,
-        model: Union[User, Address],
-        field: Optional[str] = None,
-    ) -> Optional[Union[User, Address]]:
+            model: User | Address,
+            field: str | None = None,
+    ) -> User | Address | None:
         _id: UUID4 = spec.value
-        db_obj: Optional[Union[User, Address]] = None
+        db_obj: User | Address | None = None
         async with session as async_session:
             try:
                 db_obj = await async_session.get(model, _id)
@@ -92,7 +92,7 @@ class UniqueFilter(Filter):
     @benchmark
     async def filter(
         self,
-        spec: Union[UsernameSpecification, EmailSpecification],
+            spec: UsernameSpecification | EmailSpecification,
         session: AsyncSession,
         model: User,
         field: str = "email",

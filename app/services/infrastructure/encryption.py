@@ -1,6 +1,7 @@
 """
 A module for encryption in the app.services.infrastructure package.
 """
+
 import base64
 import logging
 from os import urandom

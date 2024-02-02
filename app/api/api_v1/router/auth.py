@@ -2,19 +2,13 @@
 Authentication API Router.
 This module provides login and password recovery functionality.
 """
-import logging
-from typing import Annotated, Any, Optional
 
-from fastapi import (
-    APIRouter,
-    Body,
-    Depends,
-    Header,
-    HTTPException,
-    Path,
-    Request,
-    status,
-)
+import logging
+from typing import Annotated, Any
+
+from fastapi import (APIRouter, Body, Depends, HTTPException, Header, Path,
+                     Request, status
+                     )
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import EmailStr
 from redis.asyncio import Redis
@@ -86,7 +80,7 @@ async def login(
     :param redis: Dependency method for async Redis connection
     :type redis: Redis
     """
-    client: Optional[Address] = request.client
+    client: Address | None = request.client
     if not client:
         raise NotFoundException(auth_settings.NO_CLIENT_FOUND)
     client_ip: str = client.host
@@ -147,7 +141,7 @@ async def refresh_token(
     :param redis: Dependency method for async Redis connection
     :type redis: Redis
     """
-    client: Optional[Address]
+    client: Address | None
     if not (client := request.client):
         raise NotFoundException(auth_settings.NO_CLIENT_FOUND)
     client_ip: str = client.host
@@ -217,9 +211,7 @@ async def recover_password(
     :type init_settings: InitSettings
     """
     try:
-        user: Optional[UserResponse] = await user_service.get_user_by_email(
-            email
-        )
+        user: UserResponse | None = await user_service.get_user_by_email(email)
     except ServiceException as exc:
         logger.error(exc)
         user = None
@@ -272,7 +264,7 @@ async def reset_password(
     :param init_settings: Dependency method for cached init setting object
     :type init_settings: InitSettings
     """
-    email: Optional[EmailStr] = verify_password_reset_token(
+    email: EmailStr | None = verify_password_reset_token(
         token_reset_password.token, auth_settings
     )
     if not email:
@@ -281,9 +273,9 @@ async def reset_password(
             detail="Invalid or expired token",
         )
     try:
-        found_user: Optional[
-            UserResponse
-        ] = await user_service.get_user_by_email(email)
+        found_user: UserResponse | None = await user_service.get_user_by_email(
+            email
+        )
     except ServiceException as exc:
         logger.error(exc)
         raise HTTPException(

@@ -1,10 +1,11 @@
 """
 A module for cached user in the app.services.infrastructure package.
 """
-import json
-from typing import Any, Optional
 
-from pydantic import UUID4, PositiveInt
+import json
+from typing import Any
+
+from pydantic import PositiveInt, UUID4
 from redis.asyncio import Redis
 
 from app.config.config import auth_setting
@@ -27,7 +28,7 @@ class CachedUserService:
         self._redis: Redis = redis  # type: ignore
         self._cache_seconds: PositiveInt = auth_setting.CACHE_SECONDS
 
-    async def get_model_from_cache(self, key: UUID4) -> Optional[User]:
+    async def get_model_from_cache(self, key: UUID4) -> User | None:
         """
         Get the user model instance for the given key from the cache database
         :param key: The unique identifier for the model user instance
@@ -35,7 +36,7 @@ class CachedUserService:
         :return: The user model instance
         :rtype: User
         """
-        value: Optional[str] = await self._redis.get(str(key))
+        value: str | None = await self._redis.get(str(key))
         if not value:
             return None
         user_data: dict[str, Any] = json.loads(value)
@@ -49,7 +50,7 @@ class CachedUserService:
             return user_instance
         return None
 
-    async def get_schema_from_cache(self, key: UUID4) -> Optional[UserResponse]:
+    async def get_schema_from_cache(self, key: UUID4) -> UserResponse | None:
         """
         Get the user auth schema instance for the given key from the cache
         database
@@ -58,7 +59,7 @@ class CachedUserService:
         :return: The user schema instance
         :rtype: UserResponse
         """
-        value: Optional[str] = await self._redis.get(str(key))
+        value: str | None = await self._redis.get(str(key))
         if value:
             user_data: dict[str, Any] = json.loads(value)
             if len(user_data.keys()) > 3:

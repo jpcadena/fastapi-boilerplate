@@ -1,12 +1,12 @@
 """
 A module for utils in the app.utils package.
 """
+
 import contextlib
 import logging
 import math
 import re
 from ipaddress import AddressValueError, IPv4Address, IPv6Address, ip_address
-from typing import Optional, Union
 
 import phonenumbers
 import pycountry
@@ -63,8 +63,8 @@ def get_nationality_code(country_name: str) -> str:
 
 
 def validate_phone_number(
-    phone_number: Optional[PhoneNumber],
-) -> Optional[PhoneNumber]:
+        phone_number: PhoneNumber | None,
+) -> PhoneNumber | None:
     """
     Validate the phone number format
     :param phone_number: The phone number to validate
@@ -83,7 +83,7 @@ def validate_phone_number(
     return phone_number
 
 
-def validate_password(password: Optional[str]) -> str:
+def validate_password(password: str | None) -> str:
     """
     Validates a password based on given criteria.
     :param password: The password to validate.
@@ -108,7 +108,7 @@ def validate_password(password: Optional[str]) -> str:
 
 def get_client_ip(
     request: Request, auth_settings: AuthSettings
-) -> Union[IPv4Address, IPv6Address]:
+) -> IPv4Address | IPv6Address:
     """
     Extract the client IP address from the request.
     :param request: The FastAPI request object.
@@ -118,7 +118,7 @@ def get_client_ip(
     :return: The extracted IP address.
     :rtype: Union[IPv4Address, IPv6Address]
     """
-    client: Optional[Address] = request.client
+    client: Address | None = request.client
     if not client:
         raise NotFoundException(auth_settings.NO_CLIENT_FOUND)
     client_ip: str = client.host

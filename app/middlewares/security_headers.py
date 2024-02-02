@@ -1,6 +1,7 @@
 """
 A module for security headers in the app.middlewares package.
 """
+
 from fastapi import Request, Response
 from pydantic import PositiveInt
 from starlette.middleware.base import (

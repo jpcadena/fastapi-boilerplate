@@ -1,6 +1,7 @@
 """
 Database session script
 """
+
 import logging
 
 from sqlalchemy.ext.asyncio import (

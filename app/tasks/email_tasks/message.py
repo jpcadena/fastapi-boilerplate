@@ -1,9 +1,10 @@
 """
 A module for message in the app.utils package.
 """
+
 import logging
 from email.mime.text import MIMEText
-from typing import Annotated, Union
+from typing import Annotated
 
 import aiosmtplib
 from fastapi import Depends
@@ -37,9 +38,9 @@ def create_message(
     """
     message: MIMEText = MIMEText(html, "html")
     message["Subject"] = subject
-    message[
-        "From"
-    ] = f"{settings.EMAILS_FROM_NAME} <{settings.EMAILS_FROM_EMAIL}>"
+    message["From"] = (
+        f"{settings.EMAILS_FROM_NAME} <{settings.EMAILS_FROM_EMAIL}>"
+    )
     message["To"] = email_to
     logger.info("Message created from: %s", settings.EMAILS_FROM_EMAIL)
     return message
@@ -50,7 +51,7 @@ def create_message(
 async def send_email_message(
     message: MIMEText,
     settings: Annotated[Settings, Depends(get_settings)],
-) -> Union[bool, str]:
+) -> bool | str:
     """
     Sends the message to the given email address.
     :param message: Message with subject and rendered template

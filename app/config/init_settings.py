@@ -1,6 +1,7 @@
 """
 A module for init settings in the app.core.config package.
 """
+
 import base64
 import time
 from datetime import date, datetime

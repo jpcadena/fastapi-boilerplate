@@ -1,6 +1,7 @@
 """
 Package app.models.sql initialization.
 """
+
 from app.models.sql.address import Address
 from app.models.sql.locality import Locality
 from app.models.sql.region import Region

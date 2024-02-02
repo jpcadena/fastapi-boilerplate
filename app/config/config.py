@@ -1,6 +1,7 @@
 """
 A module for config in the app-core package.
 """
+
 from functools import lru_cache
 
 from app.config.db.auth_settings import AuthSettings
@@ -9,7 +10,7 @@ from app.config.init_settings import InitSettings
 from app.config.settings import Settings
 
 
-@lru_cache()
+@lru_cache
 def get_init_settings() -> InitSettings:
     """
     Get init settings cached
@@ -19,7 +20,7 @@ def get_init_settings() -> InitSettings:
     return init_setting
 
 
-@lru_cache()
+@lru_cache
 def get_settings() -> Settings:
     """
     Get settings cached
@@ -29,7 +30,7 @@ def get_settings() -> Settings:
     return Settings()
 
 
-@lru_cache()
+@lru_cache
 def get_sql_settings() -> SQLDatabaseSettings:
     """
     Get SQL db settings cached
@@ -39,7 +40,7 @@ def get_sql_settings() -> SQLDatabaseSettings:
     return SQLDatabaseSettings()
 
 
-@lru_cache()
+@lru_cache
 def get_auth_settings() -> AuthSettings:
     """
     Get auth settings cached

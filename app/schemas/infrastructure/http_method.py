@@ -1,7 +1,8 @@
 """
 A module for http method in the app-schemas package.
 """
-from enum import UNIQUE, Enum, auto, verify
+
+from enum import Enum, UNIQUE, auto, verify
 
 
 @verify(UNIQUE)

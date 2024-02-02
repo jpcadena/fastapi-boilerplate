@@ -1,6 +1,7 @@
 """
 A module for user in the app.schemas.infrastructure package.
 """
+
 from datetime import datetime
 
 from pydantic import ConfigDict, Field

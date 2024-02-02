@@ -1,6 +1,7 @@
 """
 A module for rate limiter in the app.schemas.external package.
 """
+
 from pydantic import BaseModel, ConfigDict, Field, IPvAnyAddress
 
 from app.schemas.schemas import rate_limiter_example, raw_rate_limiter_example

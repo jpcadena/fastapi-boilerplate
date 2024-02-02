@@ -1,17 +1,12 @@
 """
 A module for user base in the app.schemas.infrastructure package.
 """
-from datetime import date, datetime
-from typing import Optional
 
-from pydantic import (
-    UUID4,
-    BaseModel,
-    ConfigDict,
-    EmailStr,
-    Field,
-    field_validator,
-)
+from datetime import date, datetime
+
+from pydantic import (BaseModel, ConfigDict, EmailStr, Field, UUID4,
+                      field_validator
+                      )
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from app.schemas.external.address import Address
@@ -50,7 +45,7 @@ class UserUpdatedAt(BaseModel):
         json_schema_extra=updated_at_example,
     )
 
-    updated_at: Optional[datetime] = Field(
+    updated_at: datetime | None = Field(
         default=None,
         title="Updated at",
         description="Time the User was updated",
@@ -84,31 +79,29 @@ class UserOptional(BaseModel):
         json_schema_extra=user_optional_example,
     )
 
-    middle_name: Optional[str] = Field(
+    middle_name: str | None = Field(
         default=None,
         title="Middle Name",
         description="Middle name(s) of the User",
         max_length=50,
     )
-    gender: Optional[Gender] = Field(
+    gender: Gender | None = Field(
         default=None, title="Gender", description="Gender of the User"
     )
-    birthdate: Optional[date] = Field(
+    birthdate: date | None = Field(
         default=None, title="Birthdate", description="Birthday of the User"
     )
-    phone_number: Optional[PhoneNumber] = Field(
+    phone_number: PhoneNumber | None = Field(
         default=None,
         title="Phone number",
         description="Preferred telephone number of the User",
     )
-    address: Optional[Address] = Field(
+    address: Address | None = Field(
         default=None, title="Address", description="Address of the User"
     )
 
     @field_validator("phone_number", mode="before")
-    def validate_phone_number(
-        cls, v: Optional[PhoneNumber]
-    ) -> Optional[PhoneNumber]:
+    def validate_phone_number(cls, v: PhoneNumber | None) -> PhoneNumber | None:
         """
         Validates the phone number attribute
         :param v: The phone number value to validate
