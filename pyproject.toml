@@ -70,7 +70,7 @@ packages = [{include = "fastapi_boilerplate"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-fastapi = { extras = ["all"], version = "^0.109.0" }
+fastapi = { extras = ["all"], version = "^0.109.1" }
 uvicorn = { extras = ["standard"], version = "^0.27.0.post1" }
 starlette = "0.35.1"
 pydantic = "^2.6.0"
@@ -79,7 +79,7 @@ pydantic-extra-types = "^2.5.0"
 email-validator = "^2.1.0.post1"
 phonenumbers = "^8.13.29"
 pycountry = "^23.12.11"
-python-multipart = "^0.0.6"
+python-multipart = "^0.0.7"
 python-dotenv = "^1.0.1"
 aiofiles = "^23.2.1"
 types-aiofiles = "^23.2.0.20240106"
