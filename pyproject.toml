@@ -70,10 +70,11 @@ packages = [{include = "fastapi_boilerplate"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-fastapi = { extras = ["all"], version = "^0.109.1" }
+fastapi = { extras = ["all"], version = "^0.109.2" }
 uvicorn = { extras = ["standard"], version = "^0.27.0.post1" }
-starlette = "0.35.1"
-pydantic = "^2.6.0"
+starlette = "0.36.3"
+pydantic = "^2.6.1"
+pydantic-core = "^2.16.2"
 pydantic-settings = "^2.1.0"
 pydantic-extra-types = "^2.5.0"
 email-validator = "^2.1.0.post1"
@@ -93,7 +94,7 @@ redis = "^5.0.1"
 types-redis = "^4.6.0.20240106"
 isort = "^5.13.2"
 black = "^24.1.1"
-ruff = "^0.2.0"
+ruff = "^0.2.1"
 mypy = "^1.8.0"
 pre-commit = "^3.6.0"
 bcrypt = "^4.1.2"
