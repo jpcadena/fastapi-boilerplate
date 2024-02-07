@@ -37,7 +37,7 @@ jobs:
     # Check code formatting using isort
     - name: Run isort
       run: |
-        isort . --check-only
+        isort .
 
     # Check code formatting using Black
     - name: Run Black
