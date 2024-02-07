@@ -9,16 +9,15 @@ on: [push, pull_request]
 
 # Jobs define the actual tasks that the workflow will execute
 jobs:
-  setup:
-    uses: ./.github/workflows/setup_environment.yml
-    with:
-      python-version: '3.11'
-
-  lint-and-type-check:
-    needs: setup
+  code-quality-check:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+
+    - name: Setup Python Environment
+      uses: ./.github/workflows/setup_environment.yml
+      with:
+        python-version: '3.11'
 
     # Check code formatting using isort
     - name: Run isort
