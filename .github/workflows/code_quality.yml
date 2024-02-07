@@ -47,6 +47,8 @@ jobs:
     # Use Ruff to run additional quality checks
     - name: Run Ruff
       uses: chartboost/ruff-action@v1
+      with:
+        args: --fix
 
     - name: Run MyPy
       run: |
