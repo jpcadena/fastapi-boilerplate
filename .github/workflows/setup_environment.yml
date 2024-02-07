@@ -2,7 +2,7 @@
 name: Setup Python Environment
 
 # The name for workflow runs generated from this workflow
-run-name: Code Quality Run on ${{ github.ref }} by @${{ github.actor }}
+run-name: Setup Python Environment Run on ${{ github.ref }} by @${{ github.actor }}
 
 # This specifies the events that will trigger the workflow to run
 on:
@@ -16,6 +16,8 @@ on:
 jobs:
   setup:
     runs-on: ubuntu-latest
+    outputs:
+      python-version: ${{ steps.setup-python.outputs.python-version }}
 
     steps:
       # Checkout the repository content to the runner
