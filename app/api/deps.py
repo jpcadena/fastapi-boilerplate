@@ -67,7 +67,7 @@ class RedisConnectionManager:
 
 
 async def get_redis_dep(
-    redis_dependency: Annotated[RedisDependency, Depends()]
+    redis_dependency: Annotated[RedisDependency, Depends()],
 ) -> AsyncGenerator[Redis, None]:  # type: ignore
     """
     Lazy generation of Redis dependency

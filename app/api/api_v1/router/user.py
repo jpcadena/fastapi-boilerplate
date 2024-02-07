@@ -18,7 +18,7 @@ from fastapi import (
     status,
 )
 from fastapi.params import Path, Query
-from pydantic import NonNegativeInt, PositiveInt, UUID4
+from pydantic import UUID4, NonNegativeInt, PositiveInt
 from redis.asyncio import Redis
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -34,10 +34,14 @@ from app.config.db.auth_settings import AuthSettings
 from app.config.init_settings import InitSettings
 from app.config.settings import Settings
 from app.exceptions.exceptions import NotFoundException, ServiceException
-from app.schemas.external.user import (UserCreate, UserCreateResponse,
-                                       UserResponse, UserUpdate,
-                                       UserUpdateResponse, UsersResponse
-                                       )
+from app.schemas.external.user import (
+    UserCreate,
+    UserCreateResponse,
+    UserResponse,
+    UsersResponse,
+    UserUpdate,
+    UserUpdateResponse,
+)
 from app.schemas.infrastructure.user import UserAuth
 from app.services.infrastructure.cached_user import CachedUserService
 from app.services.infrastructure.user import UserService, get_user_service
@@ -53,9 +57,8 @@ router: APIRouter = APIRouter(prefix="/user", tags=["user"])
 
 @router.get("", response_model=UsersResponse)
 async def get_users(
-    current_user: Annotated[  # noqa: argument-unused
-        UserAuth, Depends(get_current_user)
-    ],
+    current_user: Annotated[UserAuth, Depends(get_current_user)],
+    # noqa: argument-unused
     user_service: Annotated[UserService, Depends(get_user_service)],
     skip: Annotated[
         NonNegativeInt,
@@ -226,9 +229,8 @@ async def get_user_me(
 @router.get("/{user_id}", response_model=UserResponse)
 async def get_user_by_id(
     user_service: Annotated[UserService, Depends(get_user_service)],
-    current_user: Annotated[  # noqa: argument-unused
-        UserAuth, Depends(get_current_user)
-    ],
+    current_user: Annotated[UserAuth, Depends(get_current_user)],
+    # noqa: argument-unused
     user_id: Annotated[
         UUID4,
         Path(
@@ -285,9 +287,8 @@ async def get_user_by_id(
 @router.put("/{user_id}", response_model=UserUpdateResponse)
 async def update_user(
     user_service: Annotated[UserService, Depends(get_user_service)],
-    current_user: Annotated[  # noqa: argument-unused
-        UserAuth, Depends(get_current_user)
-    ],
+    current_user: Annotated[UserAuth, Depends(get_current_user)],
+    # noqa: argument-unused
     user_id: Annotated[
         UUID4,
         Path(
@@ -344,9 +345,8 @@ async def update_user(
 async def delete_user(
     background_tasks: BackgroundTasks,
     user_service: Annotated[UserService, Depends(get_user_service)],
-    current_user: Annotated[  # noqa: argument-unused
-        UserAuth, Depends(get_current_user)
-    ],
+    current_user: Annotated[UserAuth, Depends(get_current_user)],
+    # noqa: argument-unused
     user_id: Annotated[
         UUID4,
         Path(

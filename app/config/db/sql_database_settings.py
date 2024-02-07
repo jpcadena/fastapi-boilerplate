@@ -39,7 +39,9 @@ class SQLDatabaseSettings(BaseSettings):
 
     @field_validator("SQLALCHEMY_DATABASE_URI", mode="before")
     def assemble_postgresql_connection(
-            cls, v: str | None, info: ValidationInfo  # noqa: argument-unused
+        cls,
+        v: str | None,
+        info: ValidationInfo,  # noqa: argument-unused
     ) -> PostgresDsn:
         """
         Assemble the database connection as URI string

@@ -20,7 +20,7 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 
 def _generate_expiration_time(
-        expires_delta: timedelta | None, minutes: float | None = None
+    expires_delta: timedelta | None, minutes: float | None = None
 ) -> datetime:
     """
     Generate an expiration time for JWT
@@ -48,7 +48,7 @@ def create_access_token(
     token_payload: TokenPayload,
     auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
     scope: Scope = Scope.ACCESS_TOKEN,
-        expires_delta: timedelta | None = None,
+    expires_delta: timedelta | None = None,
 ) -> str:
     """
     Create a new JWT access token
@@ -74,7 +74,7 @@ def create_access_token(
         payload = jsonable_encoder(updated_payload)
     else:
         payload = jsonable_encoder(token_payload)
-    header: dict[str, str] = {'alg': auth_settings.ALGORITHM}
+    header: dict[str, str] = {"alg": auth_settings.ALGORITHM}
     try:
         encoded_jwt: str = jwt.encode(header, payload, auth_settings.SECRET_KEY)
     except JoseError as exc:

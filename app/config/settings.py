@@ -97,7 +97,9 @@ class Settings(BaseSettings):
 
     @field_validator("CONTACT", mode="before")
     def assemble_contact(
-            cls, v: str | None, info: ValidationInfo  # noqa: argument-unused
+        cls,
+        v: str | None,
+        info: ValidationInfo,  # noqa: argument-unused
     ) -> dict[str, str]:
         """
         Assemble contact information

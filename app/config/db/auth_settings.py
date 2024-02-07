@@ -58,7 +58,9 @@ class AuthSettings(BaseSettings):
 
     @field_validator("AUDIENCE", mode="before")
     def assemble_audience(
-            cls, v: str | None, info: ValidationInfo  # noqa: argument-unused
+        cls,
+        v: str | None,
+        info: ValidationInfo,  # noqa: argument-unused
     ) -> AnyHttpUrl:
         """
         Combine server host and API_V1_STR to create the audience
@@ -86,7 +88,9 @@ class AuthSettings(BaseSettings):
 
     @field_validator("REDIS_DATABASE_URI", mode="before")
     def assemble_redis_connection(
-            cls, v: str | None, info: ValidationInfo  # noqa: argument-unused
+        cls,
+        v: str | None,
+        info: ValidationInfo,  # noqa: argument-unused
     ) -> RedisDsn:
         """
         Assemble the cache database connection as URI string

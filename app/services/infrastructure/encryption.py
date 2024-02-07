@@ -233,9 +233,9 @@ class EncryptionService:
         :rtype: NoneType
         """
         public_pem, private_pem = self.generate_key_pair()
-        with open(public_key_path, 'w') as public_file:
+        with open(public_key_path, "w") as public_file:
             public_file.write(public_pem)
-        with open(private_key_path, 'w') as private_file:
+        with open(private_key_path, "w") as private_file:
             private_file.write(private_pem)
         print("Public and Private keys have been generated and saved.")
 

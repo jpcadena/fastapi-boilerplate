@@ -1,7 +1,8 @@
 check:
 	-isort .
 	-black .
-	-ruff . --fix
+	-ruff check . --fix
+	-ruff format .
 	-mypy .
 update:
 	poetry update

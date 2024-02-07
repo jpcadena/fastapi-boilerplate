@@ -6,7 +6,7 @@ import logging
 import time
 from typing import Annotated, Any
 
-from authlib.jose import JWTClaims, JoseError, jwt
+from authlib.jose import JoseError, JWTClaims, jwt
 from authlib.jose.errors import BadSignatureError, ExpiredTokenError
 from fastapi import Depends, HTTPException, status
 
@@ -33,7 +33,7 @@ def encode_jwt(
     :return: The JSON Web Token
     :rtype: str
     """
-    header: dict[str, str] = {'alg': auth_settings.ALGORITHM}
+    header: dict[str, str] = {"alg": auth_settings.ALGORITHM}
     try:
         encoded_jwt: bytes = jwt.encode(
             header, payload, auth_settings.SECRET_KEY
@@ -102,12 +102,12 @@ def decode_and_validate_jwt(
     """
     try:
         claims_options: dict[str, Any] = {
-            'iss': {'essential': True, 'value': str(auth_settings.SERVER_URL)},
-            'aud': {'essential': True, 'value': str(auth_settings.AUDIENCE)},
-            'sub': {
-                'essential': True,
+            "iss": {"essential": True, "value": str(auth_settings.SERVER_URL)},
+            "aud": {"essential": True, "value": str(auth_settings.AUDIENCE)},
+            "sub": {
+                "essential": True,
             },
-            'jti': {'essential': True},
+            "jti": {"essential": True},
         }
         decoded: JWTClaims = jwt.decode(
             token, auth_settings.SECRET_KEY, claims_options=claims_options

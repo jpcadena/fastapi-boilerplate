@@ -59,7 +59,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
             "microphone=self, camera=self, fullscreen=self,"
             "accelerometer=self, gyroscope=self"
         )
-        response.headers['Cache-Control'] = 'no-store'
+        response.headers["Cache-Control"] = "no-store"
         response.headers["X-Frame-Options"] = "DENY"
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-XSS-Protection"] = "1; mode=block"

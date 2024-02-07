@@ -6,9 +6,16 @@ This module provides login and password recovery functionality.
 import logging
 from typing import Annotated, Any
 
-from fastapi import (APIRouter, Body, Depends, HTTPException, Header, Path,
-                     Request, status
-                     )
+from fastapi import (
+    APIRouter,
+    Body,
+    Depends,
+    Header,
+    HTTPException,
+    Path,
+    Request,
+    status,
+)
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import EmailStr
 from redis.asyncio import Redis
@@ -160,7 +167,7 @@ async def refresh_token(
 
 @router.post("/validate-token", response_model=UserAuth)
 async def validate_token(
-    current_user: Annotated[UserAuth, Depends(get_current_user)]
+    current_user: Annotated[UserAuth, Depends(get_current_user)],
 ) -> UserAuth:
     """
     Endpoint to validate an access token.
@@ -319,9 +326,8 @@ async def logout(
             openapi_examples=init_setting.AUTHORIZATION_HEADER_EXAMPLES,
         ),
     ],
-    current_user: Annotated[  # noqa: argument-unused
-        UserAuth, Depends(get_current_user)
-    ],
+    current_user: Annotated[UserAuth, Depends(get_current_user)],
+    # noqa: argument-unused
     redis: Annotated[Redis, Depends(get_redis_dep)],  # type: ignore
 ) -> Msg:
     """

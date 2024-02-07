@@ -41,7 +41,7 @@ def update_operation_id(operation: dict[str, Any]) -> None:
 
 
 def modify_json_data(
-    data: dict[str, dict[str, Any]]
+    data: dict[str, dict[str, Any]],
 ) -> dict[str, dict[str, Any]]:
     """
     Modify the JSON data
@@ -73,7 +73,7 @@ def custom_generate_unique_id(route: APIRoute) -> str:
         "redirect_to_docs",
         "check_health",
     ):
-        return route.name
+        return str(route.name)
     return f"{route.tags[0]}-{route.name}"
 
 
