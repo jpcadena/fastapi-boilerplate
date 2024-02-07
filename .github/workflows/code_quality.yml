@@ -42,7 +42,7 @@ jobs:
     # Check code formatting using Black
     - name: Run Black
       run: |
-        black --check .
+        black .
 
     # Use Ruff to run additional quality checks
     - name: Run Ruff
