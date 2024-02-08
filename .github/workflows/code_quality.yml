@@ -36,8 +36,9 @@ jobs:
 
     # Check code formatting using isort
     - name: Run isort
-      uses: isort/isort-action@master
+      uses: isort/isort-action@v1
       with:
+        configuration: --check-only --diff --sp pyproject.toml
         requirementsFiles: "requirements.txt"
 
     # Check code formatting using Black
