@@ -14,15 +14,15 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install Poetry
-      run: |
-        curl -sSL https://install.python-poetry.org | python3 -
-
       # Setup Python environment
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
 
     - name: Generate requirements.txt from Poetry
       run: |
@@ -37,9 +37,6 @@ jobs:
     # Check code formatting using isort
     - name: Run isort
       uses: isort/isort-action@v1
-      with:
-        configuration: --check-only --diff --sp pyproject.toml
-        requirementsFiles: "requirements.txt"
 
     # Check code formatting using Black
     - name: Run Black
@@ -50,8 +47,6 @@ jobs:
     # Use Ruff to run additional quality checks
     - name: Run Ruff
       uses: chartboost/ruff-action@v1
-      with:
-        args: --fix
 
     - name: Run MyPy
       run: |
