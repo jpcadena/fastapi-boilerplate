@@ -45,6 +45,14 @@ jobs:
     - name: Run isort
       uses: isort/isort-action@v1
 
+    - name: Diagnose Black Formatting
+      run: |
+        black . --check --verbose
+    
+    - name: Auto-format Python code with Black
+      run: |
+        black .
+
     # Check code formatting using Black
     - name: Run Black
       uses: psf/black@stable
