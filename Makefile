@@ -3,7 +3,7 @@ check:
 	-black .
 	-ruff check . --fix
 	-ruff format .
-	-mypy .
+	-mypy --pretty .
 update:
 	poetry update
 	pre-commit autoupdate

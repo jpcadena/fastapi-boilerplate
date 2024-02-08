@@ -34,7 +34,7 @@ def render_template(template: str, environment: dict[str, Any]) -> str:
 @with_logging
 @benchmark
 async def read_template_file(
-        template_path: str | Path,
+    template_path: str | Path,
     init_settings: Annotated[InitSettings, Depends(get_init_settings)],
 ) -> str:
     """
@@ -49,4 +49,5 @@ async def read_template_file(
     async with aiofiles.open(
         template_path, mode="r", encoding=init_settings.ENCODING
     ) as file:
-        return await file.read()
+        template: str = await file.read()
+    return template

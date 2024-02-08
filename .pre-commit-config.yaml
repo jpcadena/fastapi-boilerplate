@@ -29,10 +29,19 @@ repos:
           - --py3-plus
           - --keep-runtime-typing
 
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.2.1
+    hooks:
+      # Run the linter.
+      - id: ruff
+        args: [ "--fix", "--exit-non-zero-on-fix", "--config",
+                "pyproject.toml" ]
+
   - repo: https://github.com/pycqa/isort
     rev: 5.13.2
     hooks:
       - id: isort
+        name: isort (python)
         args: [ "--sp", "pyproject.toml" ]
 
   # Using this mirror lets us use mypyc-compiled black, which is about 2x faster
@@ -45,9 +54,6 @@ repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.2.1
     hooks:
-      # Run the linter.
-      - id: ruff
-        args: [ --fix, --exit-non-zero-on-fix, --config, "pyproject.toml" ]
       # Run the formatter.
       - id: ruff-format
         args: [ "--config", "pyproject.toml" ]
@@ -66,9 +72,11 @@ repos:
             packaging,
             click,
             aiosmtplib,
+            aiofiles,
             asyncpg,
             types-redis,
             types-passlib,
+            types-aiofiles,
             uvicorn,
           ]
 

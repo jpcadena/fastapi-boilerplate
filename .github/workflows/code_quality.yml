@@ -36,13 +36,15 @@ jobs:
 
     # Check code formatting using isort
     - name: Run isort
-      run: |
-        isort .
+      uses: isort/isort-action@master
+      with:
+        requirementsFiles: "requirements.txt"
 
     # Check code formatting using Black
     - name: Run Black
-      run: |
-        black .
+      uses: psf/black@stable
+      with:
+        options: "--check --verbose"
 
     # Use Ruff to run additional quality checks
     - name: Run Ruff
