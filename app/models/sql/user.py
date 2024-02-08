@@ -17,7 +17,7 @@ from sqlalchemy import (
     text,
 )
 from sqlalchemy.dialects.postgresql import TIMESTAMP, UUID
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship  # type: ignore
 
 from app.config.config import sql_database_setting
 from app.db.base_class import Base
@@ -120,7 +120,7 @@ class User(Base):  # type: ignore
         nullable=False,
         comment="ID of the User's address",
     )
-    address: Mapped["Address"] = relationship(
+    address: Mapped["Address"] = relationship(  # type: ignore
         "Address", back_populates="users", lazy="joined"
     )
 
