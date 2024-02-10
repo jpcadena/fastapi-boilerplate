@@ -64,32 +64,46 @@
 
 ![Project][project-screenshot]
 
-This backend project is FastAPI template. This project serves as the backend,
-which aims to provide a robust and reliable system to its users. This
-backend application plays a crucial role in providing the functionality for
-user authentication, real-time monitoring, data processing, and advanced
-alerting system. It is designed to ensure the scalability and
-maintainability of the mobile app, making it a vital part of the overall
-solution.
+This backend project is a FastAPI-based template designed to serve as a robust,
+reliable, and RESTful API backend. It is crucial for facilitating user
+authentication, real-time monitoring, data processing, and an advanced alerting
+system. By leveraging the principles of RESTful architecture, this API ensures
+standardized communication and a scalable, maintainable infrastructure for the
+associated mobile application. This project is not only vital for the
+functionality it provides but also for ensuring the scalability and
+maintainability of the overall solution.
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built with
 
+This project is built using a suite of modern, powerful technologies and
+frameworks to ensure high performance, ease of development, and robustness:
+
 [![Python][python-shield]][python-url] [![FastAPI][fastapi-shield]][fastapi-url] [![Pydantic][pydantic-shield]][pydantic-url] [![Starlette][starlette-shield]][starlette-url] [![Uvicorn][uvicorn-shield]][uvicorn-url] [![postgresql][postgresql-shield]][postgresql-url] [![Redis][redis-shield]][redis-url] [![JWT][jwt-shield]][jwt-url] [![HTML5][html5-shield]][html5-url] [![CSS3][css3-shield]][css3-url] [![isort][isort-shield]][isort-url] [![Black][black-shield]][black-url] [![Ruff][ruff-shield]][ruff-url] [![MyPy][mypy-shield]][mypy-url] [![pre-commit][pre-commit-shield]][pre-commit-url] [![GitHub Actions][github-actions-shield]][github-actions-url] [![Poetry][poetry-shield]][poetry-url] [![Pycharm][pycharm-shield]][pycharm-url] [![Visual Studio Code][visual-studio-code-shield]][visual-studio-code-url] [![Markdown][markdown-shield]][markdown-url] [![Swagger UI][swagger-ui-shield]][swagger-ui-url] [![License: MIT][license-shield]][license-url]
 
 ### Components
 
-Here are the main components of the system:
+The system is composed of the following main components, each playing a
+crucial role in providing a scalable, maintainable, and robust application:
 
-- **FastAPI Backend**: This is the backend for the mobile app. It's responsible for processing incoming requests, interacting with databases, and returning responses to the client.
-- **Databases**: The application uses two types of databases, PostgreSQL for relational data.
-- **Redis**: Used for caching and speeding up frequent requests.
-- **JWT**: Used for handling authentication.
+- **FastAPI Backend**: Serves as the core of the RESTful API, handling incoming
+  HTTP requests, processing data, and sending responses. It's designed for high
+  performance and encourages standard API development practices.
+- **PostgreSQL & Redis**: PostgreSQL is used for structured relational data
+  storage, while Redis serves as a fast, in-memory data store for caching and
+  temporary data to enhance performance.
+- **JWT Authentication**: Implements secure authentication mechanisms using JSON
+  Web Tokens (JWT), ensuring secure access to the API.
 
-Each of these components plays a vital role in the functioning of the
-backend. Together, they will make up a scalable, maintainable, and robust
-application.
+This project adheres to RESTful design principles, ensuring an intuitive and
+standard approach to API development. This design facilitates easy integration,
+scalability, and interaction with various clients, including web and mobile
+applications. The API provides clear, resource-oriented URLs, uses HTTP response
+codes to indicate API errors, and employs JWT for secure, stateless
+authentication.
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
