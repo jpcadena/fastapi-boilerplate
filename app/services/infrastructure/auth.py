@@ -31,7 +31,7 @@ class AuthService:
     def _build_payload(
         user: User,
         auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
-            scope: Scope | None = None,
+        scope: Scope | None = None,
     ) -> TokenPayload:
         """
         Build JWT payload for authentication

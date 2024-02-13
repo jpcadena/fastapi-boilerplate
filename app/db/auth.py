@@ -7,11 +7,9 @@ import logging
 from collections.abc import Callable
 from typing import Any
 
-from redis.exceptions import (AuthenticationError,
-                              ConnectionError as RedisConnectionError,
-                              DataError, NoPermissionError,
-                              TimeoutError as RedisTimeoutError
-                              )
+from redis.exceptions import AuthenticationError, DataError, NoPermissionError
+from redis.exceptions import ConnectionError as RedisConnectionError
+from redis.exceptions import TimeoutError as RedisTimeoutError
 
 from app.exceptions.exceptions import ServiceException
 

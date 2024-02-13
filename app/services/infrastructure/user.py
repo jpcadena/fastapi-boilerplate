@@ -7,7 +7,7 @@ from datetime import datetime
 from typing import Annotated, Any
 
 from fastapi import Depends
-from pydantic import EmailStr, NonNegativeInt, PositiveInt, UUID4
+from pydantic import UUID4, EmailStr, NonNegativeInt, PositiveInt
 from redis.asyncio import Redis
 
 from app.api.deps import get_redis_dep
@@ -110,7 +110,7 @@ class UserService:
         return UserResponse.model_validate(user)
 
     async def register_user(
-            self, user: UserCreate | UserSuperCreate
+        self, user: UserCreate | UserSuperCreate
     ) -> UserCreateResponse:
         """
         Register a new user in the database
@@ -128,7 +128,7 @@ class UserService:
         return UserCreateResponse.model_validate(created_user)
 
     async def get_users(
-            self, offset: NonNegativeInt | None, limit: PositiveInt | None
+        self, offset: NonNegativeInt | None, limit: PositiveInt | None
     ) -> list[UserResponse]:
         """
         Retrieve users' information from the table

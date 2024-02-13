@@ -7,7 +7,7 @@ These specification objects encapsulate the rules to filter or select
 
 from typing import Any
 
-from pydantic import EmailStr, UUID4
+from pydantic import UUID4, EmailStr
 
 
 class Specification:

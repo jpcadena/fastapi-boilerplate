@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 from pydantic import UUID4
 from sqlalchemy import CheckConstraint, ForeignKey, String, text
 from sqlalchemy.dialects.postgresql import TIMESTAMP, UUID
-from sqlalchemy.orm import Mapped, mapped_column, relationship  # type: ignore
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.config.config import sql_database_setting
 from app.db.base_class import Base
@@ -64,7 +64,7 @@ class Locality(Base):  # type: ignore
         nullable=True,
         comment="Time the locality was updated",
     )
-    region: Mapped[list["Region"]] = relationship(  # type: ignore
+    region: Mapped[list["Region"]] = relationship(
         "Region", back_populates="localities"
     )
 

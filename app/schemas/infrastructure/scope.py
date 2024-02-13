@@ -2,7 +2,7 @@
 A module for scope in the app-schemas package.
 """
 
-from enum import StrEnum, UNIQUE, auto, verify
+from enum import UNIQUE, StrEnum, auto, verify
 
 
 @verify(UNIQUE)

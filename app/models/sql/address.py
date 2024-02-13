@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 from pydantic import UUID4
 from sqlalchemy import CheckConstraint, String, text
 from sqlalchemy.dialects.postgresql import TIMESTAMP, UUID
-from sqlalchemy.orm import Mapped, mapped_column, relationship  # type: ignore
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.config.config import init_setting, sql_database_setting
 from app.db.base_class import Base
@@ -73,9 +73,7 @@ class Address(Base):  # type: ignore
         comment="Time the User Address was updated",
     )
 
-    users: Mapped[list["User"]] = relationship(  # type: ignore
-        "User", back_populates="address"
-    )
+    users: Mapped[list["User"]] = relationship("User", back_populates="address")
 
     __table_args__ = (
         CheckConstraint(

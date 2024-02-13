@@ -3,6 +3,7 @@ A module for locality in the app-crud package.
 """
 
 import logging
+from typing import Optional
 
 from pydantic import PositiveInt
 from sqlalchemy import select
@@ -56,11 +57,10 @@ class LocalityRepository:
         async with self.session as async_session:
             stmt = select(Locality).where(Locality.locality == name)
             try:
-                locality: Locality = await async_session.scalar(stmt)
+                locality: Optional[Locality] = await async_session.scalar(stmt)
                 logger.info("Retrieving locality with name: %s", name)
             except SQLAlchemyError as sa_exc:
                 logger.error(sa_exc)
-                return None
             return locality
 
 

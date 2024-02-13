@@ -5,7 +5,7 @@ A module for cached user in the app.services.infrastructure package.
 import json
 from typing import Any
 
-from pydantic import PositiveInt, UUID4
+from pydantic import UUID4, PositiveInt
 from redis.asyncio import Redis
 
 from app.config.config import auth_setting

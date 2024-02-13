@@ -5,12 +5,13 @@ This script contains abstract and concrete filter classes for data
 
 import logging
 from abc import ABC, abstractmethod
+from sqlite3 import Row
+from typing import Any
 
 from pydantic import UUID4
-from sqlalchemy import select
+from sqlalchemy import RowMapping, Select, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.sql import Select
 
 from app.core.decorators import benchmark, with_logging
 from app.crud.specification import (
@@ -36,7 +37,7 @@ class Filter(ABC):
         self,
         spec: Specification,
         session: AsyncSession,
-            model: User | Address,
+        model: User | Address,
         field: str,
     ) -> User | Address | None:
         """
@@ -66,8 +67,8 @@ class IndexFilter(Filter):
         self,
         spec: IdSpecification,
         session: AsyncSession,
-            model: User | Address,
-            field: str | None = None,
+        model: User | Address,
+        field: str | None = None,
     ) -> User | Address | None:
         _id: UUID4 = spec.value
         db_obj: User | Address | None = None
@@ -92,12 +93,12 @@ class UniqueFilter(Filter):
     @benchmark
     async def filter(
         self,
-            spec: UsernameSpecification | EmailSpecification,
+        spec: UsernameSpecification | EmailSpecification,
         session: AsyncSession,
         model: User,
         field: str = "email",
     ) -> User:
-        stmt: Select
+        stmt: Select[Any]
         if field == "username":
             stmt = select(model).where(model.username == spec.value)
         elif field == "email":
@@ -106,7 +107,9 @@ class UniqueFilter(Filter):
             raise ValueError("Invalid field specified for filtering")
         async with session as async_session:
             try:
-                db_obj = (await async_session.scalars(stmt)).one()
+                db_obj: Row | RowMapping = (
+                    await async_session.scalars(stmt)
+                ).one()
                 if not isinstance(db_obj, User):
                     raise ValueError("Retrieved object is not a User instance")
             except SQLAlchemyError as sa_exc:

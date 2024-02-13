@@ -5,10 +5,10 @@ This script handles CRUD (Create, Read, Update, Delete) operations for
 
 import logging
 from datetime import UTC, datetime
-from typing import Any
+from typing import Any, Sequence
 
-from pydantic import NonNegativeInt, PositiveInt, UUID4
-from sqlalchemy import select
+from pydantic import UUID4, NonNegativeInt, PositiveInt
+from sqlalchemy import Row, RowMapping, select
 from sqlalchemy.engine import Result, ScalarResult
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -134,11 +134,14 @@ class UserRepository:
         :return: A list of users
         :rtype: list[User]
         """
-        stmt: Select = select(User).offset(offset).limit(limit)
+        stmt: Select[tuple[User]] = select(User).offset(offset).limit(limit)
         async with self.session as session:
             try:
-                results: ScalarResult = await session.scalars(stmt)
-                users: list[User] = results.all()
+                scalar_result: ScalarResult[User] = await session.scalars(stmt)
+                all_results: Sequence[Row[User] | RowMapping | Any] = (
+                    scalar_result.all()
+                )
+                users: list[User] = [User(result) for result in all_results]
             except SQLAlchemyError as sa_exc:
                 logger.error(sa_exc)
                 raise DatabaseException(str(sa_exc)) from sa_exc
@@ -155,10 +158,10 @@ class UserRepository:
         """
         async with self.session as session:
             try:
-                stmt: Select = select(User.id).where(
+                stmt: Select[tuple[UUID4]] = select(User.id).where(
                     self.model.email == email.value
                 )
-                result: Result = await session.execute(stmt)
+                result: Result[tuple[UUID4]] = await session.execute(stmt)
                 user_id: UUID4 | None = result.scalar()
             except SQLAlchemyError as db_exc:
                 logger.error(db_exc)
@@ -173,7 +176,7 @@ class UserRepository:
     @benchmark
     async def create_user(
         self,
-            user: UserCreate | UserSuperCreate,
+        user: UserCreate | UserSuperCreate,
     ) -> User:
         """
         Create a new user in the database.

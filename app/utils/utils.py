@@ -63,7 +63,7 @@ def get_nationality_code(country_name: str) -> str:
 
 
 def validate_phone_number(
-        phone_number: PhoneNumber | None,
+    phone_number: PhoneNumber | None,
 ) -> PhoneNumber | None:
     """
     Validate the phone number format

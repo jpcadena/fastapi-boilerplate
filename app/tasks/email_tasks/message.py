@@ -38,9 +38,9 @@ def create_message(
     """
     message: MIMEText = MIMEText(html, "html")
     message["Subject"] = subject
-    message[
-        "From"
-    ] = f"{settings.EMAILS_FROM_NAME} <{settings.EMAILS_FROM_EMAIL}>"
+    message["From"] = (
+        f"{settings.EMAILS_FROM_NAME} <{settings.EMAILS_FROM_EMAIL}>"
+    )
     message["To"] = email_to
     logger.info("Message created from: %s", settings.EMAILS_FROM_EMAIL)
     return message

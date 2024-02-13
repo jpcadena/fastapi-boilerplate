@@ -6,9 +6,17 @@ import re
 from typing import Literal
 from uuid import uuid4
 
-from pydantic import (AnyHttpUrl, AnyUrl, BaseModel, ConfigDict, EmailStr,
-                      Field, NonNegativeInt, UUID4, field_validator
-                      )
+from pydantic import (
+    UUID4,
+    AnyHttpUrl,
+    AnyUrl,
+    BaseModel,
+    ConfigDict,
+    EmailStr,
+    Field,
+    NonNegativeInt,
+    field_validator,
+)
 
 from app.config.config import auth_setting
 from app.exceptions.exceptions import ServiceException

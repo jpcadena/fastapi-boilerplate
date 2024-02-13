@@ -44,7 +44,7 @@ class IPBlacklistMiddleware:
     @staticmethod
     async def is_blacklisted(
         ip_blacklist_service: IPBlacklistService,
-            ip: IPv4Address | IPv6Address,
+        ip: IPv4Address | IPv6Address,
     ) -> bool:
         """
         Check if the given IP address is blacklisted.

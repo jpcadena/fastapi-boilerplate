@@ -4,7 +4,7 @@ A module for address in the app-schemas package.
 
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict, Field, UUID4
+from pydantic import UUID4, BaseModel, ConfigDict, Field
 
 from app.config.config import init_setting, sql_database_setting
 from app.schemas.schemas import (

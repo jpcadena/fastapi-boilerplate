@@ -4,9 +4,14 @@ A module for user base in the app.schemas.infrastructure package.
 
 from datetime import date, datetime
 
-from pydantic import (BaseModel, ConfigDict, EmailStr, Field, UUID4,
-                      field_validator
-                      )
+from pydantic import (
+    UUID4,
+    BaseModel,
+    ConfigDict,
+    EmailStr,
+    Field,
+    field_validator,
+)
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from app.schemas.external.address import Address
