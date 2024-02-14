@@ -10,8 +10,8 @@ from fastapi import (
     APIRouter,
     Body,
     Depends,
-    Header,
     HTTPException,
+    Header,
     Path,
     Request,
     status,
@@ -327,7 +327,7 @@ async def logout(
         ),
     ],
     current_user: Annotated[UserAuth, Depends(get_current_user)],
-    # noqa: argument-unused
+    # noqa: ARG001
     redis: Annotated[Redis, Depends(get_redis_dep)],  # type: ignore
 ) -> Msg:
     """

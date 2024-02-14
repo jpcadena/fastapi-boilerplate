@@ -138,9 +138,9 @@ class UserRepository:
         async with self.session as session:
             try:
                 scalar_result: ScalarResult[User] = await session.scalars(stmt)
-                all_results: Sequence[Row[User] | RowMapping | Any] = (
-                    scalar_result.all()
-                )
+                all_results: Sequence[
+                    Row[User] | RowMapping | Any
+                ] = scalar_result.all()
                 users: list[User] = [User(result) for result in all_results]
             except SQLAlchemyError as sa_exc:
                 logger.error(sa_exc)

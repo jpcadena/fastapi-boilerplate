@@ -225,7 +225,7 @@
         "description": "User Auth that inherits from UserID.",
         "example": {
           "email": "example@mail.com",
-          "id": "fe0fc73a-bd20-42c1-8b6f-9d7d6e2f017c",
+          "id": "86afd941-266f-4b3e-9db2-4fa9cf730be4",
           "username": "username"
         },
         "properties": {
@@ -394,7 +394,7 @@
           "email": "example@mail.com",
           "first_name": "Some",
           "gender": "male",
-          "id": "fe0fc73a-bd20-42c1-8b6f-9d7d6e2f017c",
+          "id": "86afd941-266f-4b3e-9db2-4fa9cf730be4",
           "last_name": "Example",
           "middle_name": "One",
           "phone_number": "+593987654321",
@@ -454,19 +454,19 @@
             "region": "Guayas",
             "street_address": "Blvd 9 de Octubre"
           },
-          "address_id": "fe0fc73a-bd20-42c1-8b6f-9d7d6e2f017c",
+          "address_id": "86afd941-266f-4b3e-9db2-4fa9cf730be4",
           "birthdate": "2004-01-01",
-          "created_at": "2024-02-13 10:45:18",
+          "created_at": "2024-02-13 20:33:15",
           "email": "example@mail.com",
           "first_name": "Some",
           "gender": "male",
-          "id": "fe0fc73a-bd20-42c1-8b6f-9d7d6e2f017c",
+          "id": "86afd941-266f-4b3e-9db2-4fa9cf730be4",
           "is_active": true,
           "is_superuser": false,
           "last_name": "Example",
           "middle_name": "One",
           "phone_number": "+593987654321",
-          "updated_at": "2024-02-13 10:45:18",
+          "updated_at": "2024-02-13 20:33:15",
           "username": "username"
         },
         "properties": {
@@ -778,20 +778,20 @@
             "region": "Guayas",
             "street_address": "Blvd 9 de Octubre"
           },
-          "address_id": "fe0fc73a-bd20-42c1-8b6f-9d7d6e2f017c",
+          "address_id": "86afd941-266f-4b3e-9db2-4fa9cf730be4",
           "birthdate": "2004-01-01",
-          "created_at": "2024-02-13 10:45:18",
+          "created_at": "2024-02-13 20:33:15",
           "email": "example@mail.com",
           "first_name": "Some",
           "gender": "male",
-          "id": "fe0fc73a-bd20-42c1-8b6f-9d7d6e2f017c",
+          "id": "86afd941-266f-4b3e-9db2-4fa9cf730be4",
           "is_active": true,
           "is_superuser": false,
           "last_name": "Example",
           "middle_name": "One",
           "password": "Hk7pH9*Hk7pH9*35Fu&3UHk7pH9*35Fu&3U35Fu&3U",
           "phone_number": "+593987654321",
-          "updated_at": "2024-02-13 10:45:18",
+          "updated_at": "2024-02-13 20:33:15",
           "username": "username"
         },
         "properties": {
@@ -1092,7 +1092,7 @@
               "normal": {
                 "description": "A **normal** authorization token object that works correctly.",
                 "summary": "A normal example",
-                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZTpiYzU0ZDU2OS1hM2NlLTRkZDktOWM0Yi05ZjEzYjIyNmI1NmMiLCJuYXRpb25hbGl0aWVzIjpbIkVDVSJdLCJlbWFpbCI6ImV4YW1wbGVAbWFpbC5jb20iLCJuaWNrbmFtZSI6ImV4YW1wbGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJleGFtcGxlIiwiZ2l2ZW5fbmFtZSI6IlNvbWUiLCJmYW1pbHlfbmFtZSI6IkV4YW1wbGUiLCJtaWRkbGVfbmFtZSI6Ik9uZSIsImdlbmRlciI6Im1hbGUiLCJiaXJ0aGRhdGUiOiIyMDA0LTEyLTMxIiwidXBkYXRlZF9hdCI6IjIwMjQtMDItMTNUMTA6NDU6MTguMDc0Mzg4IiwicGhvbmVfbnVtYmVyIjoiKzU5Mzk4NzY1NDMyMSIsImFkZHJlc3MiOnsic3RyZWV0X2FkZHJlc3MiOiJVcmRlc2EgTm9ydGUgbXogQTEgdiA5OSIsImxvY2FsaXR5IjoiR3VheWFxdWlsIiwicmVnaW9uIjoiR3VheWFzIiwiY291bnRyeSI6IkVjdWFkb3IiLCJwb3N0YWxfY29kZSI6IjA5MDUwNSJ9LCJleHAiOjE3MDc4NDA5MTgsIm5iZiI6MTcwNzgzOTExNywiaWF0IjoxNzA3ODM5MTE4fQ.XTBZi-3M35a5QEkj5pQOa8AJ9DwwHxGBJ9KLqgtPK94"
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VybmFtZTo1YTgyNWIzYS03Y2MxLTQyZmUtODViYS0yNjIwMWI2N2ZjOTciLCJuYXRpb25hbGl0aWVzIjpbIkVDVSJdLCJlbWFpbCI6ImV4YW1wbGVAbWFpbC5jb20iLCJuaWNrbmFtZSI6ImV4YW1wbGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJleGFtcGxlIiwiZ2l2ZW5fbmFtZSI6IlNvbWUiLCJmYW1pbHlfbmFtZSI6IkV4YW1wbGUiLCJtaWRkbGVfbmFtZSI6Ik9uZSIsImdlbmRlciI6Im1hbGUiLCJiaXJ0aGRhdGUiOiIyMDA0LTEyLTMxIiwidXBkYXRlZF9hdCI6IjIwMjQtMDItMTNUMjA6MzM6MTUuMzY4MzA0IiwicGhvbmVfbnVtYmVyIjoiKzU5Mzk4NzY1NDMyMSIsImFkZHJlc3MiOnsic3RyZWV0X2FkZHJlc3MiOiJVcmRlc2EgTm9ydGUgbXogQTEgdiA5OSIsImxvY2FsaXR5IjoiR3VheWFxdWlsIiwicmVnaW9uIjoiR3VheWFzIiwiY291bnRyeSI6IkVjdWFkb3IiLCJwb3N0YWxfY29kZSI6IjA5MDUwNSJ9LCJleHAiOjE3MDc4NzYxOTUsIm5iZiI6MTcwNzg3NDM5NCwiaWF0IjoxNzA3ODc0Mzk1fQ.uKEdthgA8vBOXVX-4xzLlRYBefzdktEAxOOeJJWazJc"
               }
             },
             "in": "header",
@@ -1568,7 +1568,7 @@
         "parameters": [
           {
             "description": "ID of the User to be searched",
-            "example": "22a8cd2e-4945-4736-bae0-0ca0a2d5d599",
+            "example": "8fe61b5d-75d5-4dd3-93d9-7099aac722f9",
             "in": "path",
             "name": "user_id",
             "required": true,
@@ -1611,7 +1611,7 @@
         "parameters": [
           {
             "description": "ID of the User to be searched",
-            "example": "6f4bd522-164e-4788-b0ff-1959127b8aaf",
+            "example": "d47c3a6f-50cb-431a-8d20-20f72e715d1a",
             "in": "path",
             "name": "user_id",
             "required": true,
@@ -1661,7 +1661,7 @@
         "parameters": [
           {
             "description": "ID of the User to be searched",
-            "example": "9d65faea-7a15-4236-a73c-55916d18ab97",
+            "example": "03afff7b-b269-4058-b905-9ecd584cb87c",
             "in": "path",
             "name": "user_id",
             "required": true,

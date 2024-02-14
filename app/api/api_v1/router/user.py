@@ -38,9 +38,9 @@ from app.schemas.external.user import (
     UserCreate,
     UserCreateResponse,
     UserResponse,
-    UsersResponse,
     UserUpdate,
     UserUpdateResponse,
+    UsersResponse,
 )
 from app.schemas.infrastructure.user import UserAuth
 from app.services.infrastructure.cached_user import CachedUserService
@@ -58,7 +58,7 @@ router: APIRouter = APIRouter(prefix="/user", tags=["user"])
 @router.get("", response_model=UsersResponse)
 async def get_users(
     current_user: Annotated[UserAuth, Depends(get_current_user)],
-    # noqa: argument-unused
+    # noqa: ARG001
     user_service: Annotated[UserService, Depends(get_user_service)],
     skip: Annotated[
         NonNegativeInt,
@@ -230,7 +230,7 @@ async def get_user_me(
 async def get_user_by_id(
     user_service: Annotated[UserService, Depends(get_user_service)],
     current_user: Annotated[UserAuth, Depends(get_current_user)],
-    # noqa: argument-unused
+    # noqa: ARG001
     user_id: Annotated[
         UUID4,
         Path(
@@ -288,7 +288,7 @@ async def get_user_by_id(
 async def update_user(
     user_service: Annotated[UserService, Depends(get_user_service)],
     current_user: Annotated[UserAuth, Depends(get_current_user)],
-    # noqa: argument-unused
+    # noqa: ARG001
     user_id: Annotated[
         UUID4,
         Path(
@@ -346,7 +346,7 @@ async def delete_user(
     background_tasks: BackgroundTasks,
     user_service: Annotated[UserService, Depends(get_user_service)],
     current_user: Annotated[UserAuth, Depends(get_current_user)],
-    # noqa: argument-unused
+    # noqa: ARG001
     user_id: Annotated[
         UUID4,
         Path(

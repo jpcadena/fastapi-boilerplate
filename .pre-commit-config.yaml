@@ -80,6 +80,13 @@ repos:
             uvicorn,
           ]
 
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.7
+    hooks:
+      - id: bandit
+        args: [ "-c", "pyproject.toml" ]
+        additional_dependencies: [ "bandit[toml]" ]
+
   - repo: local
     hooks:
       - id: block-env
