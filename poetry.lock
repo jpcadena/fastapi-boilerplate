@@ -1105,13 +1105,13 @@ files = [
 
 [[package]]
 name = "phonenumbers"
-version = "8.13.30"
+version = "8.13.31"
 description = "Python version of Google's common library for parsing, formatting, storing and validating international phone numbers."
 optional = false
 python-versions = "*"
 files = [
-    {file = "phonenumbers-8.13.30-py2.py3-none-any.whl", hash = "sha256:273a969a863e9e38d4944b26fc277f408dc9aa84faa04996266efa4021adea00"},
-    {file = "phonenumbers-8.13.30.tar.gz", hash = "sha256:175fcaa89780c9cb6e089fe61de960396c9fc0c01845aea26400975fb10a8ea8"},
+    {file = "phonenumbers-8.13.31-py2.py3-none-any.whl", hash = "sha256:e45d0bc852516a3a6594bcec0ae47b825421a8adcfcf5f114ad148f1523d8646"},
+    {file = "phonenumbers-8.13.31.tar.gz", hash = "sha256:2742071c9d0af09274c8a5b2a26d9a36acbf2ea5cb62943cc2ceadb5c0c87641"},
 ]
 
 [[package]]
@@ -2097,4 +2097,4 @@ redis = ["redis"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "d9d2d3253a7b0cdc89811248b2572cbd9d9dde50af5b841facdee104cc48a702"
+content-hash = "5e5f465c1fa1e56c81b2e87102f5bada17c5cb469a2b703b4951ed23182dc720"
