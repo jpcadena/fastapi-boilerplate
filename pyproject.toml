@@ -87,7 +87,7 @@ types-aiofiles = "^23.2.0.20240106"
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 types-passlib = "^1.7.7.20240106"
 aiosmtplib = "^3.0.1"
-sqlalchemy = { extras = ["asyncio"], version = "^2.0.27" }
+sqlalchemy = { extras = ["asyncio"], version = "^2.0.28" }
 asyncpg = "^0.29.0"
 asyncpg-stubs = "^0.29.1"
 redis = "^5.0.2"
