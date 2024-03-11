@@ -91,7 +91,7 @@ sqlalchemy = { extras = ["asyncio"], version = "^2.0.28" }
 asyncpg = "^0.29.0"
 asyncpg-stubs = "^0.29.1"
 redis = "^5.0.2"
-types-redis = "^4.6.0.20240218"
+types-redis = "^4.6.0.20240311"
 isort = {extras = ["colors"], version = "^5.13.2"}
 black = "^24.2.0"
 ruff = "^0.3.2"
