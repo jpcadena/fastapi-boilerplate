@@ -83,7 +83,7 @@ pycountry = "^23.12.11"
 python-dotenv = "^1.0.1"
 python-multipart = "^0.0.9"
 aiofiles = "^23.2.1"
-types-aiofiles = "^23.2.0.20240106"
+types-aiofiles = "^23.2.0.20240311"
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 types-passlib = "^1.7.7.20240311"
 aiosmtplib = "^3.0.1"
