@@ -85,7 +85,7 @@ python-multipart = "^0.0.9"
 aiofiles = "^23.2.1"
 types-aiofiles = "^23.2.0.20240106"
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
-types-passlib = "^1.7.7.20240106"
+types-passlib = "^1.7.7.20240311"
 aiosmtplib = "^3.0.1"
 sqlalchemy = { extras = ["asyncio"], version = "^2.0.28" }
 asyncpg = "^0.29.0"
