@@ -94,7 +94,7 @@ redis = "^5.0.3"
 types-redis = "^4.6.0.20240311"
 isort = {extras = ["colors"], version = "^5.13.2"}
 black = "^24.3.0"
-ruff = "^0.3.3"
+ruff = "^0.3.4"
 mypy = "^1.9.0"
 pre-commit = "^3.6.2"
 bcrypt = "^4.1.2"
