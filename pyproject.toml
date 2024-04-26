@@ -93,7 +93,7 @@ asyncpg-stubs = "^0.29.1"
 redis = "^5.0.4"
 types-redis = "^4.6.0.20240425"
 isort = {extras = ["colors"], version = "^5.13.2"}
-black = "^24.4.1"
+black = "^24.4.2"
 ruff = "^0.4.1"
 mypy = "^1.10.0"
 pre-commit = "^3.7.0"
