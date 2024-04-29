@@ -38,9 +38,9 @@ from app.schemas.external.user import (
     UserCreate,
     UserCreateResponse,
     UserResponse,
+    UsersResponse,
     UserUpdate,
     UserUpdateResponse,
-    UsersResponse,
 )
 from app.schemas.infrastructure.user import UserAuth
 from app.services.infrastructure.cached_user import CachedUserService
@@ -207,9 +207,9 @@ async def get_user_me(
     :type redis: Redis
     """
     cached_service: CachedUserService = CachedUserService(redis)
-    cached_user: UserResponse | None = (
-        await cached_service.get_schema_from_cache(current_user.id)
-    )
+    cached_user: (
+        UserResponse | None
+    ) = await cached_service.get_schema_from_cache(current_user.id)
     if cached_user is not None:
         return cached_user
     try:
@@ -260,9 +260,9 @@ async def get_user_by_id(
     :type redis: Redis
     """
     cached_service: CachedUserService = CachedUserService(redis)
-    cached_user: UserResponse | None = (
-        await cached_service.get_schema_from_cache(user_id)
-    )
+    cached_user: (
+        UserResponse | None
+    ) = await cached_service.get_schema_from_cache(user_id)
     if cached_user is not None:
         return cached_user
     try:

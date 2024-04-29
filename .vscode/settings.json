@@ -66,5 +66,11 @@
   ],
   "terminal.integrated.env.windows": {
     "PYTHONUNBUFFERED": "1"
-  }
+  },
+  "cSpell.words": [
+    "García",
+    "Márquez",
+    "pymysql",
+    "sqlalchemy"
+  ]
 }
