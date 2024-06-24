@@ -103,7 +103,7 @@ pytest = "^8.2.2"
 pytest-asyncio = "^0.23.7"
 pytest-mock = "^3.14.0"
 pytest-cov = "^5.0.0"
-coverage = "^7.5.3"
+coverage = "^7.5.4"
 asgi-lifespan = "^2.1.0"
 trio = "^0.25.1"
 
@@ -113,7 +113,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.dev-dependencies]
 pytest = "^8.2.2"
-coverage = "^7.5.3"
+coverage = "^7.5.4"
 
 [tool.poetry.extras]
 pgsql = ["asyncpg"]
