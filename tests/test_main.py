@@ -14,8 +14,6 @@ from app.db.base_class import Base
 from app.db.session import async_engine
 from main import app
 
-# TODO: Add env variables support for dev and production environments
-
 
 @pytest.fixture(scope="function")
 async def database_fixture() -> AsyncGenerator[AsyncSession, Any]:

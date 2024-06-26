@@ -25,7 +25,7 @@ jobs:
       run: pip install bandit
 
     - name: Run Bandit
-      run: bandit -r . --exclude ./tests/
+      run: bandit -c pyproject.toml -r .
 
   # This job runs Safety for security checks
   safety:

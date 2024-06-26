@@ -5,5 +5,5 @@ check:
 	-ruff format .
 	-mypy --pretty .
 update:
-	poetry update
-	pre-commit autoupdate
+	-poetry update
+	-pre-commit autoupdate
