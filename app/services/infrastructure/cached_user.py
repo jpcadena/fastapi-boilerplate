@@ -26,7 +26,7 @@ class CachedUserService:
         redis: Redis,  # type: ignore
     ):
         self._redis: Redis = redis  # type: ignore
-        self._cache_seconds: PositiveInt = auth_setting.CACHE_SECONDS
+        self.__cache_seconds: PositiveInt = auth_setting.CACHE_SECONDS
 
     async def get_model_from_cache(self, key: UUID4) -> User | None:
         """
@@ -81,5 +81,5 @@ class CachedUserService:
         :rtype: NoneType
         """
         await self._redis.setex(
-            str(key), self._cache_seconds, json.dumps(custom_serializer(value))
+            str(key), self.__cache_seconds, json.dumps(custom_serializer(value))
         )

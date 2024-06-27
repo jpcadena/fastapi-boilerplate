@@ -32,7 +32,7 @@ refresh_token_scheme: OAuth2PasswordBearer = OAuth2PasswordBearer(
 )
 
 
-async def authenticate_user(
+async def _authenticate_user(
     token: str,
     auth_settings: AuthSettings,
     user_service: UserService,
@@ -91,7 +91,7 @@ async def get_refresh_current_user(
     :return: Authenticated user information
     :rtype: UserAuth
     """
-    return await authenticate_user(
+    return await _authenticate_user(
         refresh_token, auth_settings, user_service, redis
     )
 
@@ -123,4 +123,4 @@ async def get_current_user(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token is blacklisted",
         )
-    return await authenticate_user(token, auth_settings, user_service, redis)
+    return await _authenticate_user(token, auth_settings, user_service, redis)

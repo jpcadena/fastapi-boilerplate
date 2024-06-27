@@ -28,14 +28,14 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         :rtype: Response
         """
         response: Response = await call_next(request)
-        self.add_security_headers(
+        self._add_security_headers(
             response,
             request.app.state.auth_settings.STRICT_TRANSPORT_SECURITY_MAX_AGE,
         )
         return response
 
     @staticmethod
-    def add_security_headers(response: Response, max_age: PositiveInt) -> None:
+    def _add_security_headers(response: Response, max_age: PositiveInt) -> None:
         """
         Adds security headers to the response.
         :param max_age: The maximum age for the strict transport security

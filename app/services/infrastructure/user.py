@@ -11,7 +11,6 @@ from pydantic import UUID4, EmailStr, NonNegativeInt, PositiveInt
 from redis.asyncio import Redis
 
 from app.api.deps import get_redis_dep
-from app.config.config import auth_setting
 from app.crud.specification import (
     EmailSpecification,
     IdSpecification,
@@ -48,7 +47,6 @@ class UserService:
     ):
         self._user_repo: UserRepository = user_repo
         self._redis: Redis = redis  # type: ignore
-        self._cache_seconds: PositiveInt = auth_setting.CACHE_SECONDS
 
     async def get_user_by_id(self, user_id: UUID4) -> UserResponse | None:
         """

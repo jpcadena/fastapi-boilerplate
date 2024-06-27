@@ -29,7 +29,18 @@ class IPBlacklistService:
         blacklist_expiration_seconds: PositiveInt,
     ):
         self._redis: Redis = redis  # type: ignore
-        self._expiration_seconds: PositiveInt = blacklist_expiration_seconds
+        self.__expiration_seconds: PositiveInt = blacklist_expiration_seconds
+
+    @staticmethod
+    def _get_redis_key(ip: IPvAnyAddress) -> str:
+        """
+        Generate the Redis key for the given IP address.
+        :param ip: The IP address.
+        :type ip: IPvAnyAddress
+        :return: The Redis key.
+        :rtype: str
+        """
+        return f"blacklist:{ip}"
 
     @handle_redis_exceptions
     async def is_ip_blacklisted(self, ip: IPvAnyAddress) -> bool:
@@ -40,7 +51,7 @@ class IPBlacklistService:
         :return: True if blacklisted, False otherwise.
         :rtype: bool
         """
-        return bool(await self._redis.get(self.get_redis_key(ip)))
+        return bool(await self._redis.get(self._get_redis_key(ip)))
 
     @handle_redis_exceptions
     async def blacklist_ip(self, ip: IPvAnyAddress) -> None:
@@ -52,21 +63,10 @@ class IPBlacklistService:
         :rtype: NoneType
         """
         await self._redis.setex(
-            self.get_redis_key(ip),
-            self._expiration_seconds,
+            self._get_redis_key(ip),
+            self.__expiration_seconds,
             f"Blacklisted at {datetime.now(UTC).isoformat()}",
         )
-
-    @staticmethod
-    def get_redis_key(ip: IPvAnyAddress) -> str:
-        """
-        Generate the Redis key for the given IP address.
-        :param ip: The IP address.
-        :type ip: IPvAnyAddress
-        :return: The Redis key.
-        :rtype: str
-        """
-        return f"blacklist:{ip}"
 
 
 def get_ip_blacklist_service(

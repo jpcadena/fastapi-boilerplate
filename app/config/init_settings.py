@@ -44,10 +44,7 @@ class InitSettings(BaseSettings):
         extra="allow",
     )
 
-    ITERATIONS: PositiveInt = 100000
-    KEY_BYTES_LENGTH: PositiveInt = 32
     SALT_BYTES: PositiveInt = 16
-    IV_BYTES: PositiveInt = 12
     PUBLIC_EXPONENT: PositiveInt = 65537
     RSA_KEY_BITS: PositiveInt = 2048
     SALUTE: str = "Salute!"

@@ -25,11 +25,11 @@ class RateLimiterService:
         rate_limiter: RateLimiter,
     ):
         self._redis: Redis = redis  # type: ignore
-        self._rate_limit_duration: PositiveInt = rate_limit_duration
-        self._max_requests: PositiveInt = max_requests
+        self.__rate_limit_duration: PositiveInt = rate_limit_duration
+        self.__max_requests: PositiveInt = max_requests
         self._rate_limiter: RateLimiter = rate_limiter
 
-    def get_rate_limit_key(self) -> str:
+    def _get_rate_limit_key(self) -> str:
         """
         Returns the rate limit key
         :return: The key to store on Redis based on the model instance
@@ -48,9 +48,9 @@ class RateLimiterService:
         :return: None
         :rtype: NoneType
         """
-        rate_limit_key: str = self.get_rate_limit_key()
+        rate_limit_key: str = self._get_rate_limit_key()
         min_timestamp: datetime = datetime.now() - timedelta(
-            seconds=self._rate_limit_duration
+            seconds=self.__rate_limit_duration
         )
         now_timestamp: float = datetime.now().timestamp()
         await self._redis.zremrangebyscore(
@@ -67,7 +67,7 @@ class RateLimiterService:
         :return: The number of requests in the current window
         :rtype: int
         """
-        rate_limit_key: str = self.get_rate_limit_key()
+        rate_limit_key: str = self._get_rate_limit_key()
         return await self._redis.zcard(rate_limit_key)
 
     async def get_remaining_requests(self) -> int:
@@ -77,7 +77,7 @@ class RateLimiterService:
         :rtype: int
         """
         request_count: int = await self.get_request_count()
-        return self._max_requests - request_count
+        return self.__max_requests - request_count
 
     @handle_redis_exceptions
     async def get_reset_time(self) -> datetime:
@@ -86,7 +86,7 @@ class RateLimiterService:
         :return: The reset time available
         :rtype: datetime
         """
-        rate_limit_key: str = self.get_rate_limit_key()
+        rate_limit_key: str = self._get_rate_limit_key()
         oldest_request: list[tuple[Any, float]] = await self._redis.zrange(
             rate_limit_key, 0, 0, withscores=True
         )
@@ -95,4 +95,4 @@ class RateLimiterService:
             if oldest_request
             else datetime.now()
         )
-        return oldest_timestamp + timedelta(seconds=self._rate_limit_duration)
+        return oldest_timestamp + timedelta(seconds=self.__rate_limit_duration)

@@ -15,6 +15,18 @@ crypt_context: CryptContext = CryptContext(
 )
 
 
+def _raise_custom_error(error_message: str) -> None:
+    """
+    Raise an exception
+    :param error_message: The error message to display
+    :type error_message: str
+    :return: None
+    :rtype: NoneType
+    """
+    logger.error(error_message)
+    raise SecurityException(error_message)
+
+
 def get_password_hash(password: str) -> str:
     """
     Hash a password using the bcrypt algorithm
@@ -24,7 +36,7 @@ def get_password_hash(password: str) -> str:
     :rtype: str
     """
     if not password:
-        raise_custom_error("Password cannot be empty or None")
+        _raise_custom_error("Password cannot be empty or None")
     return crypt_context.hash(password)
 
 
@@ -39,19 +51,7 @@ def verify_password(hashed_password: str, plain_password: str) -> bool:
     :rtype: bool
     """
     if not plain_password:
-        raise_custom_error("Plain password cannot be empty or None")
+        _raise_custom_error("Plain password cannot be empty or None")
     if not hashed_password:
-        raise_custom_error("Hashed password cannot be empty or None")
+        _raise_custom_error("Hashed password cannot be empty or None")
     return crypt_context.verify(plain_password, hashed_password)
-
-
-def raise_custom_error(error_message: str) -> None:
-    """
-    Raise an exception
-    :param error_message: The error message to display
-    :type error_message: str
-    :return: None
-    :rtype: NoneType
-    """
-    logger.error(error_message)
-    raise SecurityException(error_message)

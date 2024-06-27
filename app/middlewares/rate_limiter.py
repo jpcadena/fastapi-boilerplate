@@ -24,7 +24,7 @@ class RateLimiterMiddleware:
         self.app: FastAPI = app
 
     @staticmethod
-    async def handle_rate_limit_exceeded(
+    async def __handle_rate_limit_exceeded(
         rate_limiter: RateLimiter,
         rate_limiter_service: RateLimiterService,
         request: Request,
@@ -63,7 +63,7 @@ class RateLimiterMiddleware:
             headers=headers,
         )
 
-    async def enforce_rate_limit(
+    async def __enforce_rate_limit(
         self,
         rate_limiter: RateLimiter,
         rate_limiter_service: RateLimiterService,
@@ -83,11 +83,11 @@ class RateLimiterMiddleware:
         await rate_limiter_service.add_request()
         request_count: int = await rate_limiter_service.get_request_count()
         if request_count > request.app.state.auth_settings.MAX_REQUESTS:
-            await self.handle_rate_limit_exceeded(
+            await self.__handle_rate_limit_exceeded(
                 rate_limiter, rate_limiter_service, request
             )
 
-    async def process_request(self, request: Request) -> None:
+    async def _process_request(self, request: Request) -> None:
         """
         Process a backend request from the middleware
         :param request: The upcoming request instance
@@ -111,7 +111,7 @@ class RateLimiterMiddleware:
             request.app.state.auth_settings.MAX_REQUESTS,
             rate_limiter,
         )
-        await self.enforce_rate_limit(
+        await self.__enforce_rate_limit(
             rate_limiter, rate_limiter_service, request
         )
 
@@ -123,5 +123,5 @@ class RateLimiterMiddleware:
     ) -> None:
         if scope["type"] == "http":
             request = Request(scope, receive=receive)
-            await self.process_request(request)
+            await self._process_request(request)
         await self.app(scope, receive, send)

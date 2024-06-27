@@ -20,7 +20,7 @@ SKIP_ROUTES: list[str] = [
 ]
 
 
-def extract_token(request: Request) -> str | None:
+def __extract_token(request: Request) -> str | None:
     """
     Extract token from the Authorization headers of the request
     :param request: The upcoming request instance
@@ -34,7 +34,7 @@ def extract_token(request: Request) -> str | None:
     return None
 
 
-async def check_blacklist(token: str, request: Request) -> None:
+async def __check_blacklist(token: str, request: Request) -> None:
     """
     Check if a token is blacklisted from the upcoming request
     :param token: The token to check
@@ -56,7 +56,7 @@ async def check_blacklist(token: str, request: Request) -> None:
         )
 
 
-async def process_request(request: Request) -> None:
+async def _process_request(request: Request) -> None:
     """
     Process request for the blacklist middleware
     :param request: The upcoming request instance
@@ -65,8 +65,8 @@ async def process_request(request: Request) -> None:
     :rtype: NoneType
     """
     token: str | None
-    if token := extract_token(request):
-        await check_blacklist(token, request)
+    if token := __extract_token(request):
+        await __check_blacklist(token, request)
 
 
 async def blacklist_middleware(
@@ -82,6 +82,6 @@ async def blacklist_middleware(
     :rtype: Response
     """
     if not any(request.url.path.startswith(route) for route in SKIP_ROUTES):
-        await process_request(request)
+        await _process_request(request)
     response: Response = await call_next(request)
     return response

@@ -25,26 +25,26 @@ class RedisConnectionManager:
     """
 
     def __init__(self, auth_settings: AuthSettings):
-        self.url: str = f"{auth_settings.REDIS_DATABASE_URI}"
-        self.pool: Redis | None = None  # type: ignore
+        self.__url: str = f"{auth_settings.REDIS_DATABASE_URI}"
+        self._pool: Redis | None = None  # type: ignore
 
-    async def start(self) -> None:
+    async def __start(self) -> None:
         """
         Start the redis pool connection
         :return: None
         :rtype: NoneType
         """
-        self.pool = Redis.from_url(self.url, decode_responses=True)
-        await self.pool.ping()
+        self._pool = Redis.from_url(self.__url, decode_responses=True)
+        await self._pool.ping()
         logger.info("Redis Database initialized")
 
-    async def stop(self) -> None:
+    async def __stop(self) -> None:
         """
         Stops the redis connection
         :return: None
         :rtype: NoneType
         """
-        await self.pool.close()  # type: ignore
+        await self._pool.close()  # type: ignore
 
     async def get_connection(self) -> Redis | None:  # type: ignore
         """
@@ -52,7 +52,7 @@ class RedisConnectionManager:
         :return: The redis connection
         :rtype: Optional[Redis]
         """
-        return self.pool
+        return self._pool
 
     @asynccontextmanager
     async def connection(self) -> AsyncGenerator[Redis, Any]:  # type: ignore
@@ -61,9 +61,9 @@ class RedisConnectionManager:
         :return: Yields the generator object
         :rtype: AsyncGenerator[Redis, Any]
         """
-        await self.start()
-        yield self.pool  # type: ignore
-        await self.stop()
+        await self.__start()
+        yield self._pool  # type: ignore
+        await self.__stop()
 
 
 async def get_redis_dep(

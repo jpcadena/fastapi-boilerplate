@@ -27,10 +27,10 @@ class TokenService:
         auth_settings: AuthSettings,
     ):
         self._redis: Redis = redis  # type: ignore
-        self._refresh_token_expire_minutes: PositiveInt = (
+        self.__refresh_token_expire_minutes: PositiveInt = (
             auth_settings.REFRESH_TOKEN_EXPIRE_MINUTES
         )
-        self._blacklist_expiration_seconds: PositiveInt = (
+        self.__blacklist_expiration_seconds: PositiveInt = (
             PositiveInt(
                 PositiveInt(auth_settings.ACCESS_TOKEN_EXPIRE_MINUTES) + 1
             )
@@ -50,30 +50,13 @@ class TokenService:
         try:
             inserted: bool = await self._redis.setex(
                 token.key,
-                self._refresh_token_expire_minutes,
+                self.__refresh_token_expire_minutes,
                 token.user_info,
             )
         except RedisError as r_exc:
             logger.error("Error at creating token. %s", r_exc)
             raise r_exc
         return inserted
-
-    @handle_redis_exceptions
-    @benchmark
-    async def get_token(self, key: str) -> str | None:
-        """
-        Read token from the authentication database
-        :param key: The key to search for
-        :type key: str
-        :return: The refresh token
-        :rtype: str
-        """
-        try:
-            value: str = str(await self._redis.get(key))
-        except RedisError as r_exc:
-            logger.error("Error at getting token. %s", r_exc)
-            raise r_exc
-        return value
 
     @handle_redis_exceptions
     @benchmark
@@ -89,7 +72,7 @@ class TokenService:
         try:
             blacklisted: bool = await self._redis.setex(
                 f"blacklist:{token_key}",
-                self._blacklist_expiration_seconds,
+                self.__blacklist_expiration_seconds,
                 "true",
             )
         except RedisError as r_exc:
@@ -109,7 +92,7 @@ class TokenService:
         """
         try:
             blacklisted: str | None = await self._redis.get(
-                f"blacklist" f":{token_key}"
+                f"blacklist:{token_key}"
             )
         except RedisError as r_exc:
             logger.error("Error at checking if token is blacklisted. %s", r_exc)
