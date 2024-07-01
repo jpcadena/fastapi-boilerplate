@@ -91,7 +91,7 @@ aiosmtplib = "^3.0.1"
 sqlalchemy = { extras = ["asyncio"], version = "^2.0.31" }
 asyncpg = "^0.29.0"
 asyncpg-stubs = "^0.29.1"
-redis = "^5.0.6"
+redis = "^5.0.7"
 types-redis = "^4.6.0.20240425"
 isort = {extras = ["colors"], version = "^5.13.2"}
 black = "^24.4.2"
