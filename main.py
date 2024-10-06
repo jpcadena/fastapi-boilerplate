@@ -6,22 +6,28 @@ This module sets up the application configuration including logging,
 
 import logging
 from functools import partial
+from typing import Annotated
 
 import uvicorn
-from fastapi import FastAPI, status
+from fastapi import Depends, FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import ORJSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
+from pydantic import PositiveInt
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.api_v1.api import api_router
 from app.config.config import auth_setting, init_setting, setting
 from app.core import logging_config
 from app.core.lifecycle import lifespan
+from app.db.session import check_db_health, get_db_session
 from app.middlewares.blacklist_token import blacklist_middleware
-from app.middlewares.ip_blacklist import IPBlacklistMiddleware
-from app.middlewares.rate_limiter import RateLimiterMiddleware
+
+# from app.middlewares.ip_blacklist import IPBlacklistMiddleware
+# from app.middlewares.rate_limiter import RateLimiterMiddleware
 from app.middlewares.security_headers import SecurityHeadersMiddleware
+from app.schemas.schemas import health_example
 from app.utils.files_utils.openapi_utils import (
     custom_generate_unique_id,
     custom_openapi,
@@ -39,8 +45,8 @@ app: FastAPI = FastAPI(
 )
 app.openapi = partial(custom_openapi, app)  # type: ignore
 app.add_middleware(SecurityHeadersMiddleware)
-app.add_middleware(RateLimiterMiddleware)  # type: ignore
-app.add_middleware(IPBlacklistMiddleware)  # type: ignore
+# app.add_middleware(RateLimiterMiddleware)  # type: ignore
+# app.add_middleware(IPBlacklistMiddleware)  # type: ignore
 app.add_middleware(
     CORSMiddleware,
     allow_origins=setting.BACKEND_CORS_ORIGINS,
@@ -73,15 +79,29 @@ async def redirect_to_docs() -> RedirectResponse:
     return RedirectResponse("/docs")
 
 
-@app.get("/health", response_class=JSONResponse)
-async def check_health() -> JSONResponse:
+@app.get(
+    "/health",
+    responses=health_example,
+)
+async def check_health(
+    session: Annotated[AsyncSession, Depends(get_db_session)],
+) -> ORJSONResponse:
     """
     Check the health of the application backend.
+
     ## Response:
-    - `return:` **The JSON response**
-    - `rtype:` **JSONResponse**
+    - `return:` **The ORJSON response**
+    - `rtype:` **ORJSONResponse**
+    \f
     """
-    return JSONResponse({"status": "healthy"})
+    health_status: dict[str, str] = {
+        "status": "healthy",
+    }
+    status_code: PositiveInt = status.HTTP_200_OK
+    if not await check_db_health(session):
+        health_status["status"] = "unhealthy"
+        status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+    return ORJSONResponse(health_status, status_code=status_code)
 
 
 if __name__ == "__main__":

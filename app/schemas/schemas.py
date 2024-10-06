@@ -7,6 +7,7 @@ from enum import Enum
 from typing import Any, cast
 from uuid import UUID, uuid4
 
+from pydantic import PositiveInt
 from pydantic.config import JsonDict
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
@@ -243,3 +244,29 @@ def custom_serializer(my_dict: dict[str, Any]) -> dict[str, Any]:
         elif isinstance(value, dict):
             custom_serializer(value)
     return my_dict
+
+
+health_example: dict[PositiveInt | str, dict[str, Any]] | None = {
+    200: {
+        "content": {
+            "application/json": {
+                "example": [
+                    {
+                        "status": "healthy",
+                    },
+                ],
+            },
+        },
+    },
+    503: {
+        "content": {
+            "application/json": {
+                "example": [
+                    {
+                        "status": "unhealthy",
+                    },
+                ],
+            },
+        },
+    },
+}

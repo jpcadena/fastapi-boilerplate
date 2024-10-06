@@ -9,11 +9,12 @@ from typing import Any
 
 from fastapi import FastAPI
 
-from app.api.deps import RedisConnectionManager
+# from app.api.deps import RedisConnectionManager
 from app.config.config import get_auth_settings, get_init_settings, get_settings
 from app.crud.user import get_user_repository
 from app.db.init_db import init_db
-from app.services.infrastructure.ip_blacklist import get_ip_blacklist_service
+
+# from app.services.infrastructure.ip_blacklist import get_ip_blacklist_service
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -43,16 +44,16 @@ async def lifespan(application: FastAPI) -> AsyncGenerator[Any, None]:
         )
         logger.info("Database initialized.")
 
-        redis_manager: RedisConnectionManager = RedisConnectionManager(
-            application.state.auth_settings
-        )
-        async with redis_manager.connection() as connection:
-            application.state.redis_connection = connection
-            application.state.ip_blacklist_service = get_ip_blacklist_service(
-                connection, application.state.auth_settings
-            )
-            logger.info("Redis connection established.")
-            yield
+        # redis_manager: RedisConnectionManager = RedisConnectionManager(
+        #     application.state.auth_settings
+        # )
+        # async with redis_manager.connection() as connection:
+        #     application.state.redis_connection = connection
+        #     application.state.ip_blacklist_service = get_ip_blacklist_service(
+        #         connection, application.state.auth_settings
+        #     )
+        #     logger.info("Redis connection established.")
+        yield
     except Exception as exc:
         logger.error(f"Error during application startup: {exc}")
         raise
