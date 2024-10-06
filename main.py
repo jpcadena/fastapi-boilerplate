@@ -38,8 +38,6 @@ app: FastAPI = FastAPI(
     generate_unique_id_function=custom_generate_unique_id,
 )
 app.openapi = partial(custom_openapi, app)  # type: ignore
-
-# Register middlewares
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(RateLimiterMiddleware)  # type: ignore
 app.add_middleware(IPBlacklistMiddleware)  # type: ignore
@@ -52,7 +50,6 @@ app.add_middleware(
 )
 app.add_middleware(GZipMiddleware)
 app.middleware("http")(blacklist_middleware)
-
 app.mount(
     init_setting.IMAGES_PATH,
     StaticFiles(directory=init_setting.IMAGES_DIRECTORY),

@@ -101,7 +101,7 @@ class RateLimiterMiddleware:
         user_agent: str = request.headers.get("user-agent", "unknown")
         request_path: str = request.url.path
         rate_limiter: RateLimiter = RateLimiter(
-            ip_address=IPvAnyAddress(client_ip),
+            ip_address=IPvAnyAddress(client_ip),  # type: ignore
             user_agent=user_agent,
             request_path=request_path,
         )
