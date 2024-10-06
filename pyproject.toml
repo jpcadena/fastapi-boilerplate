@@ -282,7 +282,6 @@ allow-dunder-method-names = ["__tablename__", "__table_args__"]  # PLW3201
 # Preserve types, even if a file imports `from __future__ import annotations`.
 keep-runtime-typing = true
 
-
 [tool.mypy]
 exclude = '''
 (
