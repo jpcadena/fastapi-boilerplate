@@ -4,8 +4,11 @@ This module provides login and password recovery functionality.
 """
 
 import logging
+from datetime import datetime, timedelta, timezone
 from typing import Annotated, Any
 
+import httpx
+from authlib.jose import jwt
 from fastapi import (
     APIRouter,
     Body,
@@ -16,7 +19,12 @@ from fastapi import (
     Request,
     status,
 )
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.responses import RedirectResponse
+from fastapi.security import (
+    OAuth2AuthorizationCodeBearer,
+    OAuth2PasswordRequestForm,
+)
+from httpx import Response
 from pydantic import EmailStr
 from redis.asyncio import Redis
 from starlette.datastructures import Address
@@ -36,7 +44,11 @@ from app.core.security.password import verify_password
 from app.exceptions.exceptions import NotFoundException, ServiceException
 from app.models.sql.user import User as UserDB
 from app.schemas.external.msg import Msg
-from app.schemas.external.token import TokenResetPassword, TokenResponse
+from app.schemas.external.token import (
+    OAuth2TokenResponse,
+    TokenResetPassword,
+    TokenResponse,
+)
 from app.schemas.external.user import (
     UserResponse,
     UserUpdate,
@@ -57,6 +69,17 @@ from app.utils.security.password import (
 
 logger: logging.Logger = logging.getLogger(__name__)
 router: APIRouter = APIRouter(prefix="/auth", tags=["auth"])
+GOOGLE_CLIENT_ID = "your-google-client-id"
+GOOGLE_CLIENT_SECRET = "your-google-client-secret"
+GOOGLE_OAUTH_URL = "https://accounts.google.com/o/oauth2/auth"
+GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
+GOOGLE_REDIRECT_URI = "http://localhost:8000/auth/google/callback"
+GOOGLE_AUTH_TOKEN_URL = "https://accounts.google.com/o/oauth2/token"
+GOOGLE_AUTH_USER_URL = "https://www.googleapis.com/oauth2/v1/userinfo"
+google_oauth: OAuth2AuthorizationCodeBearer = OAuth2AuthorizationCodeBearer(
+    authorizationUrl=GOOGLE_OAUTH_URL,
+    tokenUrl=GOOGLE_TOKEN_URL,
+)
 
 
 @router.post("/login", response_model=TokenResponse)
@@ -113,6 +136,82 @@ async def login(
     return await common_auth_procedure(
         found_user, client_ip, redis, auth_settings
     )
+
+
+@router.get("/google/login")
+async def google_login() -> RedirectResponse:
+    """
+    Redirect the user to Google's OAuth2 login page.
+    """
+    return RedirectResponse(
+        url=f"{GOOGLE_OAUTH_URL}?client_id={GOOGLE_CLIENT_ID}"
+        f"&redirect_uri={GOOGLE_REDIRECT_URI}"
+        f"&response_type=code&scope=openid%20email%20profile%20"
+        f"email&access_type=offline"
+    )
+
+
+@router.get("/google")
+async def auth_google(
+    request: Request,
+    code: str,
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
+    user_service: Annotated[UserService, Depends(get_user_service)],
+) -> OAuth2TokenResponse:
+    client_address: Address | None = request.client
+    if not client_address:
+        raise NotFoundException(auth_settings.NO_CLIENT_FOUND)
+    client_ip: str = client_address.host
+    params: dict[str, str] = {
+        "code": code,
+        "client_id": GOOGLE_CLIENT_ID,
+        "client_secret": GOOGLE_CLIENT_SECRET,
+        "redirect_uri": GOOGLE_REDIRECT_URI,
+        "grant_type": "authorization_code",
+    }
+    headers: dict[str, str] = {"Accept": "application/json"}
+    async with httpx.AsyncClient() as client:
+        token_response: Response = await client.post(
+            GOOGLE_AUTH_TOKEN_URL, params=params, headers=headers
+        )
+        access_token: dict[str, Any] = token_response.json()
+        token: str = access_token["access_token"]
+    async with httpx.AsyncClient() as client:
+        headers["Authorization"] = f"Bearer {token}"
+        response: Response = await client.get(
+            GOOGLE_AUTH_USER_URL, headers=headers
+        )
+        data_from_google: dict[str, Any] = response.json()
+        email_from_google: EmailStr = data_from_google["email"]
+        try:
+            found_user: UserResponse = await user_service.get_user_by_email(
+                email_from_google
+            )
+        except ServiceException as exc:
+            logger.error(exc)
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Invalid credentials",
+            ) from exc
+        access_token_expire: timedelta = timedelta(minutes=10)
+        expire: datetime = datetime.now(timezone.utc) + access_token_expire
+        to_encode: dict[str, datetime | EmailStr] = {
+            "exp": expire,
+            "sub": str(email_from_google),
+        }
+        encoded_token: bytes = jwt.encode(
+            to_encode,
+            auth_settings.SECRET_KEY,
+            algorithm=auth_settings.ALGORITHM,
+        )
+        common_token: TokenResponse = await common_auth_procedure(
+            found_user, client_ip, redis, auth_settings
+        )
+
+        return OAuth2TokenResponse(
+            **common_token.model_dump(),
+            expire_in=expire,
+        )
 
 
 @router.post(

@@ -127,13 +127,13 @@ async def common_auth_procedure(
     :return: The token response object
     :rtype: TokenResponse
     """
-    auth_token = AuthService.auth_token(user, auth_settings)
-    user_info = f"{str(user.id)}:{client_ip}"
-    token = TokenDB(key=auth_token.refresh_token, user_info=user_info)
-    token_service = TokenService(redis, auth_settings)
-    token_set = await token_service.create_token(token)
+    auth_token: Token = AuthService.auth_token(user, auth_settings)
+    user_info: str = f"{str(user.id)}:{client_ip}"
+    token: TokenDB = TokenDB(key=auth_token.refresh_token, user_info=user_info)
+    token_service: TokenService = TokenService(redis, auth_settings)
+    token_set: bool = await token_service.create_token(token)
     if not token_set:
-        detail = "Could not insert data in Authentication database"
+        detail: str = "Could not insert data in Authentication database"
         logger.warning(detail)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=detail

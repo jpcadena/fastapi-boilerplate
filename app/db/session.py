@@ -10,7 +10,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
-    async_sessionmaker, create_async_engine,
+    async_sessionmaker,
+    create_async_engine,
 )
 
 from app.config.config import sql_database_setting

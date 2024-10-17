@@ -3,6 +3,7 @@ A module for token in the app-schemas package.
 """
 
 import re
+from datetime import datetime
 from typing import Literal
 from uuid import uuid4
 
@@ -243,3 +244,12 @@ class TokenResetPassword(BaseModel):
         """
         # pylint: disable=no-self-argument
         return validate_password(v)
+
+
+class OAuth2TokenResponse(TokenResponse):
+    expire_in: datetime = Field(
+        ..., title="Expire in seconds", description="Time to expire the token"
+    )
+    refresh_token: str | None = Field(
+        None, title="Refresh Token", description="Refresh token", min_length=30
+    )
