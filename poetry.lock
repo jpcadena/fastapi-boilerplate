@@ -13,13 +13,13 @@ files = [
 
 [[package]]
 name = "aiosmtplib"
-version = "3.0.2"
+version = "4.0.0"
 description = "asyncio SMTP client"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 files = [
-    {file = "aiosmtplib-3.0.2-py3-none-any.whl", hash = "sha256:8783059603a34834c7c90ca51103c3aa129d5922003b5ce98dbaa6d4440f10fc"},
-    {file = "aiosmtplib-3.0.2.tar.gz", hash = "sha256:08fd840f9dbc23258025dca229e8a8f04d2ccf3ecb1319585615bfc7933f7f47"},
+    {file = "aiosmtplib-4.0.0-py3-none-any.whl", hash = "sha256:33c72021cd9e9da495823952751e2dd927014a04a0eca711ee4af9812f2f04af"},
+    {file = "aiosmtplib-4.0.0.tar.gz", hash = "sha256:9629a0d8786ab1e5f790ebbbf5cbe7886fedf949a3f52fd7b27a0360f6233422"},
 ]
 
 [package.extras]
@@ -2365,4 +2365,4 @@ redis = ["redis"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "056316f36fa10c611ca1f103ac523272f280000c58963ca7e15a2de72977e35a"
+content-hash = "e575136993270fe325983c82b46def6a01090cc92595ede7f12f26119d1b9177"
