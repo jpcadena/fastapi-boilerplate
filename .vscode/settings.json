@@ -23,6 +23,12 @@
   "black-formatter.path": [
     "${workspaceFolder}/.venv/Scripts/black.exe"
   ],
+  "cSpell.words": [
+    "pydantic",
+    "uvicorn",
+    "pymysql",
+    "sqlalchemy"
+  ],
   "files.autoSave": "onFocusChange",
   "isort.args": [
     "--profile",
@@ -55,22 +61,19 @@
     "."
   ],
   "python.testing.pytestEnabled": true,
+  "ruff.configuration": "~/pyproject.toml",
   "ruff.interpreter": [
     "${workspaceFolder}/.venv/Scripts/python.exe"
   ],
-  "ruff.lint.args": [
-    "--config=pyproject.toml"
+  "ruff.lineLength": 80,
+  "ruff.lint.select": [
+    "E",
+    "F"
   ],
   "ruff.path": [
     "${workspaceFolder}/.venv/Scripts/ruff.exe"
   ],
   "terminal.integrated.env.windows": {
     "PYTHONUNBUFFERED": "1"
-  },
-  "cSpell.words": [
-    "García",
-    "Márquez",
-    "pymysql",
-    "sqlalchemy"
-  ]
+  }
 }
